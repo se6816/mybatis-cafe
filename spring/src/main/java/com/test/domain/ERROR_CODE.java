@@ -14,7 +14,8 @@ public enum ERROR_CODE {
 	REPLY_FAIL("댓글을 입력해주세요"),
 	REPLY_DELETE_SUCCESS("댓글을 삭제했습니다"),
 	USER_WITHDRAW_SUCCESS("계정이 성공적으로 삭제되었습니다."),
-	CHANGE_PASSWORD_SUCCESS("비밀번호를 변경하였습니다.")
+	CHANGE_PASSWORD_SUCCESS("비밀번호를 변경하였습니다."),
+	REPORT_SUCCESS("신고가 완료되었습니다")
 	;
 	
 	private String message;

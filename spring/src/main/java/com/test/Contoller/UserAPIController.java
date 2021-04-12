@@ -23,7 +23,7 @@ import com.test.config.auto.PrincipalDetails;
 import com.test.domain.ERROR_CODE;
 import com.test.domain.RoleType;
 import com.test.domain.UserVO;
-import com.test.domain.report;
+import com.test.domain.reportVO;
 import com.test.dto.PWRequest;
 
 
@@ -34,12 +34,21 @@ public class UserAPIController {
 	@Autowired
 	UserService usvc;
 	@PostMapping(value="/report",produces="application/text; charset=utf8")
-	public ResponseEntity<String> cc(@RequestBody report report,
+	public ResponseEntity<String> report(@Valid @RequestBody reportVO report,
+			BindingResult BindingResult,
 			@AuthenticationPrincipal PrincipalDetails principal) {
 		report.setId(principal.getId());
-		
+		System.out.println(report.toString());
+		usvc.report(report);
 		ResponseEntity<String> resEntity=null;
-		
+		if(!BindingResult.hasErrors()) {
+			resEntity=new ResponseEntity<String>(ERROR_CODE.REPORT_SUCCESS.getMessage(),HttpStatus.OK);
+		}
+		else {
+			FieldError error =BindingResult.getFieldError();
+			resEntity = new ResponseEntity<String>(error.getDefaultMessage(),HttpStatus.BAD_REQUEST);
+			
+		}
 		
 		
 		return resEntity;

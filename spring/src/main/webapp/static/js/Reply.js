@@ -1,9 +1,6 @@
 let index = {
 			init: function(){
 				let _this=this;
-				$("#btn-reply-write").on("click",()=>{
-					this.write("new");
-				});	
 				$("#btn-lovers").on("click",()=>{
 					this.lover();
 				});

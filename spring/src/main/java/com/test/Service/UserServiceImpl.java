@@ -8,6 +8,7 @@ import com.test.Mapper.UserMapper;
 import com.test.domain.Log;
 import com.test.domain.RoleType;
 import com.test.domain.UserVO;
+import com.test.domain.reportVO;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -54,9 +55,10 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void writeLog(Log log) {
-		userMapper.writeLog(log);
-		
+	public void report(reportVO report) {
+		userMapper.report(report);
 	}
+
+	
 	
 }

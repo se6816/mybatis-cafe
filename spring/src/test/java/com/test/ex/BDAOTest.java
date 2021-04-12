@@ -47,6 +47,7 @@ import com.test.domain.PageCriteria;
 import com.test.domain.ReplyVO;
 import com.test.domain.SortType;
 import com.test.domain.replyPageCriteria;
+import com.test.domain.reportVO;
 import com.test.dto.writeRequestDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -200,4 +201,12 @@ public class BDAOTest {
 		}
 	}
 	
+	public void report() throws Exception{
+		reportVO report= new reportVO();
+		com.test.domain.reportType reportType= com.test.domain.reportType.Fword;
+		report.setBid("397316");
+		report.setId("user");
+		report.setReportType(reportType);
+		Usvc.report(report);
+	}
 }

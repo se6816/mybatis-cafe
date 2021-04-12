@@ -1,7 +1,10 @@
 package com.test.domain;
 
-public class report {
+import javax.validation.constraints.NotBlank;
+
+public class reportVO {
 	private String id;
+	@NotBlank(message="글이 존재하지 않습니다")
 	private String bid;
 	private String content;
 	private reportType reportType;
@@ -30,6 +33,11 @@ public class report {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	@Override
+	public String toString() {
+		return "reportVO [id=" + id + ", bid=" + bid + ", content=" + content + ", reportType=" + reportType + "]";
+	}
+	
 	
 	
 	
