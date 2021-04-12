@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.test.Mapper.FileMapper">
+ 	
+ 	<insert id="upload" parameterType="map">
+ 		insert into ${boardType.DB_File_Table}
+ 		(PATHNAME,FILENAME,ORIGINAL_FILENAME,FILESIZE,
+ 		CONTENT_TYPE,RESOURCE_PATHNAME)
+		values 
+		(#{file.PathName}, #{file.FileName}, #{file.Original_Filename},
+		 #{file.FileSize},#{file.Content_Type},
+		 #{file.ReSource_PathName})
+		<selectKey keyProperty="file.FILEID" resultType="Integer" order="AFTER">
+			select IFNULL(MAX(FILEID),0) from
+			${boardType.DB_File_Table}
+		</selectKey>
+ 	</insert>
+ 	<select id="searchFile" parameterType="map" resultType="com.test.domain.FileVO">
+ 		select PATHNAME,FILENAME, CONTENT_TYPE,FILESIZE
+ 		from
+ 		${boardType.DB_File_Table}
+ 		where
+ 		 FILEID=#{fid}
+ 	</select>
+ 	<select id="selectFile" parameterType="map" resultType="com.test.domain.FileVO">
+ 		select RESOURCE_PATHNAME, FILEID
+ 		from
+ 		${boardType.DB_File_Table}
+ 		where
+ 		 FILEID=#{fid}
+ 	</select>
+ 	<update id="registerBidAll" parameterType="map">
+ 		update 
+		${boardType.DB_File_Table}
+		set bid=#{bid}
+		where FILEID in 
+		<foreach collection="fid" item="num"
+			open="(" separator="," close=")">
+				#{num}
+		</foreach>
+ 	</update>
+ 	<delete id="deleteFileAll" parameterType="map">
+ 		delete
+ 		from
+ 			${boardType.DB_File_Table}
+ 		where FILEID in
+ 		<foreach collection="fid" item="num"
+			open="(" separator="," close=")">
+				#{num}
+		</foreach>
+ 	</delete>
+ 	
+ 	<select id="findContainedFile" parameterType="map" resultType="int">
+ 		select FILEID
+ 		from 
+ 		${boardType.DB_File_Table}
+ 		where bid=#{bid}
+ 	</select>
+ 	
+ </mapper>

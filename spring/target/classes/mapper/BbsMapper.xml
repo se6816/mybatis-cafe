@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.test.Mapper.BbsMapper">
+	<sql id="findSQL">
+		<if test="pageCria.findType!=null">
+			<if test="pageCria.findType == 'S'.toString()">
+				and subject like CONCAT('%', #{pageCria.keyword}, '%')
+			</if>
+			<if test="pageCria.findType =='C'.toString()">
+				and content like CONCAT('%', #{pageCria.keyword}, '%')
+			</if>
+			<if test="pageCria.findType =='W'.toString()">
+				and writer like CONCAT('%', #{pageCria.keyword}, '%')
+			</if>
+			<if test="pageCria.findType =='SC'.toString()">
+				and (subject like CONCAT('%', #{pageCria.keyword}, '%') 
+				or content like CONCAT('%', #{pageCria.keyword}, '%'))
+			</if>
+		</if>
+	</sql>
+	<insert id="insert" parameterType="map">
+		
+		insert into 
+		${boardType.DB_Table}
+		(subject,content,writer,bcode)
+		values 
+		(#{bvo.subject}, #{bvo.content}, #{bvo.writer}, #{bvo.bcode})
+		<selectKey keyProperty="bvo.bid" resultType="Integer" order="AFTER">
+			select last_insert_id()	
+		</selectKey>
+	</insert>
+	<delete id="delete" parameterType="map">
+		delete
+		 from 
+		${boardType.DB_Table}
+		where 
+			bid=#{bid}
+	</delete>
+	<select id="read" parameterType="map" resultType="com.test.domain.BbsVO">
+		select b.bid, b.subject, b.content, b.writer, b.regdate, b.hit, count(love.userid) as lovers
+		from
+		${boardType.DB_Table} as b
+		left outer join
+		${boardType.DB_Lovers_Table} as love
+		on b.bid=love.bid 
+		where b.bid=#{bid}
+	</select>
+
+	
+	<update id="Bhit" parameterType="map">
+		update 
+		${boardType.DB_Table}
+		set hit=hit+1
+		where bid=#{bid}
+	</update>
+	<update id="update" parameterType="map">
+		update 
+		${boardType.DB_Table}
+		set subject=#{bvo.subject}, content=#{bvo.content}
+		where bid=#{bvo.bid}
+	</update>
+	<select id="listCriteria" parameterType="map" resultType="com.test.domain.BbsVO">
+		select
+			main.bid, main.subject, main.content, main.writer, main.regdate, main.hit, replyCount
+		from
+		${boardType.DB_Table} as main left join (select bid,count(*) as replyCount 
+														from 
+															${boardType.DB_Reply_Table}
+														group by bid) as reply
+		on main.bid=reply.bid
+		where <![CDATA[ main.bid > 0 ]]>
+		<if test="pageCria.bcode!=0 and pageCria.bcode!=null">
+		   AND main.bcode = #{pageCria.bcode}
+		</if>
+			<include refid="findSQL"></include>
+		order by 
+		<choose>
+			<when test="pageCria.DB_Sort=='recent'">
+				main.bid desc, main.regdate desc
+			</when>
+			<otherwise>
+				main.bid asc, main.regdate desc
+			</otherwise>
+		</choose>
+		limit #{pageCria.startPage}, #{pageCria.numPerPage}
+	
+	</select>
+	
+	<select id="countData" parameterType="map" resultType="int">
+		select count(*) 
+		from 
+		${boardType.DB_Table}
+		where
+			<![CDATA[ bid > 0 ]]>
+		<if test="pageCria.bcode!=0 and pageCria.bcode!=null">
+		   AND bcode = #{pageCria.bcode}
+		</if>
+	</select>
+	
+	<!-- main에서 사용하는 일부 글 가져오기 -->
+	<select id="todayArticle" parameterType="map" resultType="com.test.domain.BbsVO">
+		select
+			subject,bid
+		from
+		 ${boardType.DB_Table}
+		where
+			date_format(regdate,"%Y-%m-%d")=curdate()
+		order by 
+			bid desc
+		limit #{pageCria.startPage}, #{pageCria.numPerPage}
+	</select>
+	<select id="hotArticle" parameterType="map" resultType="com.test.domain.BbsVO">
+		select
+			subject,bid
+		from
+		${boardType.DB_Table}
+		where
+			date_format(regdate,"%Y-%m-%d")
+			 > date_sub(NOW(), interval 7 DAY )
+		order by 
+			hit desc
+		limit #{pageCria.startPage}, #{pageCria.numPerPage}
+	</select>
+	
+	<!-- 좋아요 컨트롤 -->
+	
+	<select id="isClickLovers" parameterType="map" resultType="int">
+		select count(*)
+		from
+		 	${boardType.DB_Lovers_Table}
+		where bid=#{bid} AND userid=#{userid}
+			
+	</select>
+	<delete id="deleteClickLovers" parameterType="map">
+		delete
+			from
+		${boardType.DB_Lovers_Table}
+		where bid=#{bid} AND userid=#{userid}
+	
+	</delete>
+	<insert id="addClickLovers" parameterType="map">
+		insert
+		into
+		${boardType.DB_Lovers_Table}
+		(bid,userid)
+		values
+		(#{bid},#{userid})
+	</insert>
+</mapper>
+
+
