@@ -56,7 +56,16 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void report(reportVO report) {
-		userMapper.report(report);
+		userMapper.reportAdmin(report);
+	}
+
+	@Override
+	public void updatePW(UserVO userVO) {
+		String rawpassword=userVO.getPassword();
+		String encpw=encoder.encode(rawpassword);
+		userVO.setPassword(encpw);
+		userMapper.UpdatePassword(userVO);
+		
 	}
 
 	

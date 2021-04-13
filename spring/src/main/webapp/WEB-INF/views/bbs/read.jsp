@@ -87,7 +87,8 @@
     		<div class="card">
     				<ul id="reply-list">
     				<c:forEach items="${replyList}" var="replyVO">
-   						<li class="reply-box">
+    					
+   						<li class="reply-box" <c:if test="${replyVO.rstep>0}">style="margin-left:30px;"</c:if>>
    							<p style="text-align:right;">작성날짜 :<fmt:formatDate pattern="yyyy-MM-dd" value="${replyVO.regdate}"/> </p>
    						    <p>작성자 : ${replyVO.writer}</p>
    						    <c:choose>

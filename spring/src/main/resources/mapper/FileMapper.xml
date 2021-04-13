@@ -36,7 +36,8 @@
  		update 
 		${boardType.DB_File_Table}
 		set bid=#{bid}
-		where FILEID in 
+		where bid is null
+		and FILEID in 
 		<foreach collection="fid" item="num"
 			open="(" separator="," close=")">
 				#{num}

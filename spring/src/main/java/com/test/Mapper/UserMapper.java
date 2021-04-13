@@ -15,9 +15,8 @@ public interface UserMapper {
 	public void insertMember(UserVO UserVO);
 	public void deleteMember(String id); // 탈퇴
 	public UserVO readMember(int uid); // 회원수정할때
-	public void report(reportVO report);
-	public void UpdateMember(UserVO memberVO); // 회원수정 시도
-	public void UpdatePassword(String Password); // 패스워드 바꾸기
+	public void reportAdmin(reportVO report);
+	public void UpdatePassword(UserVO userVO); // 패스워드 바꾸기
 	
 
 }

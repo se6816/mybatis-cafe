@@ -80,7 +80,7 @@
     	  $.ajax({
     		  data : data,
     		  type :"POST",
-    		  url : "/spring/"+$('.board-name').data('board')+"/upload",
+    		  url : "/spring/file/"+$('.board-name').data('board')+"/upload",
     		  contentType: false,
     		  enctype : "multipart/form-data",
     		  processData : false

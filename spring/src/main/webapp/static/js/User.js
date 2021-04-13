@@ -73,17 +73,17 @@ let index={
 			let cur_pw=$("#cur_pw").val();
 			let change_pw=$("#change_pw").val();
 			let change_pw_check=$("#change_pw_check").val();
-			if(!checkVal(cur_pw)){
+			if(!this.checkVal(cur_pw)){
 				alert("양식이 부족합니다.");
 				$("#cur_pw").focus();
 				return;
 			} 
-			else if(!checkVal(change_pw)){
+			else if(!this.checkVal(change_pw)){
 				alert("양식이 부족합니다.");
 				$("#change_pw").focus();
 				return;
 			}
-			else if(!checkVal(change_pw_check)){
+			else if(!this.checkVal(change_pw_check)){
 				alert("양식이 부족합니다.");
 				$("#change_pw_check").focus();
 				return;
@@ -112,7 +112,7 @@ let index={
 				$("#change_pw").text="";
 				$("#change_pw_check").text="";
 			}).fail(function(error){
-				alert("서버와 연결이 원활하지 않습니다");
+				alert(error.responseText);
 			}); 
 		},
 		checkVal: function(value){

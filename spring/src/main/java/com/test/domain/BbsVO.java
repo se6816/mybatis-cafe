@@ -96,6 +96,8 @@ public class BbsVO {
 	public void setReplyCount(int replyCount) {
 		this.replyCount = replyCount;
 	}
+
+	
 	
 	
 	

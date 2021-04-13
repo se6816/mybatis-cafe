@@ -64,7 +64,6 @@ function sendReport(){
 				alert("서버와 연결이 원활하지 않습니다");
 			}
 		});
-	console.log("ajax 끝");
 	
 }
 </script>

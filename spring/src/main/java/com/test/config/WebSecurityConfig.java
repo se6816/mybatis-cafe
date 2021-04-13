@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -65,6 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .antMatchers("/file/**").permitAll()
 		   .antMatchers("/reply/**").permitAll()
 		   .antMatchers("/loginForm","/join").anonymous()
+		   .antMatchers(HttpMethod.POST, "/api/user/**").permitAll()
+		   .antMatchers("/api/user/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')")
 		   .antMatchers("/api/report/**").access("hasRole('ROLE_MEMBER')")
 		   .antMatchers("/api/reply/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')")
 		   .antMatchers("/api/lovers/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')")

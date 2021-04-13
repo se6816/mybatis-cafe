@@ -171,11 +171,12 @@ public class BDAOTest {
 		reply.setSecret(false);
 		replysc.write(reply, BoardType.ARCTURUS);
 	}
-	public void ReplyList() throws Exception {
-		replyPageCriteria page= new replyPageCriteria();
-		List<ReplyVO> list=replysc.listCriteria(817, page, BoardType.ARCTURUS);
-		for(ReplyVO reply : list) {
-			System.out.println(reply.toString());
+	@Test
+	public void List(){
+		HashSet<Integer> hash= new HashSet<>();
+		ArrayList<Integer> del_List=new ArrayList(hash);
+		for(int a : del_List) {
+			System.out.println(a);
 		}
 	}
 	public void encrypt() throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
@@ -192,7 +193,7 @@ public class BDAOTest {
 		System.out.println(aes2.encrypt(str));
 		System.out.println(aes2.decrypt(aes2.encrypt(str)));
 	}
-	@Test
+	
 	public void itrator() throws Exception {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication== null

@@ -13,4 +13,5 @@ public interface UserService {
 	public int isUserName(String username);
 	public void deleteMember(String uid);
 	public void report(reportVO report);
+	public void updatePW(UserVO userVO);
 }
