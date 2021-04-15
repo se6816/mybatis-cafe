@@ -54,7 +54,6 @@ public class UserAPIController {
 			BindingResult BindingResult,
 			@AuthenticationPrincipal PrincipalDetails principal) {
 		report.setId(principal.getId());
-		System.out.println(report.toString());
 		usvc.report(report);
 		ResponseEntity<String> resEntity=null;
 		if(!BindingResult.hasErrors()) {

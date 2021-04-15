@@ -8,6 +8,7 @@ public class reportVO {
 	private String bid;
 	private String content;
 	private reportType reportType;
+	private BoardType boardType;
 	
 	public String getId() {
 		return id;
@@ -37,6 +38,13 @@ public class reportVO {
 	public String toString() {
 		return "reportVO [id=" + id + ", bid=" + bid + ", content=" + content + ", reportType=" + reportType + "]";
 	}
+	public BoardType getBoardType() {
+		return boardType;
+	}
+	public void setBoardType(BoardType boardType) {
+		this.boardType = boardType;
+	}
+	
 	
 	
 	

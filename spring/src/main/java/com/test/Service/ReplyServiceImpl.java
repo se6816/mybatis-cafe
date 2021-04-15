@@ -27,7 +27,6 @@ public class ReplyServiceImpl implements ReplyService {
 	public void write(ReplyVO reply, BoardType boardType) {
 		if(reply.getRgroup()==0) replyMapper.write(reply, boardType);
 		else {
-			System.out.println(reply.toString());
 			replyMapper.addRstep(reply, boardType);
 			replyMapper.reWrite(reply, boardType);
 		}

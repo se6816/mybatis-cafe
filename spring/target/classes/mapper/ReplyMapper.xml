@@ -13,8 +13,10 @@
   		<result column="rstep" property="rstep"/>
   		<result column="secret" property="secret" 
   			typeHandler="com.test.handler.BooleanIntegerHandler"/>
+  		<result column="delYn" property="delYn"
+  			typeHandler="com.test.handler.BooleanIntegerHandler"/>
   	</resultMap>
-	
+<!-- 댓글 조회 -->
 	<select id="listCriteria" resultMap="replyVO">
 		select * 
 		from
@@ -26,14 +28,14 @@
 		limit #{reply.startPage}, #{reply.numPerPage}
 	</select>
 	<!-- 댓글 삭제 -->
-	<delete id="delete">
-		delete
-		from 
+	<update id="delete">
+		update
 		${boardType.DB_Reply_Table}
+		set delYn=1
 		where
 			rid=#{rid}
 		
-	</delete>
+	</update>
 	
 	<!-- 댓글 작성 -->
  	<insert id="write" parameterType="map">

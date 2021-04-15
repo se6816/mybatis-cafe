@@ -1,20 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>오류가 발생하였습니다.</title>
-</head>
-<body>
-<h4>${exception.getMessage()}</h4>
+    pageEncoding="UTF-8" %>
+  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<ul>
-<c:forEach items="${exception.getStackTrace()}" var="stack">
-	<li>${stack.toString()}</li>
-</c:forEach>
+<%@include file="include/header.jsp" %>
+   
+<%@include file="include/banner.jsp" %>
+   <div id="wrapper">
+     		
+     		
+  		<div id="main_content">
+   		<div class="line"></div>
+   		<div class="section">
+   			<p class="error">${exception}</p>
+   			<a href="${pageContext.request.contextPath}/bbs/main"><p class="error"> 메인으로</p></a>
+   		
+   		</div>
+		
+    </div>
+    		
+    		
+    		
+   </div>
 
-</ul>
-</body>
-</html>
+<%@include file="include/footer.jsp" %>
+
+
+

@@ -62,6 +62,7 @@ public class ReplyAPIController {
 		
 		if(!BindingResult.hasErrors()) {
 			reply.setWriter(principal.getUsername());
+			System.out.println(reply.toString());
 			Rsvc.write(reply, boardType);
 			resEntity = new ResponseEntity<String>(ERROR_CODE.REPLY_SUCCESS.getMessage(),HttpStatus.OK);	
 		}

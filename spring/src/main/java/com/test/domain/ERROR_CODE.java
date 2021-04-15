@@ -16,7 +16,8 @@ public enum ERROR_CODE {
 	USER_WITHDRAW_SUCCESS("계정이 성공적으로 삭제되었습니다."),
 	CHANGE_PASSWORD_SUCCESS("비밀번호를 변경하였습니다."),
 	CUR_PASSWORD_FAIL("현재 비밀번호가 맞지 않습니다"),
-	REPORT_SUCCESS("신고가 완료되었습니다")
+	REPORT_SUCCESS("신고가 완료되었습니다"),
+	DENIED_ACCESS("잘못된 접근입니다")
 	;
 	
 	private String message;

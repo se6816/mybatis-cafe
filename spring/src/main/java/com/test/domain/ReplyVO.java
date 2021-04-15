@@ -15,6 +15,7 @@ public class ReplyVO {
 	private int rgroup;
 	private int rstep;
 	private boolean secret;
+	private boolean delYn;
 	
 	
 	public ReplyVO() {
@@ -69,11 +70,18 @@ public class ReplyVO {
 	public void setSecret(boolean secret) {
 		this.secret = secret;
 	}
+	public boolean isDelYn() {
+		return delYn;
+	}
+	public void setDelYn(boolean delYn) {
+		this.delYn = delYn;
+	}
 	@Override
 	public String toString() {
 		return "ReplyVO [rid=" + rid + ", bid=" + bid + ", content=" + content + ", writer=" + writer + ", regdate="
-				+ regdate + ", rgroup=" + rgroup + ", rstep=" + rstep + ", secret=" + secret + "]";
+				+ regdate + ", rgroup=" + rgroup + ", rstep=" + rstep + ", secret=" + secret + ", delYn=" + delYn + "]";
 	}
+	
 	
 	
 	

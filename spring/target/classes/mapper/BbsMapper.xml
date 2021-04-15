@@ -21,6 +21,7 @@
 			</if>
 		</if>
 	</sql>
+	<!-- 글 등록 -->
 	<insert id="insert" parameterType="map">
 		
 		insert into 
@@ -32,6 +33,7 @@
 			select last_insert_id()	
 		</selectKey>
 	</insert>
+	<!-- 글 삭제 -->
 	<delete id="delete" parameterType="map">
 		delete
 		 from 
@@ -39,6 +41,7 @@
 		where 
 			bid=#{bid}
 	</delete>
+	<!-- 글 상세 조회 -->
 	<select id="read" parameterType="map" resultType="com.test.domain.BbsVO">
 		select b.bid, b.subject, b.content, b.writer, b.regdate, b.hit, count(love.userid) as lovers
 		from
@@ -49,19 +52,21 @@
 		where b.bid=#{bid}
 	</select>
 
-	
+	<!-- 조회 수 증가 -->
 	<update id="Bhit" parameterType="map">
 		update 
 		${boardType.DB_Table}
 		set hit=hit+1
 		where bid=#{bid}
 	</update>
+	<!--  글 수정 -->
 	<update id="update" parameterType="map">
 		update 
 		${boardType.DB_Table}
 		set subject=#{bvo.subject}, content=#{bvo.content}
 		where bid=#{bvo.bid}
 	</update>
+	<!-- 글 목록 조회 -->
 	<select id="listCriteria" parameterType="map" resultType="com.test.domain.BbsVO">
 		select
 			main.bid, main.subject, main.content, main.writer, main.regdate, main.hit, replyCount
@@ -89,6 +94,7 @@
 	
 	</select>
 	
+	<!-- 글 갯수 -->
 	<select id="countData" parameterType="map" resultType="int">
 		select count(*) 
 		from 

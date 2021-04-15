@@ -45,7 +45,8 @@ function sendReport(){
 	let data={
 			reportType : val,
 			bid : $("#report-id").val(),
-			content : $("#report-content").val()
+			content : $("#report-content").val(),
+			boardType : $('.board-name').data('board')
 	}
 	$.ajax({
 		data : JSON.stringify(data),

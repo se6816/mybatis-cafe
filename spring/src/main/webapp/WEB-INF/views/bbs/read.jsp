@@ -87,35 +87,41 @@
     		<div class="card">
     				<ul id="reply-list">
     				<c:forEach items="${replyList}" var="replyVO">
-    					
-   						<li class="reply-box" <c:if test="${replyVO.rstep>0}">style="margin-left:30px;"</c:if>>
-   							<p style="text-align:right;">작성날짜 :<fmt:formatDate pattern="yyyy-MM-dd" value="${replyVO.regdate}"/> </p>
-   						    <p>작성자 : ${replyVO.writer}</p>
-   						    <c:choose>
-   						    	<c:when test="${replyVO.secret && 
-   						    				(principal.username==replyVO.writer ||
-   						    				 principal.username==bbsVO.writer)}">
-   						    				 <p>${replyVO.content}</p>
-   						    	</c:when>
-   						    	<c:when test="${replyVO.secret}">
-   						    		<p>비밀글입니다</p>
-   						    	</c:when>
-   						    	<c:otherwise>
-   						    		<p>${replyVO.content}</p>
-   						    	</c:otherwise>
-   						    </c:choose>
-    						<p style="text-align:right;">
-    						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reply-comment-modal" data-whatever="${replyVO.writer}" data-rgroup="${replyVO.rgroup}" data-rstep="${replyVO.rstep}">답변</button> 
-    						<c:if test="${principal.username==replyVO.writer}">
-    							<button type="button" class="btn btn-primary btn-reply-delete" data-rid="${aes.encrypt(replyVO.rid)}">삭제</button> 	
-    						</c:if>
-    						<c:if test="${(principal.username != bbsVO.writer) && isAdmin}">
-								<div style="float:right;">
-									<button type="button" class="btn btn-primary btn-reply-delete" data-rid="${aes.encrypt(replyVO.rid)}">관리자 삭제</button> 
-								</div>	
+    					<li class="reply-box" <c:if test="${replyVO.rstep>0}">style="margin-left:30px;"</c:if>>
+    					<c:choose>
+    						<c:when test="${replyVO.delYn}">
+    							<p>이미 삭제된 댓글입니다.</p>	
+    						</c:when>
+    						<c:otherwise>
+   								<p style="text-align:right;">작성날짜 :<fmt:formatDate pattern="yyyy-MM-dd" value="${replyVO.regdate}"/> </p>
+   						    	<p>작성자 : ${replyVO.writer}</p>
+   						    	<c:choose>
+   						    		<c:when test="${replyVO.secret && 
+   						    					(principal.username==replyVO.writer ||
+   						   	 					 principal.username==bbsVO.writer)}">
+   						   	 					 <p>${replyVO.content}</p>
+   						    		</c:when>
+   						    		<c:when test="${replyVO.secret}">
+   						    			<p>비밀글입니다</p>
+   						    		</c:when>
+   						    		<c:otherwise>
+   						    			<p>${replyVO.content}</p>
+   						    		</c:otherwise>
+   						    	</c:choose>
+    							<p style="text-align:right;">
+    								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reply-comment-modal" data-whatever="${replyVO.writer}" data-rgroup="${replyVO.rgroup}" data-rstep="${replyVO.rstep}">답변</button> 
+    								<c:if test="${principal.username==replyVO.writer}">
+    									<button type="button" class="btn btn-primary btn-reply-delete" data-rid="${aes.encrypt(replyVO.rid)}">삭제</button> 	
+    								</c:if>
+    								<c:if test="${(principal.username != bbsVO.writer) && isAdmin}">
+										<div style="float:right;">
+											<button type="button" class="btn btn-primary btn-reply-delete" data-rid="${aes.encrypt(replyVO.rid)}">관리자 삭제</button> 
+										</div>	
 								
-							 </c:if>
-    						</p>
+							 		</c:if>
+    							</p>
+    						</c:otherwise>
+    					</c:choose>
     					</li>
   		  		  	</c:forEach>
     				</ul>

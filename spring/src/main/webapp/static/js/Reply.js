@@ -10,6 +10,9 @@ let index = {
 				$("#btn-add-Rreply").on("click",()=>{
 					this.write("re");
 				});
+				$("#btn-reply-write").on("click",()=>{
+					this.write("new");
+				});
 			},
 			lover : function(){
 				$.ajax({ type:"POST",
