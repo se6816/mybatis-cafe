@@ -81,7 +81,7 @@ public class BbsController {
 	public String read(@ModelAttribute("boardType")@PathVariable("boardType") BoardType boardType, 
    						PageCriteria pageCria, @PathVariable("bid") int bid, Model model,
    						@AuthenticationPrincipal PrincipalDetails principal
-   			   			
+   			   			,RedirectAttributes reAttr
 			)throws Exception {
 		boolean isLovers=false;
 		if(principal!=null) {
@@ -93,8 +93,10 @@ public class BbsController {
 		model.addAttribute("aes",aes);
 		model.addAttribute("pagingMaker", pagingMaker);
 		BbsVO bvo =bsvc.read(bid,boardType); 
-		if(bvo.getSubject()==null) 
+		if(bvo.getSubject()==null) {
+			reAttr.addFlashAttribute("err", "글이 존재하지않습니다");
 			return "redirect:/bbs/main";
+		}
 		model.addAttribute("bbsVO", bvo);
 		model.addAttribute("replyList", rsvc.listCriteria(bid, new replyPageCriteria(), boardType));
 		return "/bbs/read";
@@ -110,7 +112,7 @@ public class BbsController {
 		pagingMaker.setPageCria(pageCria);
 		BbsVO bvo= bsvc.read(bid,boardType);
 		if(!principal.getUsername().equals(bvo.getWriter())) {
-			reAttr.addFlashAttribute("err", "mistaken Access");
+			reAttr.addFlashAttribute("err", "수정 권한이 없습니다.");
 			return "redirect:/bbs/main";
 		}
 		model.addAttribute("pagingMaker", pagingMaker);

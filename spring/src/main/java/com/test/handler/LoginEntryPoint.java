@@ -28,12 +28,10 @@ public class LoginEntryPoint extends LoginUrlAuthenticationEntryPoint {
 
 		
 		String isAjax=request.getHeader("X-Requested-With");
-		if("XMLHttpRequest".equals(isAjax)) {
-			System.out.println("ajax");
+		if("XMLHttpRequest".equals(isAjax)) { // ajax 요청
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
-		else {
-			System.out.println("forward");
+		else { // 읿반 요청
 			super.commence(request, response, authException);
 		}
 		

@@ -85,7 +85,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .failureUrl("/loginForm/fail")
 		   .and()
 		   .exceptionHandling()
-		   .accessDeniedPage("/err/accessDenied")
 		   .authenticationEntryPoint(new LoginEntryPoint("/loginForm"))
 		   .and()
 		   .logout()

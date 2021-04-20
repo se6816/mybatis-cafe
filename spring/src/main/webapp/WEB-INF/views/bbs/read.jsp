@@ -106,6 +106,9 @@
    						    		</c:when>
    						    		<c:otherwise>
    						    			<p>${replyVO.content}</p>
+   						    			<c:if test="${replyVO.content.length>2}">
+   						    			    <a href="javascript:void(0)">간략히</a>
+   						    			</c:if>
    						    		</c:otherwise>
    						    	</c:choose>
     							<p style="text-align:right;">

@@ -58,8 +58,13 @@
 	.article{
 		min-width:600px;
 	}
+	a.list-subject{
+	    text-overflow: ellipsis;
+	    overflow:hidden;
+	    white-space:nowrap;  
+	}
 	a{
-		text-decoration:none;
+	    text-decoration:none;
 	}
 	a:link{
 		color:black;
@@ -96,8 +101,35 @@
 		padding: 5px 5px;
 		margin : 5px 5px;
 	}
+	p.err{
+		color:red;
+	}
 	.error{
 		text-align:center;
+	}
+	.multiline-ellipsis {
+		overflow: hidden;
+  		position: relative; 
+  		line-height: 1.2em;
+  		max-height: 3.4em; 
+  		text-align: justify;
+  		margin-right: -1em;
+  		padding-right: 1em;
+	}
+	.multiline-ellipsis:before {
+  		content: '...';
+  		position: absolute;
+  		right: 0;
+  		bottom: 0;
+	}
+	.multiline-ellipsis:after {
+  		content: '';
+  		position: absolute;
+  		right: 0;
+  		width: 1em;
+  		height: 1em;
+  		margin-top: 0.2em;
+  		background: white;
 	}
 	
 

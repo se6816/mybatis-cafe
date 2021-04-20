@@ -56,7 +56,12 @@ public class UserController {
 	}
 	
 	@GetMapping("/loginForm")
-	public String loginForm() {
+	public String loginForm(@AuthenticationPrincipal PrincipalDetails principal
+			,RedirectAttributes redirectAttr) {
+		if(principal!=null) {
+			redirectAttr.addFlashAttribute("err", "이미 로그인 중입니다");
+			return "redirect:/bbs/main";
+		}
 		return "user/loginForm";
 	}
 	@GetMapping("/loginForm/fail")
