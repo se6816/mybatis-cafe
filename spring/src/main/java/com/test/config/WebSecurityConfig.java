@@ -44,6 +44,7 @@ import com.test.handler.loginSuccessHandler;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
     PrincipalDetailsService PrincipalDetailsService;
+
 	@Autowired
 	UserService uSvc;
 	
