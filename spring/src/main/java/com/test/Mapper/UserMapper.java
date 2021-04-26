@@ -18,6 +18,6 @@ public interface UserMapper {
 	public UserVO readMember(int uid); // 회원수정할때
 	public void reportAdmin(reportVO report); // 신고하기
 	public void UpdatePassword(UserVO userVO); // 패스워드 바꾸기
-	
+	public void log(Log log); // 로그 기록
 
 }

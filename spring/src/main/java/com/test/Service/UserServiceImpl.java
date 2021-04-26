@@ -68,6 +68,12 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
+	@Override
+	public void writeLog(Log log) {
+		userMapper.log(log);
+		
+	}
+
 	
 	
 }

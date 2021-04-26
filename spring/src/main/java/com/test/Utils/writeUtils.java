@@ -44,22 +44,17 @@ public class writeUtils {
 		BbsVO bvo= wrd.makeModifyBbsVO();
 		
 		HashSet<Integer> hash= new HashSet<>();
-		List<Integer> list=FileMapper.findContainedFile(bvo.getBid(), boardType);
+		List<Integer> list=FileMapper.findContainedFile(bvo.getBid(), boardType); // DB에 저장된 해당 글 파일들
 		
-		if(!list.isEmpty()) {
-			for(int item : list) {
-				hash.add(item);
-			}
-		}
 		if(wrd.existFile()) {
 			for(int item : wrd.getFid()) {
-				if(hash.contains(item)) {
-					hash.remove(item);
-				}
+				hash.add(item);     // 현재 작성된 글에 포함된 파일 번호들
 			}
 		}
-		ArrayList<Integer> del_List=new ArrayList(hash);
-		int[] delId=del_List.stream().mapToInt(Integer::intValue).toArray();
+		int[] delId=list.stream()
+					.filter(number -> !hash.contains(number))
+					.mapToInt(Integer::intValue)
+					.toArray();
 		if(wrd.existFile())FileMapper.registerBidAll(wrd.getFid(), bvo.getBid(), boardType);
 		BbsMapper.update(bvo, boardType);
 		if(delId.length>0) FileMapper.deleteFileAll(delId, boardType);

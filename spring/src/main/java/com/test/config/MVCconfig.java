@@ -15,6 +15,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -34,7 +35,6 @@ public class MVCconfig extends WebMvcConfigurerAdapter{
 			.allowedOrigins("http://localhost:8801/spring/")
 			.allowedMethods("*");
 	}
-	
 	
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

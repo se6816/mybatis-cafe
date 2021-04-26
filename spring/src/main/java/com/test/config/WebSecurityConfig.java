@@ -1,11 +1,22 @@
 package com.test.config;
 
+import com.test.Service.UserService;
+import com.test.Service.UserServiceImpl;
+import com.test.config.auth.PrincipalDetailsService;
 import com.test.handler.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,13 +24,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-import com.test.config.auto.PrincipalDetailsService;
 import com.test.handler.LoginEntryPoint;
 import com.test.handler.loginSuccessHandler;
 
@@ -29,6 +44,8 @@ import com.test.handler.loginSuccessHandler;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
     PrincipalDetailsService PrincipalDetailsService;
+	@Autowired
+	UserService uSvc;
 	
 	@Bean
 	@Override
@@ -42,7 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(PrincipalDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(PrincipalDetailsService).
+        passwordEncoder(passwordEncoder());
     }
 
 	@Override
@@ -78,20 +96,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .and()
 		   .formLogin()
 		   .loginPage("/loginForm")
-		   .usernameParameter("username")
+		   .usernameParameter("id")
 		   .passwordParameter("password")
 		   .loginProcessingUrl("/login")
-		   .successHandler(new loginSuccessHandler())
-		   .failureUrl("/loginForm/fail")
+		   .successHandler(new loginSuccessHandler(uSvc))
+		   .failureHandler(new loginFailHandler(uSvc))
 		   .and()
 		   .exceptionHandling()
+		   .accessDeniedPage("/bbs/main")
 		   .authenticationEntryPoint(new LoginEntryPoint("/loginForm"))
 		   .and()
 		   .logout()
 		   .logoutUrl("/logout")
 		   .logoutSuccessUrl("/bbs/main")
-		   .invalidateHttpSession(true);
-		
+		   .deleteCookies("JSESSIONID")
+		   .invalidateHttpSession(true)
+		   .and()
+		   .sessionManagement()
+		   .maximumSessions(1)
+		   .maxSessionsPreventsLogin(true)
+		   .sessionRegistry(sessionRegistry())
+		   .expiredUrl("/loginForm?expired=true");
 	}
+	@Bean
+	public SessionRegistry sessionRegistry() {
+		return new SessionRegistryImpl();
+	}
+
 }
 

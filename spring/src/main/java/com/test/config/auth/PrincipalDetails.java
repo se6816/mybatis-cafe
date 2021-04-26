@@ -1,4 +1,4 @@
-package com.test.config.auto;
+package com.test.config.auth;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -79,5 +79,28 @@ public class PrincipalDetails implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime=31;
+		int hashCode=1;
+		
+		hashCode=prime*hashCode+((this.getId()==null) ? 0 : this.getId().hashCode());
+		hashCode=prime*hashCode;
+		
+		return hashCode;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		boolean isEquals=false;
+		PrincipalDetails user=(PrincipalDetails) obj;
+		if(this.getId().equals(user.getId())) {
+			isEquals=true;
+		}
+		return isEquals;
+	}
+	
+	
 
 }

@@ -46,7 +46,8 @@
     </div>
 <script>
 	var result= '${err}';
-	if(result!=null){
+	console.log(${err});
+	if(result!=null && result!=""){
 		alert(result);
 	}
 

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.test.Service.ReplyService;
 import com.test.Utils.AES256Util;
-import com.test.config.auto.PrincipalDetails;
+import com.test.config.auth.PrincipalDetails;
 import com.test.domain.BoardType;
 import com.test.domain.ERROR_CODE;
 import com.test.domain.ReplyVO;

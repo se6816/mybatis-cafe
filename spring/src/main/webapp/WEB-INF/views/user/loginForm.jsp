@@ -28,9 +28,9 @@
 <div class="form-group card-body" >
 
 <form id="login-form"action="/spring/login" method="post">
-  ID: <input type="text" class="form-control" id="username" name="username" />
+  ID: <input type="text" class="form-control" id="id" name="id" value="${id}" />
   <br/>
-   비밀번호: <input type="password" class="form-control" id="password" name="password" />
+   비밀번호: <input type="password" class="form-control" id="password" name="password" value="${password}"/>
   <br/>
   <p class="err">${ERR}</p>
   
@@ -46,6 +46,12 @@
 </div>
 </div>
 </div>
+<script type="text/javascript">
+	
+	if(${request.getParamter(expired)}){
+		$(".err").text("이미 다른 사용자가 로그인 중입니다");
+	}
+</script>
 <script type="text/javascript">
 	$("#access-login").on("click",function(){
 		if(!navigator.cookieEnabled){

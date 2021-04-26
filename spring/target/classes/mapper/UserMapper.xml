@@ -76,5 +76,12 @@
 		where id=#{id}
   	</update>
  	
+ 	<insert id="log">
+ 	insert into login_log(login_userid,login_success,login_ip)
+ 	values(#{login_userid}
+ 	,#{login_success, typeHandler = com.test.handler.BooleanIntegerHandler}
+ 	,#{login_ip});
+ 	</insert>
+ 	
   </mapper>
   

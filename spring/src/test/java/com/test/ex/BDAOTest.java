@@ -8,9 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 import javax.xml.ws.spi.http.HttpHandler;
@@ -56,12 +59,12 @@ import com.test.dto.writeRequestDto;
 public class BDAOTest {
 
 	
-	@Resource
+//	@Resource
 	private BbsServiceImpl BbsService;
 	
 	private ReplyServiceImpl replysc;
 	
-	@Resource
+//	@Resource
 	private UserServiceImpl Usvc;
 	private static Logger logger = LoggerFactory.getLogger(BDAOTest.class);
 	
@@ -173,11 +176,20 @@ public class BDAOTest {
 	}
 	@Test
 	public void List(){
+		HashSet<Integer> exist_hash= new HashSet<>();
+		List<Integer> list= new ArrayList();
+		int[] aa= new int[] {1,2,3};
 		HashSet<Integer> hash= new HashSet<>();
-		ArrayList<Integer> del_List=new ArrayList(hash);
-		for(int a : del_List) {
-			System.out.println(a);
-		}
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		List<Integer> stream=list.stream()
+						.filter(i->!hash.contains(i))
+						.collect(Collectors.toList());
+		
+		stream.forEach(System.out::println);
+		
+		
 	}
 	public void encrypt() throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
 		Date date= new Date();

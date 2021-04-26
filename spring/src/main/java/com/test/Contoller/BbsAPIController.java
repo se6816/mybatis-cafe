@@ -30,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.test.Service.BbsService;
 import com.test.Utils.AES256Util;
-import com.test.config.auto.PrincipalDetails;
+import com.test.config.auth.PrincipalDetails;
 import com.test.domain.BbsVO;
 import com.test.domain.BoardType;
 import com.test.domain.ERROR_CODE;

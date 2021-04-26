@@ -16,10 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.test.Service.UserService;
-import com.test.config.auto.PrincipalDetails;
+import com.test.config.auth.PrincipalDetails;
 import com.test.domain.BoardType;
 import com.test.domain.UserVO;
 
@@ -37,10 +38,6 @@ public class UserController {
 		return list;
 	}
 	
-	@GetMapping("/err/accessDenied")
-	public String errPage(){
-		return "error/403";
-	}
 	@GetMapping("/user/changepw")
 	public String changepwForm(@AuthenticationPrincipal PrincipalDetails principal, Model model) {
 		BoardType boardType= BoardType.ARCTURUS;
@@ -64,9 +61,12 @@ public class UserController {
 		}
 		return "user/loginForm";
 	}
+	
+	
 	@GetMapping("/loginForm/fail")
-	public String loginFormFail(RedirectAttributes reAttribute) {
+	public String loginFail(@RequestParam(defaultValue="") String id,RedirectAttributes reAttribute) {
 		reAttribute.addFlashAttribute("ERR", "아이디나 비밀번호가 틀렸습니다.");
+		reAttribute.addFlashAttribute("id", id);
 		return "redirect:/loginForm";
 	}
 	@GetMapping("/join")

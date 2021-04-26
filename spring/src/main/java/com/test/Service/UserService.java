@@ -14,4 +14,5 @@ public interface UserService {
 	public void deleteMember(String uid);   // 회원 탈퇴
 	public void report(reportVO report);   // 신고하기
 	public void updatePW(UserVO userVO);   // 비밀번호 변경
+	public void writeLog(Log log); // 로그 기록
 }
