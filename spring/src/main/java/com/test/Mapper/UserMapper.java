@@ -11,6 +11,7 @@ import com.test.domain.reportVO;
 public interface UserMapper {
 	public int isUserName(String username);  // 닉네임 중복 여부
 	public int isID(String id); // ID 중복 여부
+	public int isEmail(String email);
 	public void loginMember(UserVO UserVO); // 록그인 
 	public UserVO selectMember(String id); // 회원 조회
 	public void insertMember(UserVO UserVO); // 회원 가입

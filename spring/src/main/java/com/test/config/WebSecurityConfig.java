@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .antMatchers("/user/**").authenticated()
 		   .antMatchers("/file/**").permitAll()
 		   .antMatchers("/reply/**").permitAll()
-		   .antMatchers("/loginForm","/join").anonymous()
+		   .antMatchers("/loginForm","/join","/find_id_pw").anonymous()
 		   .antMatchers(HttpMethod.POST, "/api/user/**").permitAll()
 		   .antMatchers("/api/user/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')")
 		   .antMatchers("/api/report/**").access("hasRole('ROLE_MEMBER')")

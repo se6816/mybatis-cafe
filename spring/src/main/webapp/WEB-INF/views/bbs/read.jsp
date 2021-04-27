@@ -105,9 +105,13 @@
    						    			<p>비밀글입니다</p>
    						    		</c:when>
    						    		<c:otherwise>
-   						    			<p>${replyVO.content}</p>
+   						    			<p class="collapse" id="collapse-${replyVO.rid}"aria-expanded="false">${replyVO.content}</p>
    						    		</c:otherwise>
    						    	</c:choose>
+   						    	<div class="paper-button <c:if test='${replyVO.length<100}'>hide</c:if>">
+   						    		<a role="button" class="collapsed" data-toggle="collapse" href="#collapse-${replyVO.rid}" aria-expanded="false" aria-controls="${replyVO.rid}"></a>
+    								
+    							</div>
     							<p style="text-align:right;">
     								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reply-comment-modal" data-whatever="${replyVO.writer}" data-rgroup="${replyVO.rgroup}" data-rstep="${replyVO.rstep}">답변</button> 
     								<c:if test="${principal.username==replyVO.writer}">
@@ -203,7 +207,14 @@ $("#btn-add-reply").on("click",function(){
 			html+="<li class='reply-box'>";
 			html+="<p style='text-align:right;'>작성날짜 :"+moment(date).format('YYYY-MM-DD')+"</p>";
 			html+="<p>작성자 :"+reply.writer+"</p>";
-			html+="<p>"+reply.content+"</p>";
+			html+="<p class='collapse' id='collapse-"+reply.rid+"' aria-expanded='false'>"+reply.content+"</p>";
+			html+="<div class='paper-button";
+			if(reply.length<100){
+				html+=" hide";
+			}
+			html+="'>";
+			html+="<a role='button' class='collapsed' data-toggle='collapse' href='#collapse-"+reply.rid+"' aria-expanded='false' aria-controls='"+reply.rid+"'></a>";
+			html+="</div>";
 			html+="<p style='text-align:right;'>";
 			html+="<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#reply-comment-modal' data-whatever='"+reply.writer+"' data-rgroup='"+reply.rgroup+"'>답변</button> ";
 			if(username===reply.writer){

@@ -67,7 +67,8 @@ public class ReplyAPIController {
 			resEntity = new ResponseEntity<String>(ERROR_CODE.REPLY_SUCCESS.getMessage(),HttpStatus.OK);	
 		}
 		else {
-			resEntity = new ResponseEntity<String>(ERROR_CODE.REPLY_FAIL.getMessage(),HttpStatus.BAD_REQUEST);
+			FieldError error =BindingResult.getFieldError();
+			resEntity = new ResponseEntity<String>(error.getDefaultMessage(),HttpStatus.BAD_REQUEST);
 			
 		}
 		return resEntity;

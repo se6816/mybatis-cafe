@@ -73,4 +73,8 @@ public class UserController {
 	public String joinForm() {
 		return "user/joinForm";
 	}
+	@GetMapping("/find_id_pw")
+	public String findForm() {
+		return "user/find_id_pw";
+	}
 }

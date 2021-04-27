@@ -37,18 +37,17 @@
   <button id="access-login" type="button" class="btn btn-success btn-block" onclick="javascript:void(0)">로그인</button>
 	
 </form>
+<a href="<c:url value='find_id_pw'/>">비밀번호/아이디 찾기</a>
+<br/>
 <a href="<c:url value='/join'/>">회원가입을 하지 않으셨나요?</a>
 </div>
-
 <div class="card-footer">
-
-
 </div>
 </div>
 </div>
 <script type="text/javascript">
-	
-	if(${request.getParamter(expired)}){
+	let expired=${request.getParamter(expired)};
+	if(expired){
 		$(".err").text("이미 다른 사용자가 로그인 중입니다");
 	}
 </script>

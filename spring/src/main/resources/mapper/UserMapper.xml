@@ -45,6 +45,14 @@
   		where
   			id=#{id}
   	</select>
+  	<!-- Email 중복 여부 -->
+  	<select id="isEmail" resultType="integer">
+  	select count(*)
+  		from 
+  			user
+  		where
+  			email=#{email}
+  	</select>
   	
   	<!--회원가입 -->
   	<insert id="insertMember">

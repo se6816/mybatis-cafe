@@ -97,15 +97,4 @@ public class BbsVO {
 		this.replyCount = replyCount;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

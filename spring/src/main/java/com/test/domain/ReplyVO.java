@@ -8,7 +8,7 @@ public class ReplyVO {
 	
 	private int rid;
 	private int bid;
-	@Size(min=1,max=100)
+	@Size(min=1,max=1000,message="글자수가 1000자 이하여야합니다")
 	private String content;
 	private String writer;
 	private Timestamp regdate;
@@ -16,6 +16,7 @@ public class ReplyVO {
 	private int rstep;
 	private boolean secret;
 	private boolean delYn;
+	private int length;
 	
 	
 	public ReplyVO() {
@@ -39,6 +40,7 @@ public class ReplyVO {
 	}
 	public void setContent(String content) {
 		this.content = content;
+		this.length=content.length();
 	}
 	public String getWriter() {
 		return writer;
@@ -76,10 +78,8 @@ public class ReplyVO {
 	public void setDelYn(boolean delYn) {
 		this.delYn = delYn;
 	}
-	@Override
-	public String toString() {
-		return "ReplyVO [rid=" + rid + ", bid=" + bid + ", content=" + content + ", writer=" + writer + ", regdate="
-				+ regdate + ", rgroup=" + rgroup + ", rstep=" + rstep + ", secret=" + secret + ", delYn=" + delYn + "]";
+	public int getLength() {
+		return length;
 	}
 	
 	
