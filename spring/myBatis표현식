@@ -1,0 +1,53 @@
+[MyBatis�� ǥ����]
+
+  # if
+ 	- 사용예
+ 		<if test="content !=null">
+ 				명령문...
+ 		</if>
+ 
+ # choose(when, otherwise)
+ 	- 사용예
+ 	    <choose>
+ 	    	<when test="content !=null">
+ 	    		명령문.....
+ 	    	</when>
+ 	    	<when test="product !=null and product.code !=null">
+ 	    		명령문....
+ 	    	</when>
+ 	    	<otherwise>
+ 	    		명령문....
+ 	    	</otherwise> 	    
+ 	    </choose>
+ 
+ 
+ # trim(where, set)
+ 
+ // 맨끝에 있는 콤마(,)를 제거하는 경우
+   
+  <update id="updateMember" parameterType="com.spring.xxxxxVO"> 
+	   update Member 
+	   	<trim prefix="set" suffixOverrides=",">
+	   		<if test="userName !=null">userName = #{userName},</if>
+	 	    <if test="email !=null">email = #{email},</if>
+	 	    <if test="tel !=null">tel = #{tel} </if>
+	 	</trim>
+	   where id = #{id}
+   </update>	
+ // 맨 앞에 있는 연산자를(AND / OR) 제거하는 경우
+ 
+  <select id="selectInfo" parameterType="com.spring.xxxVO" resultType="memberResultMap">
+    select * from Employee 
+    	<trim prefix="where" prefixOverrides = "AND | OR">
+    		<if test ="userName !=null">userName = #{userName}</if>
+    		<if test ="pwd !=null">and pwd = #{pwd} </if>
+    		<if test ="email !=null">and email = #{email}</if>
+    	</trim> 
+  </select>
+ 	
+ # forEach 
+ 	<foreach item="item" index ="idx" collection="list"
+ 		open="(" separator="," close=")">
+ 			#{item}
+ 	</foreach>	
+ 

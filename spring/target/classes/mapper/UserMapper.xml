@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  
+  <mapper namespace="com.test.Mapper.UserMapper">
+  	
+  	<resultMap type="com.test.domain.UserVO" id="user">
+  		<result column="id" property="id"/>
+  		<result column="password" property="password"/>
+  		<result column="username" property="username"/>
+  		<result column="email" property="email"/>
+  		<result column="role" property="role" 
+  			typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+  	</resultMap>
+  	<resultMap type="com.test.domain.reportVO" id="report">
+  		<result column="id" property="id"/>
+  		<result column="bid" property="bid"/>
+  		<result column="content" property="content"/>
+  		<result column="reportType" property="reportType" 
+  			typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+  	</resultMap>
+  	<!-- 유저 email을 이용한 조회 -->
+  	<select id="selectMemberFromEmail" resultType="com.test.domain.UserVO">
+  		select *
+  		from
+  			user
+  		where
+  		    email=#{email};
+  	</select>
+  	<!-- 유저 id를 이용한 조회 -->
+  	<select id="selectMember" resultType="com.test.domain.UserVO">
+  		select *
+  		from
+  			user
+  		where
+  		    id=#{id};
+  		    
+  	</select> 	
+  	<!-- 닉네임 중복 여부 -->
+  	<select id="isUserName" resultType="integer">
+  	 select count(*)
+  	 	from 
+  	 		user
+  	 	where
+  	 		username=#{username}
+  	</select>
+  	<!-- ID 중복 여부 -->
+  	<select id="isID" resultType="integer">
+  	select count(*)
+  		from 
+  			user
+  		where
+  			id=#{id}
+  	</select>
+  	<!-- Email 중복 여부 -->
+  	<select id="isEmail" resultType="integer">
+  	select count(*)
+  		from 
+  			user
+  		where
+  			email=#{email}
+  	</select>
+  	
+  	<!--회원가입 -->
+  	<insert id="insertMember">
+  		insert into user (id, password, username, email, role) values
+  		(#{id},#{password},#{username},#{email}, 
+  		#{role, typeHandler=org.apache.ibatis.type.EnumTypeHandler})
+  	</insert>
+  	<!--회원탈퇴 -->
+  	<delete id="deleteMember">
+  		delete
+  		from user
+  		where id=#{id}
+  	</delete>
+  	
+  	<!-- 신고 기능 -->
+  	<insert id="reportAdmin" parameterType="map">
+  		insert into report(id, bid, content, reportType, boardType)
+  		values(#{id},#{bid},#{content},#{reportType,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+  		#{boardType,typeHandler=org.apache.ibatis.type.EnumTypeHandler})
+  		on duplicate key update
+  		content=#{content},
+  		reportType=#{reportType,typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+  	</insert>
+  	<!-- 비밀번호 변경 -->
+  	<update id="UpdatePassword">
+  	update 
+		user
+		set password=#{password}
+		where id=#{id}
+  	</update>
+ 	
+ 	<insert id="log">
+ 	insert into login_log(login_userid,login_success,login_ip)
+ 	values(#{login_userid}
+ 	,#{login_success, typeHandler = com.test.handler.BooleanIntegerHandler}
+ 	,#{login_ip});
+ 	</insert>
+ 	
+  </mapper>
+  
