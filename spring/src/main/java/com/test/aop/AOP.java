@@ -27,6 +27,7 @@ public class AOP {
 		System.out.println(joinPoint.getSignature().getDeclaringTypeName()+"->"+joinPoint.getSignature().getName());
 		Object result=joinPoint.proceed();
 		System.out.println("finish-"+joinPoint.getSignature().getDeclaringTypeName()+ "/"+joinPoint.getSignature().getName());
+		
 		return result;
 	}
 	
