@@ -9,6 +9,12 @@ let index={
 			$("#btn-change-pwd").on("click",()=>{
 				this.changePw();
 			});
+			$("#search-ID").on("click",()=>{
+				this.findID();
+			});
+			$("#search-Passwd").on("click",()=>{
+				this.findPW();
+			});
 			
 			
 		},
@@ -114,6 +120,39 @@ let index={
 			}).fail(function(error){
 				alert(error.responseText);
 			}); 
+		},
+		findID : function(){
+			let data={
+				email : $("#email").val()
+			};
+			$.ajax({ 
+				type: "POST",
+				url: "/spring/api/find/id",
+				contentType: "application/json; charset=utf-8",
+				data : JSON.stringify(data),
+				dataType: "text" 
+			}).done(function(data){
+				alert(data);
+			}).fail(function(error){
+				alert(error.responseText);
+			}); 
+		},
+		findPW : function(){
+			console.log("aa");
+			let data={
+					email : $("#email").val()
+				};
+				$.ajax({ 
+					type: "POST",
+					url: "/spring/api/change/pw",
+					contentType: "application/json; charset=utf-8",
+					data : JSON.stringify(data),
+					dataType: "text" 
+				}).done(function(data){
+					alert(data);
+				}).fail(function(error){
+					alert(error.responseText);
+				}); 
 		},
 		checkVal: function(value){
 			var tmp =value.replace(/\s| /gi, '');

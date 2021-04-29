@@ -22,6 +22,7 @@ public class UserVO implements Serializable{
 	@Size(min=3, max=10, message="아이디 길이가 맞지 않습니다(최소 3글자 최대 10글자)")
 	private String username;
 	
+	@NotBlank(message="이메일을 입력해주세요")
 	@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message="이메일 형식이 아닙니다.")
 	private String email;
 	private RoleType role;

@@ -13,10 +13,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.test.Service.UserService;
@@ -34,14 +37,21 @@ public class UserController {
 	public List<Entry<String,String>> UserCategory(){
 		List<Entry<String,String>> list= new ArrayList<>();
 		list.add(new AbstractMap.SimpleEntry<String,String>("회원정보보기","userInfo"));
-		list.add(new AbstractMap.SimpleEntry<String,String>("비밀번호변경","changepw"));
 		return list;
 	}
-	
-	@GetMapping("/user/changepw")
-	public String changepwForm(@AuthenticationPrincipal PrincipalDetails principal, Model model) {
-		BoardType boardType= BoardType.ARCTURUS;
-		model.addAttribute("boardType", boardType);
+	@GetMapping("/user/change/pw")
+	public String pw() {
+		return "user/change_pw";
+	}
+	@CrossOrigin
+	@GetMapping("/user/change/pw/{auth}")
+	public String changepwForm(@PathVariable("auth") String auth
+			,@SessionAttribute String Auth) throws Exception {
+		System.out.println("a");
+		if(!auth.equals(Auth)) {
+			throw new Exception();
+		}
+		System.out.println("b");
 		return "user/change_pw";
 	}
 	

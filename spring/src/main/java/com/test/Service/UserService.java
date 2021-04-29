@@ -7,7 +7,8 @@ import com.test.domain.UserVO;
 import com.test.domain.reportVO;
 
 public interface UserService {
-	public UserVO selectMember(String id);  // 회원 조회
+	public UserVO selectMember(String id);  // 회원을 id로 조회
+	public UserVO selectMemberFromEmail(String email); // 회원 이메일로 조회
 	public void insertMember(UserVO userVO);   // 회원 가입
 	public int isID(String id); // 아이디 중복 여부
 	public int isUserName(String username);   // 닉네임 중복 여부

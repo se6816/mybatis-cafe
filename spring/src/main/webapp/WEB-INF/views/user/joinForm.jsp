@@ -8,9 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
-<sec:authorize access="isAuthenticated()">
-    <% response.sendRedirect("/bbs/main"); %>
-</sec:authorize>
+
 <meta charset="UTF-8">
 <title>로그인</title>
 </head>

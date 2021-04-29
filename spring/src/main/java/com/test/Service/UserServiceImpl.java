@@ -74,6 +74,11 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
+	@Override
+	public UserVO selectMemberFromEmail(String email) {
+		return userMapper.selectMemberFromEmail(email);
+	}
+
 	
 	
 }

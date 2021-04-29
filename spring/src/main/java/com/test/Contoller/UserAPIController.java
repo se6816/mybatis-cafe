@@ -4,11 +4,17 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,15 +30,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.test.Service.UserService;
 import com.test.Utils.AES256Util;
+import com.test.Utils.EmailUtil;
 import com.test.config.auth.PrincipalDetails;
 import com.test.domain.ERROR_CODE;
 import com.test.domain.RoleType;
 import com.test.domain.UserVO;
 import com.test.domain.reportVO;
+import com.test.dto.EmailRequest;
 import com.test.dto.PWRequest;
 
 
@@ -49,14 +58,58 @@ public class UserAPIController {
 	@Autowired
 	AuthenticationManager AuthManager;
 	
+	@Autowired
+	JavaMailSender sender;
+	
+	@PostMapping(value="/find/id",produces="application/text; charset=utf8")
+	public ResponseEntity<String> find_Id(@Valid @RequestBody EmailRequest Ereq
+			,BindingResult BindingResult) {
+		ResponseEntity<String> resEntity=null;
+		EmailUtil emailUtil=new EmailUtil(sender);
+		if(!BindingResult.hasErrors()) {
+			UserVO user=usvc.selectMemberFromEmail(Ereq.getEmail());
+			if(user.getId()!=null) {
+				emailUtil.sendID(user);
+			}
+			resEntity=new ResponseEntity<String>(ERROR_CODE.EMAIL_SEND_SUCCESS.getMessage(),HttpStatus.OK);
+		}
+		else {
+			FieldError error =BindingResult.getFieldError();
+			resEntity = new ResponseEntity<String>(error.getDefaultMessage(),HttpStatus.BAD_REQUEST);
+			
+		}
+		return resEntity;
+	}
+	@PostMapping(value="/change/pw",produces="application/text; charset=utf8")
+	public ResponseEntity<String> find_Pw(@Valid @RequestBody EmailRequest Ereq
+			,BindingResult BindingResult
+			, HttpSession session) {
+		ResponseEntity<String> resEntity=null;
+		EmailUtil emailUtil=new EmailUtil(sender);
+		if(!BindingResult.hasErrors()) {
+			UserVO user=usvc.selectMemberFromEmail(Ereq.getEmail());
+			if(user.getId()!=null) {
+				emailUtil.sendFindPw(user,session);
+			}
+			resEntity=new ResponseEntity<String>(ERROR_CODE.EMAIL_SEND_SUCCESS.getMessage(),HttpStatus.OK);
+		}
+		else {
+			FieldError error =BindingResult.getFieldError();
+			resEntity = new ResponseEntity<String>(error.getDefaultMessage(),HttpStatus.BAD_REQUEST);
+			
+		}
+		return resEntity;
+	}
+	
+	
 	@PostMapping(value="/report",produces="application/text; charset=utf8")
 	public ResponseEntity<String> report(@Valid @RequestBody reportVO report,
 			BindingResult BindingResult,
 			@AuthenticationPrincipal PrincipalDetails principal) {
-		report.setId(principal.getId());
-		usvc.report(report);
 		ResponseEntity<String> resEntity=null;
 		if(!BindingResult.hasErrors()) {
+			report.setId(principal.getId());
+			usvc.report(report);
 			resEntity=new ResponseEntity<String>(ERROR_CODE.REPORT_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {

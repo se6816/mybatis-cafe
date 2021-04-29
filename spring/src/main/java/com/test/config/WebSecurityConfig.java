@@ -34,6 +34,9 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.test.handler.LoginEntryPoint;
 import com.test.handler.loginSuccessHandler;
@@ -81,6 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable();
 		http.authorizeRequests()
+		   .antMatchers("/user/change/**").permitAll()
 		   .antMatchers("/user/**").authenticated()
 		   .antMatchers("/file/**").permitAll()
 		   .antMatchers("/reply/**").permitAll()
@@ -118,10 +122,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .maxSessionsPreventsLogin(true)
 		   .sessionRegistry(sessionRegistry())
 		   .expiredUrl("/loginForm?expired=true");
+		http.cors()
+			.configurationSource(corsConfigurationSource());
+			
+			
 	}
 	@Bean
 	public SessionRegistry sessionRegistry() {
 		return new SessionRegistryImpl();
+	}
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration config= new CorsConfiguration();
+		config.setAllowedOrigins(Arrays.asList("*"));
+		config.setAllowedMethods(Arrays.asList("GET","POST"));
+		UrlBasedCorsConfigurationSource source= new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		return source;
 	}
 
 }
