@@ -39,19 +39,13 @@ public class UserController {
 		list.add(new AbstractMap.SimpleEntry<String,String>("회원정보보기","userInfo"));
 		return list;
 	}
-	@GetMapping("/user/change/pw")
-	public String pw() {
-		return "user/change_pw";
-	}
 	@CrossOrigin
 	@GetMapping("/user/change/pw/{auth}")
 	public String changepwForm(@PathVariable("auth") String auth
 			,@SessionAttribute String Auth) throws Exception {
-		System.out.println("a");
 		if(!auth.equals(Auth)) {
 			throw new Exception();
 		}
-		System.out.println("b");
 		return "user/change_pw";
 	}
 	

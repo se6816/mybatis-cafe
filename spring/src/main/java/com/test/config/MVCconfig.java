@@ -32,11 +32,13 @@ public class MVCconfig extends WebMvcConfigurerAdapter{
 	@Autowired 
 	Environment env;
 	private final int MAX_SIZE = 10* 1024*1024;
+	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.//addMapping("/user/change/**")
 			addMapping("*")
 			.allowedOrigins("*")
+			.allowedHeaders("*")
 			.allowCredentials(true)
 			.allowedMethods("*");
 			
@@ -91,7 +93,7 @@ public class MVCconfig extends WebMvcConfigurerAdapter{
 		String passwd=env.getProperty("gmail.user.password");
 		
 		sender.setHost("smtp.gmail.com");
-		sender.setPort(25);
+		sender.setPort(587);
 		sender.setUsername(id);
 		sender.setPassword(passwd);
 		sender.setDefaultEncoding("UTF-8");

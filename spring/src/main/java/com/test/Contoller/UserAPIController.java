@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -87,10 +88,12 @@ public class UserAPIController {
 		ResponseEntity<String> resEntity=null;
 		EmailUtil emailUtil=new EmailUtil(sender);
 		if(!BindingResult.hasErrors()) {
+			System.out.println("1");
 			UserVO user=usvc.selectMemberFromEmail(Ereq.getEmail());
 			if(user.getId()!=null) {
 				emailUtil.sendFindPw(user,session);
 			}
+			System.out.println("2");
 			resEntity=new ResponseEntity<String>(ERROR_CODE.EMAIL_SEND_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {
@@ -123,21 +126,23 @@ public class UserAPIController {
 	}
 	@PutMapping(value="/user",produces="application/text; charset=utf8")
 	public ResponseEntity<String> changePW(@Valid @RequestBody PWRequest password
-			,BindingResult BindingResult
-			,@AuthenticationPrincipal PrincipalDetails principal){
+			,BindingResult BindingResult,HttpSession session,
+			@AuthenticationPrincipal PrincipalDetails principal){
 		ResponseEntity<String> resEntity=null;		
-		if(!encoder.matches(password.getCur_passwd(),principal.getPassword())) {
-			resEntity=new ResponseEntity<String>(ERROR_CODE.CUR_PASSWORD_FAIL.getMessage(),HttpStatus.BAD_REQUEST);
-			return resEntity;
-		}
 		if(!BindingResult.hasErrors()) {
 			UserVO user= new UserVO();
-			user.setId(principal.getId());
+			String id=(String)session.getAttribute(password.getKey());
+			if(id==null) {
+				return new ResponseEntity<String>(ERROR_CODE.KEY_ALREADY_EXPIRED.getMessage(),HttpStatus.BAD_REQUEST);
+			}
+			user.setId(id);
 			user.setPassword(password.getNew_passwd());
 			usvc.updatePW(user);
 			resEntity=new ResponseEntity<String>(ERROR_CODE.CHANGE_PASSWORD_SUCCESS.getMessage(),HttpStatus.OK);
-			Authentication authentication = AuthManager.authenticate(new UsernamePasswordAuthenticationToken(principal.getId(), password.getNew_passwd()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+			if(principal!=null) {
+				Authentication authentication = AuthManager.authenticate(new UsernamePasswordAuthenticationToken(id, password.getNew_passwd()));
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
 		}
 		else {
 			FieldError error =BindingResult.getFieldError();

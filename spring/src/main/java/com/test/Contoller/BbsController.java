@@ -87,6 +87,7 @@ public class BbsController {
 		if(principal!=null) {
 			isLovers=bsvc.isClickLovers(bid, principal.getId(), boardType);
 		}
+		
 		PagingMaker pagingMaker= new PagingMaker();
 		pagingMaker.setPageCria(pageCria);
 		model.addAttribute("isLovers",isLovers);

@@ -51,6 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	UserService uSvc;
 	
+	
+	
+	
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -90,6 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .antMatchers("/reply/**").permitAll()
 		   .antMatchers("/loginForm","/join","/find_id_pw").anonymous()
 		   .antMatchers(HttpMethod.POST, "/api/user/**").permitAll()
+		   .antMatchers(HttpMethod.PUT,"/api/user/**").permitAll()
 		   .antMatchers("/api/user/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')")
 		   .antMatchers("/api/report/**").access("hasRole('ROLE_MEMBER')")
 		   .antMatchers("/api/reply/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MEMBER')")
@@ -123,7 +127,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .sessionRegistry(sessionRegistry())
 		   .expiredUrl("/loginForm?expired=true");
 		http.cors()
-			.configurationSource(corsConfigurationSource());
+			.configurationSource(corsConfigurationSource()).and();
 			
 			
 	}
@@ -131,11 +135,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	public SessionRegistry sessionRegistry() {
 		return new SessionRegistryImpl();
 	}
+	
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config= new CorsConfiguration();
-		config.setAllowedOrigins(Arrays.asList("*"));
-		config.setAllowedMethods(Arrays.asList("GET","POST"));
+		config.addAllowedOrigin("*");
+		config.addAllowedMethod("*");
+		config.addAllowedHeader("*");
+		config.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source= new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		return source;

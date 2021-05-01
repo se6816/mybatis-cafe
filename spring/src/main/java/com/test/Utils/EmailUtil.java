@@ -15,13 +15,14 @@ import com.test.domain.UserVO;
 
 public class EmailUtil {
 	private final JavaMailSender sender;
-	private final String domain="http://localhost:8081/spring/user/change/pw/";
+	private final String domain="https://localhost:8443/spring/user/change/pw/";
 	public EmailUtil(JavaMailSender sender) {
 		this.sender = sender;
 	}
 	public void sendFindPw(UserVO user,HttpSession session) {
-		if(session.getAttribute("email")==null) {
-			session.setAttribute("email",user.getEmail());
+		String auth=getAuth(session);
+		if(session.getAttribute(auth)==null) {
+			session.setAttribute(auth, user.getId());
 		}
 		MimeMessagePreparator preparator= new MimeMessagePreparator() {
 			@Override
@@ -29,7 +30,7 @@ public class EmailUtil {
 				mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
 				mimeMessage.setSubject("비밀번호 변경메일입니다","UTF-8");
 				mimeMessage.setText("비밀번호 변경을 위해서 아래 링크를 들어가주세요\n"
-					+domain+getAuth(session),"UTF-8");
+					+domain+auth,"UTF-8");
 			}
 		};
 		

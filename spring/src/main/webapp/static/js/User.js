@@ -36,7 +36,6 @@ let index={
 					password: $("#passwd").val(),
 					email: $("#email").val()
 			};
-			console.log(data);
 			$.ajax({ 
 				type: "POST",
 				url: "/spring/api/user",
@@ -73,37 +72,33 @@ let index={
 		},
 		changePw : function(){
 			let result=confirm("비밀번호를 변경하시겠습니까?");
+			let key= location.pathname.substring(location.pathname.lastIndexOf('/')+1);
 			if(!result){
 				return;
 			}
-			let cur_pw=$("#cur_pw").val();
-			let change_pw=$("#change_pw").val();
-			let change_pw_check=$("#change_pw_check").val();
-			if(!this.checkVal(cur_pw)){
+			let change_pw=$("#passwd").val();
+			let change_pw_check=$("#passwd-check").val();
+			if(!this.checkVal(change_pw)){
 				alert("양식이 부족합니다.");
-				$("#cur_pw").focus();
-				return;
-			} 
-			else if(!this.checkVal(change_pw)){
-				alert("양식이 부족합니다.");
-				$("#change_pw").focus();
+				$("#passwd").focus();
 				return;
 			}
 			else if(!this.checkVal(change_pw_check)){
 				alert("양식이 부족합니다.");
-				$("#change_pw_check").focus();
+				$("#passwd-check").focus();
 				return;
 			}
 			if(change_pw!=change_pw_check){
 				alert("새 비밀번호가 일치하지 않습니다.");
 				return;
 			}
+			console.log(change_pw);
 			if(change_pw.length<8){
 				alert("새 비밀번호가 8글자 이상이어야 합니다.");
 				return;
 			}
 			let data={
-					cur_passwd : cur_pw,
+					key : key,
 					new_passwd : change_pw
 			};
 			$.ajax({ 
@@ -114,9 +109,7 @@ let index={
 				dataType: "text" 
 			}).done(function(data){
 				alert(data);
-				$("#cur_pw").text="";
-				$("#change_pw").text="";
-				$("#change_pw_check").text="";
+				location.assign(location.origin+"/spring/bbs/main");
 			}).fail(function(error){
 				alert(error.responseText);
 			}); 
@@ -154,8 +147,8 @@ let index={
 					alert(error.responseText);
 				}); 
 		},
-		checkVal: function(value){
-			var tmp =value.replace(/\s| /gi, '');
+		checkVal : function(value){
+			let tmp =value.replace(/\s| /gi, '');
 			if(tmp == '')
 				{
 					return false;

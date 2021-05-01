@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -24,6 +25,18 @@ public class AOP {
 
 	@Around(value = "execution(* com.test.Service..*.*(..))")
 	public Object logging(ProceedingJoinPoint joinPoint) throws Throwable {
+		System.out.println(joinPoint.getSignature().getDeclaringTypeName()+"->"+joinPoint.getSignature().getName());
+		Object result=joinPoint.proceed();
+		System.out.println("finish-"+joinPoint.getSignature().getDeclaringTypeName()+ "/"+joinPoint.getSignature().getName());
+		
+		return result;
+	}
+	@AfterThrowing(value = "execution(* com.test.Contoller..*.*(..))")
+	public void gggg() {
+		System.out.println("오류 발생");
+	}
+	@Around(value = "execution(* com.test.Contoller..*.*(..))")
+	public Object gg(ProceedingJoinPoint joinPoint) throws Throwable {
 		System.out.println(joinPoint.getSignature().getDeclaringTypeName()+"->"+joinPoint.getSignature().getName());
 		Object result=joinPoint.proceed();
 		System.out.println("finish-"+joinPoint.getSignature().getDeclaringTypeName()+ "/"+joinPoint.getSignature().getName());
