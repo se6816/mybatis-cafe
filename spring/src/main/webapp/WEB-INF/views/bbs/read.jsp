@@ -86,52 +86,9 @@
     		</div>
     		<div class="card">
     				<ul id="reply-list">
-    				<c:forEach items="${replyList}" var="replyVO">
-    					<li class="reply-box" <c:if test="${replyVO.rstep>0}">style="margin-left:30px;"</c:if>>
-    					<c:choose>
-    						<c:when test="${replyVO.delYn}">
-    							<p>이미 삭제된 댓글입니다.</p>	
-    						</c:when>
-    						<c:otherwise>
-   								<p style="text-align:right;">작성날짜 :<fmt:formatDate pattern="yyyy-MM-dd" value="${replyVO.regdate}"/> </p>
-   						    	<p>작성자 : ${replyVO.writer}</p>
-   						    	<c:choose>
-   						    		<c:when test="${replyVO.secret && 
-   						    					(principal.username==replyVO.writer ||
-   						   	 					 principal.username==bbsVO.writer)}">
-   						   	 					 <p>${replyVO.content}</p>
-   						    		</c:when>
-   						    		<c:when test="${replyVO.secret}">
-   						    			<p>비밀글입니다</p>
-   						    		</c:when>
-   						    		<c:otherwise>
-   						    			<p class="collapse" id="collapse-${replyVO.rid}"aria-expanded="false">${replyVO.content}</p>
-   						    		</c:otherwise>
-   						    	</c:choose>
-   						    	<div class="paper-button <c:if test='${replyVO.length<100}'>hide</c:if>">
-   						    		<a role="button" class="collapsed" data-toggle="collapse" href="#collapse-${replyVO.rid}" aria-expanded="false" aria-controls="${replyVO.rid}"></a>
-    								
-    							</div>
-    							<p style="text-align:right;">
-    								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reply-comment-modal" data-whatever="${replyVO.writer}" data-rgroup="${replyVO.rgroup}" data-rstep="${replyVO.rstep}">답변</button> 
-    								<c:if test="${principal.username==replyVO.writer}">
-    									<button type="button" class="btn btn-primary btn-reply-delete" data-rid="${aes.encrypt(replyVO.rid)}">삭제</button> 	
-    								</c:if>
-    								<c:if test="${(principal.username != bbsVO.writer) && isAdmin}">
-										<div style="float:right;">
-											<button type="button" class="btn btn-primary btn-reply-delete" data-rid="${aes.encrypt(replyVO.rid)}">관리자 삭제</button> 
-										</div>	
-								
-							 		</c:if>
-    							</p>
-    						</c:otherwise>
-    					</c:choose>
-    					</li>
-  		  		  	</c:forEach>
+    				
     				</ul>
-    				<c:if test="${replyList.size() >= 10}">
-    					<button id="btn-add-reply" class="btn btn-secondary" data-page=2><i class="bi-chevron-down"></i></button>
-    				</c:if>
+    					<button id="btn-add-reply" class="btn btn-secondary" data-page=1><i class="bi-chevron-down"></i></button>
     				<div class="modal fade" id="reply-comment-modal" tabindex="-1" aria-labelledby="reply-comment-Label" aria-hidden="true">
   						<div class="modal-dialog">
    							 <div class="modal-content">
@@ -198,16 +155,27 @@ $("#btn-add-reply").on("click",function(){
 		dataType: "json"
 	}).done(function(data){
 		var html="";
-		var username='<c:out value="${principal.username}"/>';
-		<c:if test="${empty principal}">
-			var username="empty";
-		</c:if>
+		let username='<c:out value="${principal.username}"/>';
 		for(var reply of data.list){
 			let date=new Date(reply.regdate);
-			html+="<li class='reply-box'>";
+			html+="<li class='reply-box ";
+			if(reply.rstep>0){
+				html+="add-reply";
+			}
+			html+="'>";
+			if(reply.delYn===true){
+				html+="<p>이미 삭제된 댓글입니다</p>";
+				html+="</li>";
+				continue;
+			}
 			html+="<p style='text-align:right;'>작성날짜 :"+moment(date).format('YYYY-MM-DD')+"</p>";
 			html+="<p>작성자 :"+reply.writer+"</p>";
-			html+="<p class='collapse' id='collapse-"+reply.rid+"' aria-expanded='false'>"+reply.content+"</p>";
+			if(reply.secret===true &&!(username===reply.writer || 
+									  username===reply.Bwriter)){
+				html+="<p>비밀글입니다</p>";
+			}else{
+				html+="<p class='collapse' id='collapse-"+reply.rid+"' aria-expanded='false'>"+reply.content+"</p>";
+			}
 			html+="<div class='paper-button";
 			if(reply.length<100){
 				html+=" hide";
@@ -218,11 +186,11 @@ $("#btn-add-reply").on("click",function(){
 			html+="<p style='text-align:right;'>";
 			html+="<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#reply-comment-modal' data-whatever='"+reply.writer+"' data-rgroup='"+reply.rgroup+"'>답변</button> ";
 			if(username===reply.writer){
-				html+="<button type='button' class='btn btn-primary btn-reply-delete' data-rid='${aes.encrypt(reply.rid)}'>삭제</button>";
+				html+="<button type='button' class='btn btn-primary btn-reply-delete' data-rid='"+reply.rid+"'>삭제</button>";
 			}
 			
-			<c:if test="${(principal.username != bbsVO.writer) && isAdmin}">
-				html+="<button type='button' class='btn btn-primary btn-reply-delete' data-rid='${aes.encrypt(reply.rid)}'>관리자 삭제</button>";
+			<c:if test="${isAdmin}">
+				html+="<button type='button' class='btn btn-primary btn-reply-delete' data-rid='"+reply.rid+"'>관리자 삭제</button>";
 				
 			 </c:if>
 			html+="</p>";
@@ -233,6 +201,7 @@ $("#btn-add-reply").on("click",function(){
 			$(target).remove();
 		else
 			target.dataset.page++;
+		index.init();
 		
 	}).fail(function(err){
 		alert("서버와 연결이 원활하지 않습니다");
@@ -258,6 +227,7 @@ $("#btn-add-reply").on("click",function(){
 	<c:if test="${isLovers}">
 		$("#icon").attr('class','bi-hand-thumbs-up-fill');
 	</c:if>
+	$("#btn-add-reply").click();
 </script>
 
 

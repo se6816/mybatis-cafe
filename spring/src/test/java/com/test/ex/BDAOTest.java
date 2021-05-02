@@ -174,7 +174,6 @@ public class BDAOTest {
 		reply.setSecret(false);
 		replysc.write(reply, BoardType.ARCTURUS);
 	}
-	@Test
 	public void List(){
 		HashSet<Integer> exist_hash= new HashSet<>();
 		List<Integer> list= new ArrayList();
@@ -191,15 +190,18 @@ public class BDAOTest {
 		
 		
 	}
+	@Test
 	public void encrypt() throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
 		Date date= new Date();
-		String key= "aes256-test-key!!";
+		String key= "aes256realusedtempkey";
 		String key2= "aes222-test-keey!!";
 		AES256Util aes;
 		aes= new AES256Util(key);
 		AES256Util aes2;
 		aes2= new AES256Util(key2);
-		String str= "11";
+		String str= "";
+		
+		System.out.println(aes.decrypt("VJ4I6-Zox-9O_Tb17VDt_w"));
 		System.out.println(aes.encrypt(str));
 		System.out.println(aes.decrypt(aes.encrypt(str)));
 		System.out.println(aes2.encrypt(str));

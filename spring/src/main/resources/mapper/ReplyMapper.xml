@@ -4,13 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.test.Mapper.ReplyMapper">
  	<resultMap type="com.test.domain.ReplyVO" id="replyVO">
- 		<result column="rid" property="rid"/>
+ 		<result column="rid" property="rid"
+ 				typeHandler="com.test.handler.StringHandler"/>
   		<result column="bid" property="bid"/>
   		<result column="content" property="content"/>
   		<result column="writer" property="writer"/>
   		<result column="regdate" property="regdate"/>
   		<result column="rgroup" property="rgroup"/>
   		<result column="rstep" property="rstep"/>
+  		<result column="Bwriter" property="Bwriter"/>
   		<result column="secret" property="secret" 
   			typeHandler="com.test.handler.BooleanIntegerHandler"/>
   		<result column="delYn" property="delYn"
@@ -18,14 +20,15 @@
   	</resultMap>
 <!-- 댓글 조회 -->
 	<select id="listCriteria" resultMap="replyVO">
-		select * 
+		select reply.*,article.writer as Bwriter
 		from
-		${boardType.DB_Reply_Table}
+		${boardType.DB_Reply_Table} as reply, ${boardType.DB_Table} as article
 		where 
-			bid=#{bid}
+			reply.bid=article.bid and
+			reply.bid=#{bid}
 		order by 
 			rgroup DESC, rstep ASC
-		limit #{reply.startPage}, #{reply.numPerPage}
+		limit #{replyPageCriteria.startPage}, #{replyPageCriteria.numPerPage}
 	</select>
 	<!-- 댓글 삭제 -->
 	<update id="delete">

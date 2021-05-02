@@ -81,7 +81,7 @@ public class MVCconfig extends WebMvcConfigurerAdapter{
 	}
 	@Bean
 	public AES256Util AES256Util() throws UnsupportedEncodingException {
-		String key="aes256-used-key..";
+		String key="aes256realusedtempkey";
 		AES256Util AES256Util;
 		AES256Util= new AES256Util(key);
 		return AES256Util;

@@ -38,7 +38,7 @@ import com.test.Service.UserService;
 import com.test.Utils.AES256Util;
 import com.test.Utils.EmailUtil;
 import com.test.config.auth.PrincipalDetails;
-import com.test.domain.ERROR_CODE;
+import com.test.domain.MESSAGE_CODE;
 import com.test.domain.RoleType;
 import com.test.domain.UserVO;
 import com.test.domain.reportVO;
@@ -72,7 +72,8 @@ public class UserAPIController {
 			if(user.getId()!=null) {
 				emailUtil.sendID(user);
 			}
-			resEntity=new ResponseEntity<String>(ERROR_CODE.EMAIL_SEND_SUCCESS.getMessage(),HttpStatus.OK);
+			
+			resEntity=new ResponseEntity<String>(MESSAGE_CODE.EMAIL_SEND_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {
 			FieldError error =BindingResult.getFieldError();
@@ -88,13 +89,11 @@ public class UserAPIController {
 		ResponseEntity<String> resEntity=null;
 		EmailUtil emailUtil=new EmailUtil(sender);
 		if(!BindingResult.hasErrors()) {
-			System.out.println("1");
 			UserVO user=usvc.selectMemberFromEmail(Ereq.getEmail());
 			if(user.getId()!=null) {
 				emailUtil.sendFindPw(user,session);
 			}
-			System.out.println("2");
-			resEntity=new ResponseEntity<String>(ERROR_CODE.EMAIL_SEND_SUCCESS.getMessage(),HttpStatus.OK);
+			resEntity=new ResponseEntity<String>(MESSAGE_CODE.EMAIL_SEND_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {
 			FieldError error =BindingResult.getFieldError();
@@ -113,7 +112,7 @@ public class UserAPIController {
 		if(!BindingResult.hasErrors()) {
 			report.setId(principal.getId());
 			usvc.report(report);
-			resEntity=new ResponseEntity<String>(ERROR_CODE.REPORT_SUCCESS.getMessage(),HttpStatus.OK);
+			resEntity=new ResponseEntity<String>(MESSAGE_CODE.REPORT_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {
 			FieldError error =BindingResult.getFieldError();
@@ -133,12 +132,12 @@ public class UserAPIController {
 			UserVO user= new UserVO();
 			String id=(String)session.getAttribute(password.getKey());
 			if(id==null) {
-				return new ResponseEntity<String>(ERROR_CODE.KEY_ALREADY_EXPIRED.getMessage(),HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<String>(MESSAGE_CODE.KEY_ALREADY_EXPIRED.getMessage(),HttpStatus.BAD_REQUEST);
 			}
 			user.setId(id);
 			user.setPassword(password.getNew_passwd());
 			usvc.updatePW(user);
-			resEntity=new ResponseEntity<String>(ERROR_CODE.CHANGE_PASSWORD_SUCCESS.getMessage(),HttpStatus.OK);
+			resEntity=new ResponseEntity<String>(MESSAGE_CODE.CHANGE_PASSWORD_SUCCESS.getMessage(),HttpStatus.OK);
 			if(principal!=null) {
 				Authentication authentication = AuthManager.authenticate(new UsernamePasswordAuthenticationToken(id, password.getNew_passwd()));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -158,17 +157,17 @@ public class UserAPIController {
 		ResponseEntity<String> resEntity=null;
 		if(!BindingResult.hasErrors()) {
 			if(usvc.isID(UserVO.getId())>0) {
-				resEntity = new ResponseEntity<String>(ERROR_CODE.ALREADY_EXIST_USERNAME.getMessage(),HttpStatus.BAD_REQUEST);
+				resEntity = new ResponseEntity<String>(MESSAGE_CODE.ALREADY_EXIST_USERNAME.getMessage(),HttpStatus.BAD_REQUEST);
 				return resEntity;
 			}
 			if(usvc.isUserName(UserVO.getUsername())>0){
-				resEntity = new ResponseEntity<String>(ERROR_CODE.ALREADY_EXIST_USERNAME.getMessage(),HttpStatus.BAD_REQUEST);
+				resEntity = new ResponseEntity<String>(MESSAGE_CODE.ALREADY_EXIST_USERNAME.getMessage(),HttpStatus.BAD_REQUEST);
 				return resEntity;
 			}
 			usvc.insertMember(UserVO);
 			Authentication authentication = AuthManager.authenticate(new UsernamePasswordAuthenticationToken(UserVO.getId(), UserVO.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			resEntity = new ResponseEntity<String>(ERROR_CODE.JOIN_USER_SUCCESS.getMessage(),HttpStatus.OK);
+			resEntity = new ResponseEntity<String>(MESSAGE_CODE.JOIN_USER_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {
 			FieldError error =BindingResult.getFieldError();
@@ -180,7 +179,7 @@ public class UserAPIController {
 	public ResponseEntity<String> deleteMember(@AuthenticationPrincipal PrincipalDetails principal){
 		ResponseEntity<String> resEntity=null;
 		usvc.deleteMember(principal.getId());
-		resEntity = new ResponseEntity<String>(ERROR_CODE.USER_WITHDRAW_SUCCESS.getMessage(),HttpStatus.OK);
+		resEntity = new ResponseEntity<String>(MESSAGE_CODE.USER_WITHDRAW_SUCCESS.getMessage(),HttpStatus.OK);
 		return resEntity;
 	} 
 }

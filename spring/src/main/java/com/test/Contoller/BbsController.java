@@ -46,8 +46,6 @@ public class BbsController {
 	@Autowired
 	private BbsService bsvc;
 	@Autowired
-	private ReplyService rsvc;
-	@Autowired
 	private AES256Util aes;
 	
 	
@@ -99,7 +97,6 @@ public class BbsController {
 			return "redirect:/bbs/main";
 		}
 		model.addAttribute("bbsVO", bvo);
-		model.addAttribute("replyList", rsvc.listCriteria(bid, new replyPageCriteria(), boardType));
 		return "/bbs/read";
 	}
 	

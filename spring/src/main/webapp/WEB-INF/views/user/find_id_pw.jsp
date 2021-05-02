@@ -28,7 +28,7 @@
 </div>
 <div class="card-footer">
 <button class="btn btn-success btn-block" id="search-ID">ID 찾기</button>
-<button class="btn btn-success btn-block" id="search-Passwd">비밀번호 찾기</button>
+<button class="btn btn-success btn-block" id="email-Passwd">비밀번호 찾기</button>
 <br>
 </div>
 </div>

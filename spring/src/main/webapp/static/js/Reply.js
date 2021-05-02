@@ -90,6 +90,7 @@ let index = {
 					return;
 				}
 				let rid=target.dataset.rid;
+				console.log(rid);
 				$.ajax({ type:"DELETE",
 					url:"/spring/api/reply/"+$('.board-name').data('board')+"/"+rid,
 					contentType: "application/json; charset=utf-8",

@@ -23,6 +23,8 @@
 				<div class="board_name"><p><span class="board_text">${b_name}</span>게시판</p></div>
 				<div class="line"></div>
     			<div class="container w-100 mx-auto mt-5">
+    					<input type="hidden" value="${principal.email}" id="email" readonly/>
+ 						 	
  						 <div class="user-info">
  						 	<p>활동명 : ${principal.username}</p>
  						 	<p>이메일 : ${principal.email}</p>
@@ -34,6 +36,7 @@
  						 </div>
 						<div style="float:right;">
 							<button type="button" class="btn btn-primary btn-block" id="btn-delete">회원 탈퇴</button>
+							<button type="button" class="btn btn-primary btn-block" id="email-Passwd">비번 번경</button>
 						</div>  	
 					
     			</div>

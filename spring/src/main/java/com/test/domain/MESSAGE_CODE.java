@@ -1,6 +1,7 @@
 package com.test.domain;
 
-public enum ERROR_CODE {
+
+public enum MESSAGE_CODE {
 	WRITE_ARTICLE_SUCCESS("게시물 작성이 완료되었습니다."),
 	UPDATE_ARTICLE_SUCCESS("게시물이 성공적으로 수정되었습니다."),
 	DELETE_ARTICLE_SUCCESS("게시물이 성공적으로 삭제되었습니다."),
@@ -23,7 +24,7 @@ public enum ERROR_CODE {
 	
 	private String message;
 
-	private ERROR_CODE(String message) {
+	private MESSAGE_CODE(String message) {
 		this.message=message;
 		// TODO Auto-generated constructor stub
 	}

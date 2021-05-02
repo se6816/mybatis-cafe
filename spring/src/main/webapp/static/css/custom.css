@@ -110,6 +110,9 @@
 	#reply-list{
 		min-width:400px;
 	}
+	.add-reply{
+		margin-left :30px;
+	}
 	.reply-box{
 		min-width:400px;
 		border : outset;	

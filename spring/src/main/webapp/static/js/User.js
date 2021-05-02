@@ -12,7 +12,7 @@ let index={
 			$("#search-ID").on("click",()=>{
 				this.findID();
 			});
-			$("#search-Passwd").on("click",()=>{
+			$("#email-Passwd").on("click",()=>{
 				this.findPW();
 			});
 			

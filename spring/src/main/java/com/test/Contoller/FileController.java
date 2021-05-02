@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.test.Service.UploadService;
 import com.test.Utils.FileUtils;
 import com.test.domain.BoardType;
-import com.test.domain.ERROR_CODE;
+import com.test.domain.MESSAGE_CODE;
 import com.test.domain.FileVO;
 
 @RestController
@@ -54,7 +54,7 @@ public class FileController {
 		
 		fno=fileutil.save(multipartFile,boardType);
 		if(fno==0) {
-			hash.put("message",ERROR_CODE.UPLOAD_FILE_FAIL.getMessage());
+			hash.put("message",MESSAGE_CODE.UPLOAD_FILE_FAIL.getMessage());
 			hash.put("httpstatus", HttpStatus.BAD_REQUEST);
 			return hash;
 		}
