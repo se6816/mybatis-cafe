@@ -19,6 +19,8 @@ public enum MESSAGE_CODE {
 	REPORT_SUCCESS("신고가 완료되었습니다"),
 	DENIED_ACCESS("잘못된 접근입니다"),
 	EMAIL_SEND_SUCCESS("성공적으로 이메일이 발송되었습니다"),
+	EMAIL_CHECK_FAIL("이메일 확인이 되지 않았습니다."),
+	EMAIL_ALREADY_EXISTS("존재하는 이메일입니다"),
 	KEY_ALREADY_EXPIRED("키가 만료되었습니다")
 	;
 	

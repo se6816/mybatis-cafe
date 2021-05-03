@@ -28,4 +28,6 @@ public interface BbsMapper {
 		public void addClickLovers(@Param("bid")int bid,@Param("userid")String userid,@Param("boardType") BoardType boardType);
 		public void deleteClickLovers(@Param("bid")int bid,@Param("userid")String userid,@Param("boardType") BoardType boardType);
 
+		
+		
 }

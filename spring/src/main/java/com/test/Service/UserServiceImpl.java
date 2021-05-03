@@ -79,6 +79,12 @@ public class UserServiceImpl implements UserService{
 		return userMapper.selectMemberFromEmail(email);
 	}
 
+	@Override
+	public int isEmail(String email) {
+		// TODO Auto-generated method stub
+		return userMapper.isEmail(email);
+	}
+
 	
 	
 }

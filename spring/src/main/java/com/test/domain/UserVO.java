@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserVO implements Serializable{
+	public interface ValidateEmail{}
 	
 	@NotBlank(message="아이디를 입력하세요")
 	@Size(max=20, message="아이디가 너무 깁니다(최대 20글자)")
@@ -22,8 +23,8 @@ public class UserVO implements Serializable{
 	@Size(min=3, max=10, message="아이디 길이가 맞지 않습니다(최소 3글자 최대 10글자)")
 	private String username;
 	
-	@NotBlank(message="이메일을 입력해주세요")
-	@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message="이메일 형식이 아닙니다.")
+	@NotBlank(message="이메일을 입력해주세요", groups=ValidateEmail.class)
+	@Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message="이메일 형식이 아닙니다.",groups=ValidateEmail.class)
 	private String email;
 	private RoleType role;
 	private Timestamp regdate;

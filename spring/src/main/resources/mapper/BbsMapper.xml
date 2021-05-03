@@ -87,7 +87,7 @@
 				main.bid desc, main.regdate desc
 			</when>
 			<otherwise>
-				main.bid asc, main.regdate desc
+				main.bid desc, main.hit desc
 			</otherwise>
 		</choose>
 		limit #{pageCria.startPage}, #{pageCria.numPerPage}

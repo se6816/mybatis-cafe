@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.test.Service.UserService;
 import com.test.config.auth.PrincipalDetails;
 import com.test.domain.BoardType;
+import com.test.domain.UserCategory;
 import com.test.domain.UserVO;
 
 
@@ -33,13 +35,19 @@ public class UserController {
 	
 	@Autowired
 	UserService Usvc;
-	@ModelAttribute("UserCategory")
-	public List<Entry<String,String>> UserCategory(){
-		List<Entry<String,String>> list= new ArrayList<>();
-		list.add(new AbstractMap.SimpleEntry<String,String>("회원정보보기","userInfo"));
-		return list;
+	@GetMapping("/user/email/{auth}")
+	public String emailCheck(@PathVariable("auth") String auth,
+			@SessionAttribute String email_Check_Addr,HttpSession session) throws Exception {
+		if(!email_Check_Addr.equals(auth)) {
+			throw new Exception();
+		}
+		
+		session.setAttribute("email_Check_Success", true);
+		
+		return "user/auth_Success";
+		
 	}
-	@CrossOrigin
+	
 	@GetMapping("/user/change/pw/{auth}")
 	public String changepwForm(@PathVariable("auth") String auth
 			,@SessionAttribute String Auth) throws Exception {
@@ -48,9 +56,15 @@ public class UserController {
 		}
 		return "user/change_pw";
 	}
-	
-	@GetMapping("/user/userInfo")
-	public String userInfo(Model model) {
+	@GetMapping("/user/help")
+	public String userHelp(Model model) {
+		BoardType boardType= BoardType.ARCTURUS;
+		model.addAttribute("boardType", boardType);
+		return "user/userHelp";
+	}
+	@GetMapping("/user/info/{username}/{userCategory}")
+	public String userInfo(Model model,@ModelAttribute("username") @PathVariable("username") String username
+			               ,@ModelAttribute("userCategory") @PathVariable("userCategory") UserCategory userCategory) {
 		BoardType boardType= BoardType.ARCTURUS;
 		model.addAttribute("boardType", boardType);
 		return "user/userInfo";

@@ -15,6 +15,9 @@ let index={
 			$("#email-Passwd").on("click",()=>{
 				this.findPW();
 			});
+			$("#btn-Email-Check").on("click",()=>{
+				this.emailCheck();
+			});
 			
 			
 		},
@@ -43,11 +46,8 @@ let index={
 				contentType: "application/json; charset=utf-8",
 				dataType: "text" 
 			}).done(function(data){
-				console.log(data);
 				alert(data);
-				location.assign(location.origin+"/spring/bbs/main");
-				
-
+				location.assign(location.origin+"/spring/loginForm");
 			}).fail(function(error){
 				alert(error.responseText);
 			}); 
@@ -118,6 +118,7 @@ let index={
 			let data={
 				email : $("#email").val()
 			};
+			alert("메일 발송이 완료되었습니다 최대 5분까지 걸릴 수 있습니다.");
 			$.ajax({ 
 				type: "POST",
 				url: "/spring/api/find/id",
@@ -131,21 +132,38 @@ let index={
 			}); 
 		},
 		findPW : function(){
-			console.log("aa");
 			let data={
 					email : $("#email").val()
 				};
-				$.ajax({ 
-					type: "POST",
-					url: "/spring/api/change/pw",
-					contentType: "application/json; charset=utf-8",
-					data : JSON.stringify(data),
-					dataType: "text" 
-				}).done(function(data){
-					alert(data);
-				}).fail(function(error){
-					alert(error.responseText);
-				}); 
+			alert("메일 발송이 완료되었습니다 최대 5분까지 걸릴 수 있습니다.");
+			$.ajax({ 
+				type: "POST",
+				url: "/spring/api/change/pw",
+				contentType: "application/json; charset=utf-8",
+				data : JSON.stringify(data),
+				dataType: "text" 
+			}).done(function(data){
+				alert(data);
+			}).fail(function(error){
+				alert(error.responseText);
+			}); 
+		},
+		emailCheck : function(){
+			let data={
+					email : $("#email").val()
+			};
+			alert("메일 발송이 완료되었습니다 최대 5분까지 걸릴 수 있습니다.");
+			$.ajax({ 
+				type: "POST",
+				url: "/spring/api/email/check",
+				contentType: "application/json; charset=utf-8",
+				data : JSON.stringify(data),
+				dataType: "text" 
+			}).done(function(data){
+				alert(data);
+			}).fail(function(error){
+				alert(error.responseText);
+			}); 
 		},
 		checkVal : function(value){
 			let tmp =value.replace(/\s| /gi, '');

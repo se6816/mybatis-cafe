@@ -25,7 +25,7 @@
 			<div class="line"></div>
 			<div class="form=group" style="float:right;">
 			 <select class="form-control" name="sort" id="sort" onchange="sort()">
-			 		<option value="old">가장 오래된 순</option>
+			 		<option value="popular">가장 인기있는 순</option>
 			 		<option value="recent">가장 최근 순</option>		 
 			 </select>
 			</div> 
@@ -43,7 +43,7 @@
  			  <c:forEach items="${list}" var="bvo">
    				 <tr>
      				 <th scope="row">${bvo.bid}</th>
-    				  <td><a class="list-subject" href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
+    				  <td><a class="list-subject" target="_blank" href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
     				  		<strong>[${bvo.replyCount}]</strong>
     				  </td>
     				  <td>${bvo.writer}</td>

@@ -35,10 +35,11 @@
   <input type="password" class="form-control" id="passwd_check" name="passwd_check"/>
   <br/>
   <label for="email">email:</label>
-  <input type="email" class="form-control" id="email" name="email"/>
-   
- <br/>
   
+  <input type="email" class="form-control" id="email" name="email"/>
+   <button type="button" class="btn btn-primary" id="btn-Email-Check">이메일 확인</button>
+ <br/>
+  <br/>
   
   <input type="button" id="btn-save" class="btn btn-success btn-block" value="회원가입" />
 </form>

@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +62,27 @@ public class UserAPIController {
 	
 	@Autowired
 	JavaMailSender sender;
+	
+	@PostMapping(value="/email/check",produces="application/text; charset=utf8")
+	public ResponseEntity<String> emailCheck(@Validated(UserVO.ValidateEmail.class)@RequestBody UserVO user,HttpSession session,
+			BindingResult BindingResult) {
+		ResponseEntity<String> resEntity=null;
+		EmailUtil emailUtil=new EmailUtil(sender);
+		
+		if(!BindingResult.hasErrors()) {
+			if(usvc.isEmail(user.getEmail())>0) {
+				return new ResponseEntity<String>(MESSAGE_CODE.EMAIL_ALREADY_EXISTS.getMessage(),HttpStatus.BAD_REQUEST);
+			}
+			emailUtil.sendEmailCheck(user,session);
+			resEntity=new ResponseEntity<String>(MESSAGE_CODE.EMAIL_SEND_SUCCESS.getMessage(),HttpStatus.OK);
+		}
+		else {
+			FieldError error =BindingResult.getFieldError();
+			resEntity = new ResponseEntity<String>(error.getDefaultMessage(),HttpStatus.BAD_REQUEST);
+			
+		}
+		return resEntity;
+	}
 	
 	@PostMapping(value="/find/id",produces="application/text; charset=utf8")
 	public ResponseEntity<String> find_Id(@Valid @RequestBody EmailRequest Ereq
@@ -142,6 +164,8 @@ public class UserAPIController {
 				Authentication authentication = AuthManager.authenticate(new UsernamePasswordAuthenticationToken(id, password.getNew_passwd()));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
+			session.removeAttribute(password.getKey());
+			session.removeAttribute("Auth");
 		}
 		else {
 			FieldError error =BindingResult.getFieldError();
@@ -153,20 +177,25 @@ public class UserAPIController {
 
 	@PostMapping(value="/user",produces="application/text; charset=utf8")
 	public ResponseEntity<String> join(@Valid @RequestBody UserVO UserVO,
-			BindingResult BindingResult){
+			BindingResult BindingResult,HttpSession session){
 		ResponseEntity<String> resEntity=null;
 		if(!BindingResult.hasErrors()) {
 			if(usvc.isID(UserVO.getId())>0) {
-				resEntity = new ResponseEntity<String>(MESSAGE_CODE.ALREADY_EXIST_USERNAME.getMessage(),HttpStatus.BAD_REQUEST);
+				resEntity = new ResponseEntity<String>(MESSAGE_CODE.ALREADY_EXIST_ID.getMessage(),HttpStatus.BAD_REQUEST);
 				return resEntity;
 			}
 			if(usvc.isUserName(UserVO.getUsername())>0){
 				resEntity = new ResponseEntity<String>(MESSAGE_CODE.ALREADY_EXIST_USERNAME.getMessage(),HttpStatus.BAD_REQUEST);
 				return resEntity;
 			}
+			if(session.getAttribute("email_Check_Success")==null || !((String)session.getAttribute("email")).equals(UserVO.getEmail())) {
+				resEntity = new ResponseEntity<String>(MESSAGE_CODE.EMAIL_CHECK_FAIL.getMessage(),HttpStatus.BAD_REQUEST);
+				return resEntity;
+			}
 			usvc.insertMember(UserVO);
-			Authentication authentication = AuthManager.authenticate(new UsernamePasswordAuthenticationToken(UserVO.getId(), UserVO.getPassword()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+			session.removeAttribute("email_Check_Success");
+			session.removeAttribute("email_Check_Addr");
+			session.removeAttribute("email");
 			resEntity = new ResponseEntity<String>(MESSAGE_CODE.JOIN_USER_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {
