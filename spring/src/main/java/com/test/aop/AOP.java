@@ -29,6 +29,7 @@ public class AOP {
 		Object result=joinPoint.proceed();
 		System.out.println("finish-"+joinPoint.getSignature().getDeclaringTypeName()+ "/"+joinPoint.getSignature().getName());
 		
+		
 		return result;
 	}
 	@Around(value = "execution(* com.test.Contoller..*.*(..))")
