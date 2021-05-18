@@ -50,7 +50,7 @@
 				</c:when>
 				<c:otherwise>
 					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link" href="<c:url value='/user/info/${principal.username}/bbs'/>">내 정보</a></li>
+						<li class="nav-item"><a class="nav-link" href="<c:url value='/user/${principal.id}/bbs'/>">내 정보</a></li>
 						<li class="nav-item"><a class="nav-link" href="<c:url value='/user/help'/>">회원설정</a></li>
 						<li class="nav-item"><a class="nav-link"  href="<c:url value='/logout'/>">로그아웃</a></li>
 						

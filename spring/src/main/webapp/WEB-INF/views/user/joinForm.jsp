@@ -43,7 +43,7 @@
   
   <input type="button" id="btn-save" class="btn btn-success btn-block" value="회원가입" />
 </form>
-<script src="<c:url value='/js/User.js'/>"></script>
+<script src="<c:url value='/js/user.js'/>"></script>
 </div>
 <div class="card-footer">
 </div>

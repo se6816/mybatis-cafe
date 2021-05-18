@@ -43,12 +43,15 @@ import com.test.Service.UserServiceImpl;
 import com.test.Utils.AES256Util;
 import com.test.config.MVCconfig;
 import com.test.config.MyBatisConfig;
+import com.test.domain.BbsListVO;
 import com.test.domain.BbsVO;
 import com.test.domain.BoardType;
 import com.test.domain.Log;
+import com.test.domain.Page;
 import com.test.domain.PageCriteria;
 import com.test.domain.ReplyVO;
 import com.test.domain.SortType;
+import com.test.domain.UserVO;
 import com.test.domain.replyPageCriteria;
 import com.test.domain.reportVO;
 import com.test.dto.writeRequestDto;
@@ -59,15 +62,13 @@ import com.test.dto.writeRequestDto;
 public class BDAOTest {
 
 	
-//	@Resource
-	private BbsServiceImpl BbsService;
+	@Autowired
+	private com.test.Service.BbsService BbsService;
 	
 	private ReplyServiceImpl replysc;
 	
-//	@Resource
+
 	private UserServiceImpl Usvc;
-	private static Logger logger = LoggerFactory.getLogger(BDAOTest.class);
-	
 	
 	public void insertTest() throws Exception{
 		BbsVO bvo= new BbsVO();
@@ -114,13 +115,11 @@ public class BDAOTest {
 	}*/
 	public void listCriteriaTest() throws Exception{
 		PageCriteria pri = new PageCriteria();
-		BoardType board= BoardType.ARCTURUS;
+		BoardType board= BoardType.arcturus;
 		pri.setPage(1);
 		System.out.println(pri.toString());
-		List<BbsVO> list= BbsService.listCriteria(pri,board);
-		for(BbsVO BbsVO : list) {
-		System.out.println(BbsVO.getBid()+  " : "+BbsVO.getContent()+BbsVO.getReplyCount());
-		}
+		java.util.List<BbsListVO> list= BbsService.listCriteria(pri,board);
+	
 	}
 	
 	//UriComponentsBuilder을 이용하는 법 : org.springframeork.eb.util에있음
@@ -150,7 +149,7 @@ public class BDAOTest {
 		System.out.println(env.getProperty("spring.datasource.password"));
 	}
 	public void ddd() throws Exception {
-		BbsVO bvo=BbsService.read(196632, BoardType.ARCTURUS);
+		BbsVO bvo=BbsService.read(196632, BoardType.arcturus);
 		System.out.println(bvo.toString());
 	//	PageCriteria cri= new PageCriteria();
 	//	cri.setPage(1);
@@ -172,7 +171,7 @@ public class BDAOTest {
 		reply.setRgroup(0);
 		reply.setRstep(0);
 		reply.setSecret(false);
-		replysc.write(reply, BoardType.ARCTURUS);
+		replysc.write(reply, BoardType.arcturus);
 	}
 	public void List(){
 		HashSet<Integer> exist_hash= new HashSet<>();
@@ -190,7 +189,7 @@ public class BDAOTest {
 		
 		
 	}
-	@Test
+	
 	public void encrypt() throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
 		Date date= new Date();
 		String key= "aes256realusedtempkey";
@@ -223,5 +222,10 @@ public class BDAOTest {
 		report.setId("user");
 		report.setReportType(reportType);
 		Usvc.report(report);
+	}
+	@Test
+	public void userList() throws Exception {
+		Page page= new Page();
+		System.out.println(BbsService.userListCriteria(page, "user"));
 	}
 }

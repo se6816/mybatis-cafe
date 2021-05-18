@@ -87,8 +87,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable();
 		http.authorizeRequests()
+		   .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+		   .antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')")
 		   .antMatchers("/user/change/**").permitAll()
-		   .antMatchers("/user/info/**").permitAll()
+		   .antMatchers("/user/**/bbs").permitAll()
+		   .antMatchers("/user/**/reply").permitAll()
 		   .antMatchers("/user/email/**").permitAll()
 		   .antMatchers("/user/**").authenticated()
 		   .antMatchers("/file/**").permitAll()
@@ -114,7 +117,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .successHandler(new loginSuccessHandler(uSvc))
 		   .failureHandler(new loginFailHandler(uSvc))
 		   .and()
-		   .exceptionHandling()
+		   .exceptionHandling()		 
 		   .accessDeniedPage("/bbs/main")
 		   .authenticationEntryPoint(new LoginEntryPoint("/loginForm"))
 		   .and()

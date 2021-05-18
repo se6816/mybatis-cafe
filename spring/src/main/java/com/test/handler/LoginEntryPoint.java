@@ -16,7 +16,6 @@ public class LoginEntryPoint extends LoginUrlAuthenticationEntryPoint {
 
 	public LoginEntryPoint(String loginFormUrl) {
 		super(loginFormUrl);
-		// TODO Auto-generated constructor stub
 	}
 
 

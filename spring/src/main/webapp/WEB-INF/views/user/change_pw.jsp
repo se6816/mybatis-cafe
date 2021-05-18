@@ -31,6 +31,6 @@
 </div>
 </div>
 </div>
-<script src="<c:url value='/js/User.js'/>"></script>
+<script src="<c:url value='/js/user.js'/>"></script>
 </body>
 </html>

@@ -58,17 +58,11 @@ public class UserController {
 	}
 	@GetMapping("/user/help")
 	public String userHelp(Model model) {
-		BoardType boardType= BoardType.ARCTURUS;
+		BoardType boardType= BoardType.arcturus;
 		model.addAttribute("boardType", boardType);
 		return "user/userHelp";
 	}
-	@GetMapping("/user/info/{username}/{userCategory}")
-	public String userInfo(Model model,@ModelAttribute("username") @PathVariable("username") String username
-			               ,@ModelAttribute("userCategory") @PathVariable("userCategory") UserCategory userCategory) {
-		BoardType boardType= BoardType.ARCTURUS;
-		model.addAttribute("boardType", boardType);
-		return "user/userInfo";
-	}
+	
 	
 	@GetMapping("/loginForm")
 	public String loginForm(@AuthenticationPrincipal PrincipalDetails principal

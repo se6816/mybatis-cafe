@@ -1,7 +1,6 @@
 package com.test.Service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +8,14 @@ import org.springframework.stereotype.Service;
 import com.test.Mapper.BbsMapper;
 import com.test.Mapper.FileMapper;
 import com.test.Utils.writeUtils;
+import com.test.domain.BbsListVO;
 import com.test.domain.BbsVO;
 import com.test.domain.BoardType;
+import com.test.domain.Page;
 import com.test.domain.PageCriteria;
+import com.test.domain.UserVO;
+import com.test.domain.userBbsVO;
+import com.test.domain.userReplyVO;
 import com.test.dto.writeRequestDto;
 
 @Service
@@ -51,12 +55,12 @@ public class BbsServiceImpl implements BbsService {
 	}
 	
 	@Override
-	public List<BbsVO> listCriteria(PageCriteria pageCria,BoardType boardType) throws Exception {
+	public List<BbsListVO> listCriteria(PageCriteria pageCria,BoardType boardType) throws Exception {
 		return BbsMapper.listCriteria(pageCria,boardType);
 		
 	}
 	@Override
-	public int countData(PageCriteria pageCria,BoardType boardType) throws Exception {
+	public int countData(Page pageCria,BoardType boardType) throws Exception {
 		return BbsMapper.countData(pageCria, boardType);
 	}
 	@Override
@@ -87,6 +91,31 @@ public class BbsServiceImpl implements BbsService {
 		
 		return false;
 	}
+
+	@Override
+	public List<userBbsVO> userListCriteria(Page page, String id) throws Exception {
+		// TODO Auto-generated method stub
+		return BbsMapper.userListCriteria(page, id);
+	}
+
+	@Override
+	public List<userReplyVO> userReplyListCriteria(Page page, String id) throws Exception {
+		// TODO Auto-generated method stub
+		return BbsMapper.userReplyListCriteria(page, id);
+	}
+
+	@Override
+	public int userCountData(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return BbsMapper.userCountData(id);
+	}
+
+	@Override
+	public int userReplyCountData(String id) throws Exception {
+		return BbsMapper.userReplyCountData(id);
+	}
+
+	
 	
 	
 	

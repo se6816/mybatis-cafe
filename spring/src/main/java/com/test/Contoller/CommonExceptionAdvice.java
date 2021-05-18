@@ -19,7 +19,7 @@ public class CommonExceptionAdvice {
 	@ExceptionHandler(Exception.class)
 	private ModelAndView errMV(Exception e) {
 		ModelAndView mv= new ModelAndView();
-		BoardType boardType= BoardType.ARCTURUS;
+		BoardType boardType= BoardType.arcturus;
 		System.out.println(e.toString());
 		mv.setViewName("/err_exception");
 		mv.addObject("boardType", boardType);
@@ -29,7 +29,7 @@ public class CommonExceptionAdvice {
 	@ExceptionHandler(FileNotFoundException.class)
 	private ModelAndView Fileerr(Exception e) {
 		ModelAndView mv= new ModelAndView();
-		BoardType boardType= BoardType.ARCTURUS;
+		BoardType boardType= BoardType.arcturus;
 		System.out.println(e.toString());
 		mv.setViewName("/err_exception");
 		mv.addObject("boardType", boardType);

@@ -129,7 +129,7 @@
     		
     		
     </div>
-<script type="text/javascript">
+<script>
 $('#reply-comment-modal').on('show.bs.modal', function (event) {
 	  var button = $(event.relatedTarget);
 	  var recipient = button.data('whatever');
@@ -141,7 +141,7 @@ $('#reply-comment-modal').on('show.bs.modal', function (event) {
 	  modal.find('.modal-body input:hidden[id=reply-rstep]').val(rstep);
 	})
 </script>
-<script type="text/javascript">
+<script>
 $("#btn-add-reply").on("click",function(){
 	var target=this;
 	let data={
@@ -209,9 +209,7 @@ $("#btn-add-reply").on("click",function(){
 	});
 });
 </script>
-<script src="${pageContext.request.contextPath}/js/Reply.js"></script>
- 
-<%@include file="../include/footer.jsp" %>
+
 <script defer>
 	var arr= document.querySelectorAll("div.board-content > p > img");
 	var html="";
@@ -229,6 +227,10 @@ $("#btn-add-reply").on("click",function(){
 	</c:if>
 	$("#btn-add-reply").click();
 </script>
+
+<script src="${pageContext.request.contextPath}/js/reply.js"></script>
+ 
+<%@include file="../include/footer.jsp" %>
 
 
 

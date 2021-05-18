@@ -16,12 +16,12 @@
 		background-color: #eff;
 	}
 	#menu{
+		white-space : break-spaces;
 		height:100%;
 		float:left;
 		margin-left: 3%;
 		margin-right:4%;
 		width:25%; 
-		background-color:black;
 	}	
 	#section{
 		margin-left: 3%;
@@ -58,7 +58,9 @@
 	.article{
 		min-width:600px;
 	}
-	a.list-subject{
+	td.list-subject{
+		min-width:400px;
+		max-width:400px;
 	    text-overflow: ellipsis;
 	    overflow:hidden;
 	    white-space:nowrap;  

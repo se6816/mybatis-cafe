@@ -5,9 +5,9 @@ import java.util.Arrays;
 
 public enum UserCategory {
 	bbs("작성한 글보기"
-			,"/user/info/bbs"),
+			,"/bbs"),
 	reply("작성한 댓글"
-			,"/user/info/reply");
+			,"/reply");
 	private UserCategory(String boardName, String url) {
 				this.boardName = boardName;
 				this.url = url;

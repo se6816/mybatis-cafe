@@ -40,13 +40,16 @@
    			 </tr>
   			</thead>
  			 <tbody>
+ 			 
  			  <c:forEach items="${list}" var="bvo">
    				 <tr>
      				 <th scope="row">${bvo.bid}</th>
-    				  <td><a class="list-subject" target="_blank" href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
+    				  <td class="list-subject"><a target="_blank" href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
     				  		<strong>[${bvo.replyCount}]</strong>
     				  </td>
-    				  <td>${bvo.writer}</td>
+    				  <td><a target="_blank" href="${pageContext.request.contextPath}/user/${bvo.id}/bbs">${bvo.writer}</a>
+    				  
+    				  </td>
     				 	<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${bvo.regdate}"/></td>
     				  	
     				  <td>${bvo.hit}</td>
@@ -151,7 +154,7 @@
 		}
 	}	
 </script>
-<script src="${pageContext.request.contextPath}/js/Board.js"></script>
+<script src="${pageContext.request.contextPath}/js/board.js"></script>
 
 <script type="text/javascript">
 function sort(){

@@ -45,13 +45,13 @@
 </div>
 </div>
 </div>
-<script type="text/javascript">
+<script>
 	let expired=${request.getParamter(expired)};
 	if(expired){
 		$(".err").text("이미 다른 사용자가 로그인 중입니다");
 	}
 </script>
-<script type="text/javascript">
+<script>
 	$("#access-login").on("click",function(){
 		if(!navigator.cookieEnabled){
 			alert("쿠키를 허용해주십시오");

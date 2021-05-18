@@ -148,7 +148,7 @@
 		}
 	}	
 </script>
-<script src="${pageContext.request.contextPath}/js/Board.js"></script>
+<script src="${pageContext.request.contextPath}/js/board.js"></script>
 
 <script type="text/javascript">
 function sort(){

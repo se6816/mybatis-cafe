@@ -31,10 +31,6 @@ public class AOP {
 		
 		return result;
 	}
-	@AfterThrowing(value = "execution(* com.test.Contoller..*.*(..))")
-	public void gggg() {
-		System.out.println("오류 발생");
-	}
 	@Around(value = "execution(* com.test.Contoller..*.*(..))")
 	public Object gg(ProceedingJoinPoint joinPoint) throws Throwable {
 		System.out.println(joinPoint.getSignature().getDeclaringTypeName()+"->"+joinPoint.getSignature().getName());

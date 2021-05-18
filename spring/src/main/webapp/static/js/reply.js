@@ -1,11 +1,14 @@
 let index = {
 			init: function(){
 				let _this=this;
-				$("#btn-lovers").on("click",()=>{
-					this.lover();
+				$("#btn-lovers").on("click",function(e){
+					e.preventDefault();
+					_this.lover();
 				});
 				$(".btn-reply-delete").on("click",function(){
-					_this.deleteReply(this);
+					_this.deleteReply();
+					
+					
 				});
 				$("#btn-add-Rreply").on("click",()=>{
 					this.write("re");
@@ -16,6 +19,7 @@ let index = {
 			},
 			lover : function(){
 				$.ajax({ type:"POST",
+					    async:false,
 						url:"/spring/api/lovers/"+$('.board-name').data('board')+"/"+$("#bid").val(),
 						contentType: "application/json; charset=utf-8",
 						dataType: "text"
@@ -24,7 +28,7 @@ let index = {
 						$("#lovers-count").text(parseInt($("#lovers-count").text())+1);
 						$("#icon").attr('class','bi-hand-thumbs-up-fill');
 					}
-					else if(data>0){
+					else{
 						$("#lovers-count").text(parseInt($("#lovers-count").text())-1);
 						$("#icon").attr('class','bi-hand-thumbs-up');
 					}

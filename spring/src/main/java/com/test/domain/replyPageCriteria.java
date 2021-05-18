@@ -2,7 +2,11 @@ package com.test.domain;
 
 public class replyPageCriteria extends PageCriteria{
 
-	public replyPageCriteria() {
-		super.numPerPage=10;
+	private final int replyNumPerPage=10;
+	
+	
+	@Override
+	public int getNumPerPage() {
+		return replyNumPerPage;
 	}
 }

@@ -10,13 +10,6 @@
     		<div class="line"></div>
     		<div id="menu">	
     			<div class="list-group">
-  					
-  					<c:forEach var="i" begin="0" end="${UserCategory.size()-1}">
-  					  <a href="<c:url value='${UserCategory.get(i).getValue()}'/>">
-  					  	<button type="button" class="list-group-item list-group-item-action">  ${UserCategory.get(i).getKey()} </button>
-  						</a>
-  					</c:forEach>
-			
 				</div>
 			</div>
 			<div id="section">
@@ -45,5 +38,5 @@
     		
     		
     </div>
-<script src="${pageContext.request.contextPath}/js/User.js"></script>      
+<script src="${pageContext.request.contextPath}/js/user.js"></script>      
 <%@include file="../include/footer.jsp" %>

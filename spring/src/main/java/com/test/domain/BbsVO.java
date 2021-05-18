@@ -26,7 +26,6 @@ public class BbsVO {
 	private int hit;
 	private int bcode;
 	private int lovers;
-	private int replyCount;
 	public BbsVO() {}
 	public BbsVO(String writer, String content,String subject,int bcode) {
 		this.content=content;
@@ -89,12 +88,6 @@ public class BbsVO {
 	}
 	public void setLovers(int lovers) {
 		this.lovers = lovers;
-	}
-	public int getReplyCount() {
-		return replyCount;
-	}
-	public void setReplyCount(int replyCount) {
-		this.replyCount = replyCount;
 	}
 
 }
