@@ -39,7 +39,7 @@
     			<div>
     			
     			<p id="lovers-count">${bbsVO.lovers}</p>
-    			<button id="btn-lovers" class="btn btn-primary"><i id="icon" class="bi-hand-thumbs-up"></i></button>
+    			<button type="button" id="btn-lovers" class="btn btn-primary"><i id="icon" class="bi-hand-thumbs-up"></i></button>
     			<%@include file="../include/report_admin.jsp" %>
     			</div>
     			<div class="download-group">
@@ -48,14 +48,14 @@
     				</ul>
     			</div>
     			<div style="float:left;">
-					<button type="button" id="btn-List"class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/bbs/${boardType.name()}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}'">목록으로</button>
+					<button type="button" id="btn-List" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/bbs/${boardType.name()}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}'">목록으로</button>
 				</div>
 				<c:if test="${principal.username==bbsVO.writer}">
 					<div style="float:right;">
 						<button type="button" id="btn-modify-page" class="btn btn-primary" onClick="location.href= '${pageContext.request.contextPath}/bbs/${boardType.name()}/${bbsVO.bid}/modify${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}'">수정하기</button>
 					</div>	
 				</c:if>
-				<c:if test="${(principal.username !=bbsVO.writer) && isAdmin}">
+				<c:if test="${isAdmin}">
 					
 					<div style="float:right;">
 						<button type="button" id="btn-delete"class="btn btn-primary">관리자 삭제하기</button>
@@ -141,9 +141,10 @@ $('#reply-comment-modal').on('show.bs.modal', function (event) {
 	  modal.find('.modal-body input:hidden[id=reply-rstep]').val(rstep);
 	})
 </script>
+<script src="${pageContext.request.contextPath}/js/reply.js"></script>
 <script>
 $("#btn-add-reply").on("click",function(){
-	var target=this;
+	let target=this;
 	let data={
 			page : target.dataset.page
 	}
@@ -154,7 +155,7 @@ $("#btn-add-reply").on("click",function(){
 		contentType: "application/json; charset=utf-8",
 		dataType: "json"
 	}).done(function(data){
-		var html="";
+		let html="";
 		let username='<c:out value="${principal.username}"/>';
 		for(var reply of data.list){
 			let date=new Date(reply.regdate);
@@ -200,9 +201,7 @@ $("#btn-add-reply").on("click",function(){
 		if(data.list.length<10)
 			$(target).remove();
 		else
-			target.dataset.page++;
-		index.init();
-		
+			target.dataset.page++;	
 	}).fail(function(err){
 		alert("서버와 연결이 원활하지 않습니다");
 		console.log(err);
@@ -228,8 +227,7 @@ $("#btn-add-reply").on("click",function(){
 	$("#btn-add-reply").click();
 </script>
 
-<script src="${pageContext.request.contextPath}/js/reply.js"></script>
- 
+
 <%@include file="../include/footer.jsp" %>
 
 

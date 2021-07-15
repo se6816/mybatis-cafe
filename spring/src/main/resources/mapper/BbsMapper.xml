@@ -259,7 +259,7 @@
 		where bid=#{bid} AND userid=#{userid}
 	
 	</delete>
-	<insert id="addClickLovers" parameterType="map">
+	<insert id="addClickLovers"  parameterType="map">
 		insert
 		into
 		${boardType.DB_Lovers_Table}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.test.Mapper.BbsMapper;
 import com.test.Mapper.FileMapper;
@@ -23,14 +24,15 @@ public class BbsServiceImpl implements BbsService {
 
 	private final BbsMapper BbsMapper;
 	private final FileMapper FileMapper;
-	
+	@Autowired
+	private writeUtils wut;
 	@Autowired
 	public BbsServiceImpl(BbsMapper bbsMapper, FileMapper fileMapper) {
 		BbsMapper = bbsMapper;
 		FileMapper= fileMapper;
 	}
-
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public void write(writeRequestDto wrd,BoardType boardType) throws Exception {
 		writeUtils writeUtils= new writeUtils(BbsMapper,FileMapper);
 		writeUtils.writeAndUpload(wrd, boardType);	
@@ -44,6 +46,7 @@ public class BbsServiceImpl implements BbsService {
 	}
 
 	@Override
+	@Transactional(rollbackFor=Exception.class)
 	public void modify(writeRequestDto wrd, BoardType boardType)  throws Exception {
 		writeUtils writeUtils= new writeUtils(BbsMapper,FileMapper);
 		writeUtils.modifyAndUpload(wrd, boardType);
@@ -115,11 +118,4 @@ public class BbsServiceImpl implements BbsService {
 		return BbsMapper.userReplyCountData(id);
 	}
 
-	
-	
-	
-	
-	
-	
-	
 }

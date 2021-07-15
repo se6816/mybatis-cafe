@@ -56,6 +56,7 @@ function sendReport(){
 		dataType: "text" 
 	  }).done(function(data){
 		 alert(data);
+		 $("#report-modal").modal("hide");
 			
 		}).fail(function(err){
 			if(err.status=='401'){

@@ -27,5 +27,6 @@ public interface BbsService {
 	public int userCountData(String id) throws Exception;
 	public int userReplyCountData(String id) throws Exception;
 	public List<userBbsVO> userListCriteria(Page page,String id) throws Exception;
+
 	public List<userReplyVO> userReplyListCriteria(Page page,String id) throws Exception;
 }

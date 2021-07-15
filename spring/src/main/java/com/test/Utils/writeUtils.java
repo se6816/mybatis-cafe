@@ -29,8 +29,6 @@ public class writeUtils {
 		BbsMapper = bbsMapper;
 		FileMapper = fileMapper;
 	}
-	
-	@Transactional(rollbackFor=Exception.class)
 	public void writeAndUpload(writeRequestDto wrd, BoardType boardType) throws Exception {
 		BbsVO bvo= wrd.makeBbsVO();
 		BbsMapper.insert(bvo, boardType);
@@ -38,8 +36,6 @@ public class writeUtils {
 			FileMapper.registerBidAll(wrd.getFid(), bvo.getBid(), boardType);
 		}
 	}
-	
-	@Transactional(rollbackFor=Exception.class)
 	public void modifyAndUpload(writeRequestDto wrd, BoardType boardType) throws Exception {
 		BbsVO bvo= wrd.makeModifyBbsVO();
 		

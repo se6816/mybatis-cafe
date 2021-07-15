@@ -18,7 +18,7 @@ public interface BbsMapper {
 		
 		public void insert(@Param("bvo") BbsVO bvo, @Param("boardType")BoardType boardType) throws Exception;
 		public BbsVO read(@Param("bid")int bid,@Param("boardType") BoardType boardType) throws Exception;
-		public void update(@Param("bvo")BbsVO bvo,@Param("boardType") BoardType boardType) throws Exception;
+		public void update(@Param("bvo")BbsVO bvo,@Param("boardType") BoardType boardType) throws RuntimeException;
 		public void delete(@Param("bid")int bid, @Param("boardType")BoardType boardType) throws Exception;
 		public List<BbsListVO> listCriteria(@Param("pageCria") PageCriteria pageCria,@Param("boardType") BoardType boardType) throws Exception;
 		public int countData(@Param("pageCria") Page pageCria, @Param("boardType") BoardType boardType) throws Exception;

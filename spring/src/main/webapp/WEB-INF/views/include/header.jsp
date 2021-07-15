@@ -19,6 +19,7 @@
 	<sec:authentication property="principal" var="principal"/>
 </sec:authorize>
 <sec:authorize var="isAdmin" access="hasAnyRole('ROLE_ADMIN')"/>
+<link rel="icon" href="data:,">
 <meta charset="utf-8">
 <title>리뷰 카페</title>
 </head>

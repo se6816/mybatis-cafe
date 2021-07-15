@@ -1,12 +1,11 @@
 let index = {
 			init: function(){
 				let _this=this;
-				$("#btn-lovers").on("click",function(e){
-					e.preventDefault();
-					_this.lover();
+				$("#btn-lovers").on("click",()=>{
+					this.lover();
 				});
 				$(".btn-reply-delete").on("click",function(){
-					_this.deleteReply();
+					_this.deleteReply(this);
 					
 					
 				});
@@ -19,7 +18,6 @@ let index = {
 			},
 			lover : function(){
 				$.ajax({ type:"POST",
-					    async:false,
 						url:"/spring/api/lovers/"+$('.board-name').data('board')+"/"+$("#bid").val(),
 						contentType: "application/json; charset=utf-8",
 						dataType: "text"
@@ -44,24 +42,24 @@ let index = {
 				if(!result){
 					return;
 				}
+				let secret=false;
+				let data={};
 				if(behavior=="new"){ // 새 댓글 작성
-					var secret=false;
 					if($("input:checkbox[name=secret]").is(":checked")==true){
 						secret=true;
 					}
-					var data={
+					data={
 						content : $("#reply-content").val(),
 						bid : $("#reply-Id").val(),
 						secret : secret
 					}
 				}
 				else{            // 댓글에 댓글 달기
-					var secrect=false;
 					if($("input:checkbox[name=re-secret]").is(":checked")==true){
 						secret=true;
 					}
 		
-					var data={
+					data={
 							content : $("#reply-comment-content").val(),
 							bid : $("#reply-Id").val(),
 							rgroup : $("#reply-rgroup").val(),
@@ -94,14 +92,17 @@ let index = {
 					return;
 				}
 				let rid=target.dataset.rid;
-				console.log(rid);
 				$.ajax({ type:"DELETE",
 					url:"/spring/api/reply/"+$('.board-name').data('board')+"/"+rid,
 					contentType: "application/json; charset=utf-8",
 					dataType: "text"
 				}).done(function(data){
-				alert(data);
-				location.assign(location.origin+"/spring/bbs/"+$('.board-name').data('board')+"/"+$("#reply-Id").val());
+					let node=$(target).parent().parent();
+					let html="";
+					node.children().remove();
+					html+="<p>이미 삭제된 댓글입니다</p>";
+					node.append(html);
+				
 				}).fail(function(err){
 					if(err.status=='401'){
 						alert("로그인 후 이용해주십시오");
@@ -112,5 +113,4 @@ let index = {
 	
 			
 }
-
 index.init();

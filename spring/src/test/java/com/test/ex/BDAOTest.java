@@ -223,9 +223,10 @@ public class BDAOTest {
 		report.setReportType(reportType);
 		Usvc.report(report);
 	}
-	@Test
+	
 	public void userList() throws Exception {
 		Page page= new Page();
 		System.out.println(BbsService.userListCriteria(page, "user"));
 	}
+	
 }
