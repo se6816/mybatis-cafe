@@ -31,6 +31,7 @@ let index = {
 						location.assign(location.origin+"/spring/loginForm");
 					}
 				});
+				
 			},
 			write : function(behavior){
 				let result=confirm("댓글을 작성하시겠습니까?");
