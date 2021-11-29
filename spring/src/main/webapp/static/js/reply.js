@@ -27,6 +27,7 @@ let index = {
 					}
 				}).fail(function(err){
 					if(err.status=='401'){
+						
 						alert("로그인 후 이용해주십시오");
 						location.assign(location.origin+"/spring/loginForm");
 					}
