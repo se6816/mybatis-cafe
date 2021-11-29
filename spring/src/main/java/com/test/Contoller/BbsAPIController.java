@@ -30,10 +30,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.test.Service.BbsService;
 import com.test.Utils.AES256Util;
-import com.test.config.auto.PrincipalDetails;
+import com.test.config.auth.PrincipalDetails;
 import com.test.domain.BbsVO;
 import com.test.domain.BoardType;
-import com.test.domain.ERROR_CODE;
+import com.test.domain.MESSAGE_CODE;
 import com.test.domain.PageCriteria;
 import com.test.domain.PagingMaker;
 import com.test.dto.writeRequestDto;
@@ -63,7 +63,7 @@ public class BbsAPIController {
 		ResponseEntity<String> resEntity=null;
 		if(!BindingResult.hasErrors()) {
 			bsvc.modify(writeRequestDto, boardType);
-			resEntity=new ResponseEntity<String>(ERROR_CODE.UPDATE_ARTICLE_SUCCESS.getMessage(),HttpStatus.OK);
+			resEntity=new ResponseEntity<String>(MESSAGE_CODE.UPDATE_ARTICLE_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {
 			FieldError error =BindingResult.getFieldError();
@@ -82,7 +82,7 @@ public class BbsAPIController {
 		if(!BindingResult.hasErrors()) {
 			writeRequestDto.setWriter(principal.getUsername());
 			bsvc.write(writeRequestDto,boardType);
-			resEntity = new ResponseEntity<String>(ERROR_CODE.WRITE_ARTICLE_SUCCESS.getMessage(),HttpStatus.OK);
+			resEntity = new ResponseEntity<String>(MESSAGE_CODE.WRITE_ARTICLE_SUCCESS.getMessage(),HttpStatus.OK);
 		}
 		else {
 			
@@ -96,10 +96,10 @@ public class BbsAPIController {
 		ResponseEntity<String> resEntity = null;
 		try {
 			bsvc.remove(bid,boardType);
-			resEntity = new ResponseEntity<String>(ERROR_CODE.DELETE_ARTICLE_SUCCESS.getMessage(),HttpStatus.OK);	
+			resEntity = new ResponseEntity<String>(MESSAGE_CODE.DELETE_ARTICLE_SUCCESS.getMessage(),HttpStatus.OK);	
 		} catch (Exception e) {
 			e.printStackTrace();
-			resEntity = new ResponseEntity<String>(ERROR_CODE.DELETE_ARCICLE_FAIL.getMessage(),HttpStatus.BAD_REQUEST);
+			resEntity = new ResponseEntity<String>(MESSAGE_CODE.DELETE_ARCICLE_FAIL.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 
 		return resEntity;

@@ -31,27 +31,28 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.test.Service.BbsService;
 import com.test.Service.ReplyService;
 import com.test.Utils.AES256Util;
-import com.test.config.auto.PrincipalDetails;
+import com.test.config.auth.PrincipalDetails;
 import com.test.domain.BbsVO;
 import com.test.domain.BoardType;
+import com.test.domain.Page;
 import com.test.domain.PageCriteria;
 import com.test.domain.PagingMaker;
 import com.test.domain.ReplyVO;
+import com.test.domain.UserCategory;
+import com.test.domain.UserVO;
 import com.test.domain.replyPageCriteria;
+import com.test.domain.userBbsVO;
 
 @Controller
-@RequestMapping("/bbs/*")
 public class BbsController {
 
 	@Autowired
 	private BbsService bsvc;
 	@Autowired
-	private ReplyService rsvc;
-	@Autowired
 	private AES256Util aes;
 	
 	
-	@RequestMapping(value="{boardType}/write",method=RequestMethod.GET)
+	@RequestMapping(value="/bbs/{boardType}/write",method=RequestMethod.GET)
 	public String writeGET(@ModelAttribute("boardType")@PathVariable("boardType") BoardType boardType, 
    			BbsVO bvo,PageCriteria PageCria,Model model) {
 		PagingMaker pagingMaker= new PagingMaker();
@@ -59,7 +60,7 @@ public class BbsController {
 		model.addAttribute("pagingMaker", pagingMaker);
 		return "/bbs/write";
 	}
-	@RequestMapping(value= {"{boardType}","{boardType}/main"},method=RequestMethod.GET)
+	@RequestMapping(value= {"/bbs/{boardType}","bbs/{boardType}/main"},method=RequestMethod.GET)
 	public String list(@ModelAttribute("boardType")@PathVariable("boardType") BoardType boardType, 
 			   			BbsVO bvo,Model model,PageCriteria PageCria)
 			   					throws Exception {
@@ -67,7 +68,7 @@ public class BbsController {
 		PagingMaker pagingMaker= new PagingMaker();
 		pagingMaker.constructData(PageCria, bsvc.countData(PageCria,boardType));
 		model.addAttribute("pagingMaker", pagingMaker);
-		if(boardType.name().equalsIgnoreCase("NOTICE")) {
+		if(boardType.name().equals("NOTICE")) {
 			return "/bbs/notice";
 		}
 	
@@ -77,30 +78,32 @@ public class BbsController {
 	// Servlet의 request는 HttpServletRequest
 	// @RequestParam과 HttpServletRequest의 차이점 : 문자열, 숫자, 날짜 등의 형변환 여부
 	
-	@RequestMapping(value="{boardType}/{bid}", method=RequestMethod.GET)
+	@RequestMapping(value="/bbs/{boardType}/{bid}", method=RequestMethod.GET)
 	public String read(@ModelAttribute("boardType")@PathVariable("boardType") BoardType boardType, 
    						PageCriteria pageCria, @PathVariable("bid") int bid, Model model,
    						@AuthenticationPrincipal PrincipalDetails principal
-   			   			
+   			   			,RedirectAttributes reAttr
 			)throws Exception {
 		boolean isLovers=false;
 		if(principal!=null) {
 			isLovers=bsvc.isClickLovers(bid, principal.getId(), boardType);
 		}
+		
 		PagingMaker pagingMaker= new PagingMaker();
 		pagingMaker.setPageCria(pageCria);
 		model.addAttribute("isLovers",isLovers);
 		model.addAttribute("aes",aes);
 		model.addAttribute("pagingMaker", pagingMaker);
 		BbsVO bvo =bsvc.read(bid,boardType); 
-		if(bvo.getSubject()==null) 
+		if(bvo.getSubject()==null) {
+			reAttr.addFlashAttribute("err", "글이 존재하지않습니다");
 			return "redirect:/bbs/main";
+		}
 		model.addAttribute("bbsVO", bvo);
-		model.addAttribute("replyList", rsvc.listCriteria(bid, new replyPageCriteria(), boardType));
 		return "/bbs/read";
 	}
 	
-	@RequestMapping(value="{boardType}/{bid}/modify", method=RequestMethod.GET)
+	@RequestMapping(value="/bbs/{boardType}/{bid}/modify", method=RequestMethod.GET)
 	public String modifyForm(@ModelAttribute("boardType")@PathVariable("boardType") BoardType boardType, 
    			PageCriteria pageCria, @PathVariable("bid") int bid, Model model
    			,@AuthenticationPrincipal PrincipalDetails principal
@@ -110,7 +113,7 @@ public class BbsController {
 		pagingMaker.setPageCria(pageCria);
 		BbsVO bvo= bsvc.read(bid,boardType);
 		if(!principal.getUsername().equals(bvo.getWriter())) {
-			reAttr.addFlashAttribute("err", "mistaken Access");
+			reAttr.addFlashAttribute("err", "수정 권한이 없습니다.");
 			return "redirect:/bbs/main";
 		}
 		model.addAttribute("pagingMaker", pagingMaker);
@@ -118,11 +121,32 @@ public class BbsController {
 
 		return "/bbs/modify";
 	}
-	@RequestMapping(value="/main", method=RequestMethod.GET)
+	
+	@GetMapping("/user/{id}/{userCategory}")
+	public String userInfo(Model model,@ModelAttribute("id") @PathVariable("id") String id
+			               ,@ModelAttribute("userCategory") @PathVariable("userCategory") UserCategory userCategory
+			               ,PageCriteria page) throws Exception {
+		BoardType boardType= BoardType.arcturus;
+		model.addAttribute("boardType", boardType);
+		PagingMaker pagingMaker= new PagingMaker();
+		if(userCategory.name().equals("bbs")) {
+			pagingMaker.constructData(page, bsvc.userCountData(id));
+			model.addAttribute("bbsList", bsvc.userListCriteria(page, id));
+		}
+		else {
+			pagingMaker.constructData(page, bsvc.userReplyCountData(id));
+			model.addAttribute("replyList", bsvc.userReplyListCriteria(page, id));
+		}
+		model.addAttribute("pagingMaker", pagingMaker);
+		
+		return "user/userInfo";
+	}
+	
+	@RequestMapping(value="/bbs/main", method=RequestMethod.GET)
 	public String mainPage(Model model) throws Exception {
 		PageCriteria pageCria = new PageCriteria();
 		BoardType[] boardTypes = BoardType.values();
-		BoardType boardType= BoardType.ARCTURUS;
+		BoardType boardType= BoardType.arcturus;
 		Map<Integer,List<BbsVO>> recentArticle = new HashMap<Integer,List<BbsVO>>();
 		Map<Integer,List<BbsVO>> hotArticle = new HashMap<Integer,List<BbsVO>>();
 		for(int i=0; i<BoardType.values().length;i++) {

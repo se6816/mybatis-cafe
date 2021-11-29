@@ -46,7 +46,8 @@
     </div>
 <script>
 	var result= '${err}';
-	if(result=="mistaken Access"){
+	console.log(${err});
+	if(result!=null && result!=""){
 		alert(result);
 	}
 

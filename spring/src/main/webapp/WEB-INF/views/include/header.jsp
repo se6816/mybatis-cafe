@@ -19,6 +19,7 @@
 	<sec:authentication property="principal" var="principal"/>
 </sec:authorize>
 <sec:authorize var="isAdmin" access="hasAnyRole('ROLE_ADMIN')"/>
+<link rel="icon" href="data:,">
 <meta charset="utf-8">
 <title>리뷰 카페</title>
 </head>
@@ -50,7 +51,8 @@
 				</c:when>
 				<c:otherwise>
 					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link" href="<c:url value='/user/userInfo'/>">회원정보</a></li>
+						<li class="nav-item"><a class="nav-link" href="<c:url value='/user/${principal.id}/bbs'/>">내 정보</a></li>
+						<li class="nav-item"><a class="nav-link" href="<c:url value='/user/help'/>">회원설정</a></li>
 						<li class="nav-item"><a class="nav-link"  href="<c:url value='/logout'/>">로그아웃</a></li>
 						
 					</ul>

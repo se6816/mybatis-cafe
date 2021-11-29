@@ -35,9 +35,10 @@
 	</insert>
 	<!-- 글 삭제 -->
 	<delete id="delete" parameterType="map">
-		delete
-		 from 
-		${boardType.DB_Table}
+		update
+			${boardType.DB_Table}
+		set
+			delYn=1
 		where 
 			bid=#{bid}
 	</delete>
@@ -50,6 +51,7 @@
 		${boardType.DB_Lovers_Table} as love
 		on b.bid=love.bid 
 		where b.bid=#{bid}
+			and b.delYn=0
 	</select>
 
 	<!-- 조회 수 증가 -->
@@ -66,17 +68,81 @@
 		set subject=#{bvo.subject}, content=#{bvo.content}
 		where bid=#{bvo.bid}
 	</update>
-	<!-- 글 목록 조회 -->
-	<select id="listCriteria" parameterType="map" resultType="com.test.domain.BbsVO">
+	<select id="userReplyListCriteria" parameterType="map" resultType="com.test.domain.userReplyVO">
 		select
-			main.bid, main.subject, main.content, main.writer, main.regdate, main.hit, replyCount
-		from
-		${boardType.DB_Table} as main left join (select bid,count(*) as replyCount 
-														from 
-															${boardType.DB_Reply_Table}
-														group by bid) as reply
-		on main.bid=reply.bid
-		where <![CDATA[ main.bid > 0 ]]>
+			result.bid, result.content, result.regdate,result.board
+		from(
+				select *, "arcturus" as board
+				from arcturus_reply as a right join (
+												select username,id
+												from  user
+												where id=#{id}
+												) as u1
+				on a.writer=u1.username
+       			Union all
+        
+        		select *, "starcraft" as board
+        		from starcraft_reply as s right join(
+        										select username, id
+												from user
+             	                            	where id=#{id}
+												) as u2
+        		on s.writer=u2.username
+			) as result
+		where result.delYn=0
+		order by result.regdate desc
+		limit #{pageCria.startPage}, #{pageCria.numPerPage}
+	
+	</select>
+	<select id="userListCriteria" parameterType="map" resultType="com.test.domain.userBbsVO">
+		select
+			result.bid, result.subject, result.regdate, result.board
+		from(
+				select *, "arcturus" as board
+				from arcturus as a right join (
+												select username,id
+												from  user
+												where id=#{id}
+												) as u1
+				on a.writer=u1.username
+       			Union all
+        
+        		select * ,"starcraft" as board
+        		from starcraft as s right join(
+        										select username, id
+												from user
+             	                            	where id=#{id}
+												) as u2
+        		on s.writer=u2.username
+			) as result
+		where result.delYn=0
+		order by result.regdate desc
+		limit #{pageCria.startPage}, #{pageCria.numPerPage}
+	
+	
+	</select>
+	<!-- 글 목록 조회 -->
+	<select id="listCriteria" parameterType="map" resultType="com.test.domain.BbsListVO">
+	select *	
+	from
+		(
+			select
+				sub.bcode,sub.delYn,sub.bid, sub.subject, sub.content, sub.writer, sub.regdate, sub.hit, replyCount,id
+			from
+			     ${boardType.DB_Table}
+			                     as sub left join (select bid,count(*) as replyCount 
+															from 
+																${boardType.DB_Reply_Table}
+															group by bid) as reply
+			on sub.bid=reply.bid
+										left join ( select id, username
+															from user
+													) as u
+			on sub.writer=u.username
+			
+		) as main 
+	where 1=1 
+		   AND main.delYn=0
 		<if test="pageCria.bcode!=0 and pageCria.bcode!=null">
 		   AND main.bcode = #{pageCria.bcode}
 		</if>
@@ -87,23 +153,69 @@
 				main.bid desc, main.regdate desc
 			</when>
 			<otherwise>
-				main.bid asc, main.regdate desc
+				main.bid desc, main.hit desc
 			</otherwise>
 		</choose>
 		limit #{pageCria.startPage}, #{pageCria.numPerPage}
 	
 	</select>
-	
+	<select id="userCountData" resultType="int">
+		select
+			count(*)
+		from(
+				select *
+				from arcturus as a right join (
+												select username,id
+												from  user
+												where id=#{id}
+												) as u1
+				on a.writer=u1.username
+       			Union all
+        
+        		select *
+        		from starcraft as s right join(
+        										select username, id
+												from user
+             	                            	where id=#{id}
+												) as u2
+        		on s.writer=u2.username
+			) as result
+		where result.delYn=0
+	</select>
+	<select id="userReplyCountData" parameterType="map" resultType="int">
+		select
+			count(*)
+		from(
+				select *
+				from arcturus_reply as a right join (
+												select username,id
+												from  user
+												where id=#{id}
+												) as u1
+				on a.writer=u1.username
+       			Union all
+        
+        		select *
+        		from starcraft_reply as s right join(
+        										select username, id
+												from user
+             	                            	where id=#{id}
+												) as u2
+        		on s.writer=u2.username
+			) as result
+		where result.delYn=0
+	</select>
 	<!-- 글 갯수 -->
 	<select id="countData" parameterType="map" resultType="int">
 		select count(*) 
 		from 
-		${boardType.DB_Table}
+		${boardType.DB_Table} as b
 		where
-			<![CDATA[ bid > 0 ]]>
+			1=1 AND b.delYn=0
 		<if test="pageCria.bcode!=0 and pageCria.bcode!=null">
-		   AND bcode = #{pageCria.bcode}
+		   AND b.bcode = #{pageCria.bcode}
 		</if>
+		<include refid="findSQL"></include>
 	</select>
 	
 	<!-- main에서 사용하는 일부 글 가져오기 -->
@@ -147,7 +259,7 @@
 		where bid=#{bid} AND userid=#{userid}
 	
 	</delete>
-	<insert id="addClickLovers" parameterType="map">
+	<insert id="addClickLovers"  parameterType="map">
 		insert
 		into
 		${boardType.DB_Lovers_Table}
@@ -155,6 +267,7 @@
 		values
 		(#{bid},#{userid})
 	</insert>
+	
 </mapper>
 
 

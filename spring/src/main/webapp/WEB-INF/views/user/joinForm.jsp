@@ -8,9 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
-<sec:authorize access="isAuthenticated()">
-    <% response.sendRedirect("/bbs/main"); %>
-</sec:authorize>
+
 <meta charset="UTF-8">
 <title>로그인</title>
 </head>
@@ -37,14 +35,15 @@
   <input type="password" class="form-control" id="passwd_check" name="passwd_check"/>
   <br/>
   <label for="email">email:</label>
-  <input type="email" class="form-control" id="email" name="email"/>
-   
- <br/>
   
+  <input type="email" class="form-control" id="email" name="email"/>
+   <button type="button" class="btn btn-primary" id="btn-Email-Check">이메일 확인</button>
+ <br/>
+  <br/>
   
   <input type="button" id="btn-save" class="btn btn-success btn-block" value="회원가입" />
 </form>
-<script src="<c:url value='/js/User.js'/>"></script>
+<script src="<c:url value='/js/user.js'/>"></script>
 </div>
 <div class="card-footer">
 </div>

@@ -48,7 +48,6 @@ public class PagingMaker {
 	public String makeURI(int page,int bcode) {
 		UriComponents uriComponents=UriComponentsBuilder.newInstance()
 				.queryParam("page",page)
-//				.queryParam("numPerPage", pageCria.getNumPerPage())
 				.queryParam("bcode",bcode)
 				.queryParam("findType",pageCria.getFindType())
 				.queryParam("keyword", pageCria.getKeyword())
@@ -91,7 +90,7 @@ public class PagingMaker {
 	public void setNext(boolean next) {
 		this.next = next;
 	}
-	public PageCriteria getPageCria() {
+	public Page getPageCria() {
 		return pageCria;
 	}
 	public void setPageCria(PageCriteria pageCria) {

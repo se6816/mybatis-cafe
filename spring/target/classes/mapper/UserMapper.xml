@@ -21,13 +21,22 @@
   		<result column="reportType" property="reportType" 
   			typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
   	</resultMap>
-  	<!-- 유저 조회 -->
+  	<!-- 유저 email을 이용한 조회 -->
+  	<select id="selectMemberFromEmail" resultType="com.test.domain.UserVO">
+  		select *
+  		from
+  			user
+  		where
+  		    email=#{email};
+  	</select>
+  	<!-- 유저 id를 이용한 조회 -->
   	<select id="selectMember" resultType="com.test.domain.UserVO">
   		select *
   		from
   			user
   		where
   		    id=#{id};
+  		    
   	</select> 	
   	<!-- 닉네임 중복 여부 -->
   	<select id="isUserName" resultType="integer">
@@ -44,6 +53,14 @@
   			user
   		where
   			id=#{id}
+  	</select>
+  	<!-- Email 중복 여부 -->
+  	<select id="isEmail" resultType="integer">
+  	select count(*)
+  		from 
+  			user
+  		where
+  			email=#{email}
   	</select>
   	
   	<!--회원가입 -->
@@ -75,6 +92,13 @@
 		set password=#{password}
 		where id=#{id}
   	</update>
+ 	
+ 	<insert id="log">
+ 	insert into login_log(login_userid,login_success,login_ip)
+ 	values(#{login_userid}
+ 	,#{login_success, typeHandler = com.test.handler.BooleanIntegerHandler}
+ 	,#{login_ip});
+ 	</insert>
  	
   </mapper>
   

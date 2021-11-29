@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.test.Service.ReplyService;
 import com.test.Utils.AES256Util;
-import com.test.config.auto.PrincipalDetails;
+import com.test.config.auth.PrincipalDetails;
 import com.test.domain.BoardType;
-import com.test.domain.ERROR_CODE;
+import com.test.domain.MESSAGE_CODE;
 import com.test.domain.ReplyVO;
 import com.test.domain.replyPageCriteria;
 
@@ -38,11 +38,16 @@ import com.test.domain.replyPageCriteria;
 @RestController
 public class ReplyAPIController {
 	
-	@Autowired
-	private ReplyService Rsvc;
-	@Autowired
-	private AES256Util aes;
 	
+	private final ReplyService Rsvc;
+	
+	private final AES256Util aes;
+	
+	@Autowired
+	public ReplyAPIController(ReplyService rsvc, AES256Util aes) {
+		Rsvc = rsvc;
+		this.aes = aes;
+	}
 	@GetMapping(value="/reply/{boardType}/{bid}",produces="application/json; charset=utf8")
 	public HashMap<String,Object> replyGet(@PathVariable("boardType") BoardType boardType, @RequestParam int page, 
 		Authentication auth,@PathVariable("bid") int bid) throws Exception{
@@ -64,10 +69,11 @@ public class ReplyAPIController {
 			reply.setWriter(principal.getUsername());
 			System.out.println(reply.toString());
 			Rsvc.write(reply, boardType);
-			resEntity = new ResponseEntity<String>(ERROR_CODE.REPLY_SUCCESS.getMessage(),HttpStatus.OK);	
+			resEntity = new ResponseEntity<String>(MESSAGE_CODE.REPLY_SUCCESS.getMessage(),HttpStatus.OK);	
 		}
 		else {
-			resEntity = new ResponseEntity<String>(ERROR_CODE.REPLY_FAIL.getMessage(),HttpStatus.BAD_REQUEST);
+			FieldError error =BindingResult.getFieldError();
+			resEntity = new ResponseEntity<String>(error.getDefaultMessage(),HttpStatus.BAD_REQUEST);
 			
 		}
 		return resEntity;
@@ -76,9 +82,10 @@ public class ReplyAPIController {
 	public ResponseEntity<String> deleteReply(@PathVariable("rid") String rid,
 			@PathVariable("boardType") BoardType boardType) throws NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException{
 		ResponseEntity<String> resEntity=null;
+		
 			try {
-				Rsvc.deleteReply(Integer.parseInt(aes.decrypt(rid)), boardType);
-				resEntity = new ResponseEntity<String>(ERROR_CODE.REPLY_DELETE_SUCCESS.getMessage(),HttpStatus.OK);	
+				Rsvc.deleteReply(aes.decrypt(rid), boardType);
+				resEntity = new ResponseEntity<String>(MESSAGE_CODE.REPLY_DELETE_SUCCESS.getMessage(),HttpStatus.OK);	
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

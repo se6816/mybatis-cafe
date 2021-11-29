@@ -3,13 +3,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public enum BoardType {
-	NOTICE("공지사항","notice","notice_reply","notice_file","notice_lovers"
+	notice("공지사항","notice","notice_reply","notice_file","notice_lovers"
 			,new ArrayList<String>(Arrays.asList("전체글보기","공지사항","업데이트"))
 			,new ArrayList<Integer>(Arrays.asList(0,10,20))),
-	STARCRAFT("스타크래프트","starcraft","starcraft_reply","starcraft_File","starcraft_lovers"
+	starcraft("스타크래프트","starcraft","starcraft_reply","starcraft_File","starcraft_lovers"
 			,new ArrayList<String>(Arrays.asList("전체글보기","자유 게시판","맵 게시판","신고 게시판"))
 			,new ArrayList<Integer>(Arrays.asList(0,1,2,3))),
-	ARCTURUS("악튜러스","arcturus","arcturus_reply","arcturus_File","arcturus_lovers"
+	arcturus("악튜러스","arcturus","arcturus_reply","arcturus_File","arcturus_lovers"
 			,new ArrayList<String>(Arrays.asList("전체글보기","자유게시판","질문 게시판","신고 게시판"))
 			,new ArrayList<Integer>(Arrays.asList(0,1,2,3)));
 	private String boardName;

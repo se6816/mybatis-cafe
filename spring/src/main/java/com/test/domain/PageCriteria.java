@@ -1,38 +1,17 @@
 package com.test.domain;
 
-public class PageCriteria {
-	private int page;
-	protected int numPerPage;
+public class PageCriteria extends Page{
 	private SortType sortType;
 	private int bcode;
-	
 	private String findType;
 	private String keyword;
 
 	public PageCriteria() {
-		this.page = 1;
-		this.numPerPage = 20;
 		this.sortType=SortType.recent;
 		this.bcode=0;
 	}
-	public void setPage(int page) {
-		if(page<=0) {
-			this.page = 1;
-			return;
-		}
-		this.page=page;
-	}
-	public int getPage() {
-		return page;
-	}
 	public String getDB_Sort() {
 		return this.sortType.name();
-	}
-	public int getStartPage() {
-		return (this.page-1)*numPerPage;
-	}
-	public int getNumPerPage() {
-		return this.numPerPage;
 	}
 	public SortType getSortType() {
 		return sortType;

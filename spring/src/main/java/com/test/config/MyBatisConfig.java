@@ -53,7 +53,8 @@ public class MyBatisConfig implements TransactionManagementConfigurer{
 		dataSource.setPassword(password);
 		return dataSource;
 	}
-	@Bean public PlatformTransactionManager transactionManager() {
+	@Bean 
+	public PlatformTransactionManager transactionManager() {
 		return new DataSourceTransactionManager(dataSource());
 	}
 	@Override
@@ -95,6 +96,5 @@ public class MyBatisConfig implements TransactionManagementConfigurer{
 		factoryBean.setSqlSessionFactory(sqlSessionFactory());
         return factoryBean ;
     }
-	
 	
 }

@@ -2,19 +2,21 @@ package com.test.config;
 
 
 import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -28,13 +30,20 @@ public class MVCconfig extends WebMvcConfigurerAdapter{
 	@Autowired 
 	Environment env;
 	private final int MAX_SIZE = 10* 1024*1024;
+	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
+		registry.//addMapping("/user/change/**")
+			addMapping("*")
+			.allowedOrigins("*")
+			.allowedHeaders("*")
+			.allowCredentials(true)
+			.allowedMethods("*");
+			
 		registry.addMapping("/api/**")
 			.allowedOrigins("http://localhost:8801/spring/")
 			.allowedMethods("*");
 	}
-	
 	
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -70,9 +79,28 @@ public class MVCconfig extends WebMvcConfigurerAdapter{
 	}
 	@Bean
 	public AES256Util AES256Util() throws UnsupportedEncodingException {
-		String key="aes256-used-key..";
+		String key="aes256realusedtempkey";
 		AES256Util AES256Util;
 		AES256Util= new AES256Util(key);
 		return AES256Util;
+	}
+	@Bean
+	public JavaMailSender mailSender() {
+		JavaMailSenderImpl sender=new JavaMailSenderImpl();
+		String id=env.getProperty("gmail.user.id");
+		String passwd=env.getProperty("gmail.user.password");
+		sender.setHost("smtp.gmail.com");
+		sender.setPort(587);
+		sender.setUsername(id);
+		sender.setPassword(passwd);
+		sender.setDefaultEncoding("UTF-8");
+		Properties javaMailProperties = new Properties();
+		
+		javaMailProperties.put("mail.smtp.auth", true);
+		javaMailProperties.put("mail.smtp.starttls.enable", true);
+		
+		sender.setJavaMailProperties(javaMailProperties);
+		
+		return sender;
 	}
 }

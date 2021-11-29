@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public enum UserCategory {
-	CHANGEPW("비밀번호 변경"
-			,"changepw"),
-	CHANGEINFO("회원정보 변경"
-			,"userinfo");
+	bbs("작성한 글보기"
+			,"/bbs"),
+	reply("작성한 댓글"
+			,"/reply");
 	private UserCategory(String boardName, String url) {
 				this.boardName = boardName;
 				this.url = url;

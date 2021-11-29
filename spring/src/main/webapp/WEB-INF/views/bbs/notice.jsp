@@ -43,7 +43,7 @@
  			  <c:forEach items="${list}" var="bvo">
    				 <tr>
      				 <th scope="row">${bvo.bid}</th>
-    				  <td><a href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
+    				  <td><a class="list-subject" href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
     				  		<strong>[${bvo.replyCount}]</strong>
     				  </td>
     				  <td>${bvo.writer}</td>
@@ -148,7 +148,7 @@
 		}
 	}	
 </script>
-<script src="${pageContext.request.contextPath}/js/Board.js"></script>
+<script src="${pageContext.request.contextPath}/js/board.js"></script>
 
 <script type="text/javascript">
 function sort(){

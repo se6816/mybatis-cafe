@@ -106,5 +106,5 @@
 			});
       }
     </script> 
-<script src="${pageContext.request.contextPath}/js/Board.js"></script>
+<script src="${pageContext.request.contextPath}/js/board.js"></script>
 <%@include file="../include/footer.jsp" %>

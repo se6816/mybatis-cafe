@@ -68,6 +68,23 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
+	@Override
+	public void writeLog(Log log) {
+		userMapper.log(log);
+		
+	}
+
+	@Override
+	public UserVO selectMemberFromEmail(String email) {
+		return userMapper.selectMemberFromEmail(email);
+	}
+
+	@Override
+	public int isEmail(String email) {
+		// TODO Auto-generated method stub
+		return userMapper.isEmail(email);
+	}
+
 	
 	
 }

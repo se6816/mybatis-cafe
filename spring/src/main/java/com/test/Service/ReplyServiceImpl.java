@@ -39,8 +39,8 @@ public class ReplyServiceImpl implements ReplyService {
 
 
 	@Override
-	public void deleteReply(int rid, BoardType boardType) {
-		replyMapper.delete(rid, boardType);
+	public void deleteReply(String rid, BoardType boardType) {
+		replyMapper.delete(Integer.parseInt(rid), boardType);
 		
 	}
 
