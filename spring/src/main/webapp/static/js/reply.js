@@ -4,11 +4,6 @@ let index = {
 				$("#btn-lovers").on("click",()=>{
 					this.lover();
 				});
-				$(".btn-reply-delete").on("click",function(){
-					_this.deleteReply(this);
-					
-					
-				});
 				$("#btn-add-Rreply").on("click",()=>{
 					this.write("re");
 				});
@@ -86,17 +81,17 @@ let index = {
 					}
 				});
 			},
-			deleteReply : function(target){
+			deleteReply : function(target,rid){
 				let result=confirm("댓글을 삭제하시겠습니까?");
 				if(!result){
 					return;
 				}
-				let rid=target.dataset.rid;
 				$.ajax({ type:"DELETE",
 					url:"/spring/api/reply/"+$('.board-name').data('board')+"/"+rid,
 					contentType: "application/json; charset=utf-8",
 					dataType: "text"
 				}).done(function(data){
+					alert(data);
 					let node=$(target).parent().parent();
 					let html="";
 					node.children().remove();

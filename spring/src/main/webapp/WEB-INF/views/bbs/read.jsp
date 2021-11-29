@@ -184,14 +184,14 @@ $("#btn-add-reply").on("click",function(){
 			html+="'>";
 			html+="<a role='button' class='collapsed' data-toggle='collapse' href='#collapse-"+reply.rid+"' aria-expanded='false' aria-controls='"+reply.rid+"'></a>";
 			html+="</div>";
-			html+="<p style='text-align:right;'>";
+			html+=`<p style='text-align:right;'>`;
 			html+="<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#reply-comment-modal' data-whatever='"+reply.writer+"' data-rgroup='"+reply.rgroup+"'>답변</button> ";
 			if(username===reply.writer){
-				html+="<button type='button' class='btn btn-primary btn-reply-delete' data-rid='"+reply.rid+"'>삭제</button>";
+				html+=`<button type='button' class='btn btn-primary btn-reply-delete' onClick="index.deleteReply(this,'`+reply.rid+`')">삭제</button>`;
 			}
 			
 			<c:if test="${isAdmin}">
-				html+="<button type='button' class='btn btn-primary btn-reply-delete' data-rid='"+reply.rid+"'>관리자 삭제</button>";
+				html+=`<button type='button' class='btn btn-primary btn-reply-delete' onClick="index.deleteReply(this,'`+reply.rid+`')">관리자 삭제</button>`;
 				
 			 </c:if>
 			html+="</p>";

@@ -69,7 +69,7 @@ public class EmailUtil {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
 				mimeMessage.setSubject("이메일 확인 메일입니다","UTF-8");
-				mimeMessage.setText("해당 주소로 접속햊주셍요"+
+				mimeMessage.setText("해당 주소로 접속해주세요"+
 				email_domain+addr,"UTF-8");
 			}
 		};

@@ -27,6 +27,26 @@ let index={
 			if(!result){
 				return;
 			}
+			if(!this.checkVal($("#id").val())){
+				alert("id를 입력해주세요.");
+				$("#id").focus();
+				return;
+			}
+			if(!this.checkVal($("#username").val())){
+				alert("활동명을 입력해주세요.");
+				$("#username").focus();
+				return;
+			}
+			if(!this.checkVal($("#passwd").val())){
+				alert("비밀번호를 입력해주세요.");
+				$("#passwd").focus();
+				return;
+			}
+			if(!this.checkVal($("#email").val())){
+				alert("email을 입력해주세요.");
+				$("#email").focus();
+				return;
+			}
 			let save_passwd = $("#passwd").val();
 			let save_passwd_check = $("#passwd_check").val();
 			if(save_passwd!=save_passwd_check){
@@ -118,6 +138,11 @@ let index={
 			let data={
 				email : $("#email").val()
 			};
+			if(!this.checkVal($("#email").val())){
+				alert("이메일을 입력해주세요.");
+				$("#email").focus();
+				return;
+			}
 			alert("메일 발송이 완료되었습니다 최대 5분까지 걸릴 수 있습니다.");
 			$.ajax({ 
 				type: "POST",
@@ -135,6 +160,11 @@ let index={
 			let data={
 					email : $("#email").val()
 				};
+			if(!this.checkVal($("#email").val())){
+				alert("이메일을 입력해주세요.");
+				$("#email").focus();
+				return;
+			}
 			alert("메일 발송이 완료되었습니다 최대 5분까지 걸릴 수 있습니다.");
 			$.ajax({ 
 				type: "POST",
@@ -152,6 +182,11 @@ let index={
 			let data={
 					email : $("#email").val()
 			};
+			if(!this.checkVal($("#email").val())){
+				alert("이메일을 입력해주세요.");
+				$("#email").focus();
+				return;
+			}
 			alert("메일 발송이 완료되었습니다 최대 5분까지 걸릴 수 있습니다.");
 			$.ajax({ 
 				type: "POST",

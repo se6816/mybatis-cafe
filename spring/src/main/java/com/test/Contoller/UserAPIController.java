@@ -63,6 +63,8 @@ public class UserAPIController {
 	@Autowired
 	JavaMailSender sender;
 	
+	
+	
 	@PostMapping(value="/email/check",produces="application/text; charset=utf8")
 	public ResponseEntity<String> emailCheck(@Validated(UserVO.ValidateEmail.class)@RequestBody UserVO user,HttpSession session,
 			BindingResult BindingResult) {
