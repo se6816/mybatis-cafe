@@ -249,16 +249,11 @@
 		select count(*)
 		from
 		 	${boardType.DB_Lovers_Table}
-		where bid=#{bid} AND userid=#{userid}
+		where bid=#{bid} 
+			AND userid=#{userid} 
+			AND islovers=1
 			
 	</select>
-	<delete id="deleteClickLovers" parameterType="map">
-		delete
-			from
-		${boardType.DB_Lovers_Table}
-		where bid=#{bid} AND userid=#{userid}
-	
-	</delete>
 	<insert id="addClickLovers"  parameterType="map">
 		insert
 		into
@@ -266,6 +261,8 @@
 		(bid,userid)
 		values
 		(#{bid},#{userid})
+		on duplicate key update
+		islovers= NOT islovers
 	</insert>
 	
 </mapper>

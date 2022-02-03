@@ -1,22 +1,12 @@
 package com.test.config;
 
-import com.test.Service.UserService;
-import com.test.Service.UserServiceImpl;
 import com.test.config.auth.PrincipalDetailsService;
 import com.test.handler.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.expression.SecurityExpressionHandler;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,13 +17,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.FilterInvocation;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -45,15 +30,20 @@ import com.test.handler.loginSuccessHandler;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
-	@Autowired
-    PrincipalDetailsService PrincipalDetailsService;
+	
+    private final PrincipalDetailsService PrincipalDetailsService;	
+	private final loginSuccessHandler loginSuccessHandler;
+	private final loginFailHandler loginFailHandler;
+	
 
-	@Autowired
-	UserService uSvc;
-	
-	
-	
-	
+	public WebSecurityConfig(PrincipalDetailsService principalDetailsService,
+			loginSuccessHandler loginSuccessHandler,
+			loginFailHandler loginFailHandler) {
+		PrincipalDetailsService = principalDetailsService;
+		this.loginSuccessHandler = loginSuccessHandler;
+		this.loginFailHandler = loginFailHandler;
+	}
+
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -114,8 +104,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   .usernameParameter("id")
 		   .passwordParameter("password")
 		   .loginProcessingUrl("/login")
-		   .successHandler(new loginSuccessHandler(uSvc))
-		   .failureHandler(new loginFailHandler(uSvc))
+		   .successHandler(loginSuccessHandler)
+		   .failureHandler(loginFailHandler)
 		   .and()
 		   .exceptionHandling()		 
 		   .accessDeniedPage("/bbs/main")

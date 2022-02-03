@@ -46,13 +46,12 @@ public class BbsAPIController {
 	private BbsService bsvc;
 	
 	@PostMapping(value="/lovers/{boardType}/{bid}")
-	public ResponseEntity<Integer> loversCheck(@PathVariable("boardType") BoardType boardType,
+	public ResponseEntity<String> loversCheck(@PathVariable("boardType") BoardType boardType,
 			@PathVariable("bid") int bid,
 			@AuthenticationPrincipal PrincipalDetails principal) {
-		ResponseEntity<Integer> resEntity = null;
-		int isLoversCheck=bsvc.clicklovers(bid, principal.getId(), boardType);
-		System.out.println(isLoversCheck);
-		resEntity = new ResponseEntity<Integer>(isLoversCheck,HttpStatus.OK);
+		ResponseEntity<String> resEntity = null;
+		bsvc.clicklovers(bid, principal.getId(), boardType);
+		resEntity = new ResponseEntity<String>("",HttpStatus.OK);
 		return resEntity;
 	}
 	

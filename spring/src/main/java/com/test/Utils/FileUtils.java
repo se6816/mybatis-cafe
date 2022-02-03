@@ -15,9 +15,21 @@ import org.springframework.web.multipart.MultipartFile;
 import com.test.Service.UploadService;
 import com.test.domain.BoardType;
 import com.test.domain.FileVO;
+
+/**
+ * 파일 저장 Util이다.
+ * 2021.12.21
+ * @author user
+ *
+ */
+
+
+
+
+
 @Service
 public class FileUtils {
-
+	
 	@Autowired
 	Environment env;
 	
@@ -29,7 +41,12 @@ public class FileUtils {
 		return 1;
 	}
 	
-	
+	/**
+	 * 파일을 실제 서버에 업로드학고 DB에 파일 정보를 저장한다.
+	 * @param multi 파일 관련 데이터
+	 * @param boardType 게시판 종류
+	 * @return
+	 */
 	public int save(MultipartFile multi,BoardType boardType) {
 		int UploadFail=0;
 		System.out.println("시작");
@@ -38,6 +55,9 @@ public class FileUtils {
 		
 		String OriginFile=multi.getOriginalFilename();
 		String copyFile=OriginFile;
+		
+		
+		// 파일이 실존한다면면
 		if(copyFile !=null && !copyFile.equals("")) {
 			Calendar cal= Calendar.getInstance();
 			String currentTime=new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
@@ -48,9 +68,13 @@ public class FileUtils {
 			String pathname=uploadPath+"/"+copyFile;
 			resourcePath=resourcePath.concat(currentTime+"/"+copyFile);
 			File file= new File(pathname);
+			
+			// 디렉토리가 없다면면
 			if(!file.isDirectory()) {
 				file.mkdirs();
 			}
+			
+			// 파일을 서버에 업로드하고 DB에 저장한다.
 			try {
 				multi.transferTo(file);
 				FileVO FVO = new FileVO();

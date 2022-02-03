@@ -12,6 +12,12 @@ import com.test.domain.userBbsVO;
 import com.test.domain.userReplyVO;
 import com.test.dto.writeRequestDto;
 
+/**
+ * 게시판 Service interface
+ * 2021.12.20
+ * @author user
+ *
+ */
 public interface BbsService {
 	public void write(writeRequestDto wrd,BoardType boardType) throws Exception; // 글 작성
 	public BbsVO read(int bid,BoardType boardType) throws Exception; // 글 상세조회
@@ -21,7 +27,7 @@ public interface BbsService {
 	public int countData(Page pageCria, BoardType boardType) throws Exception;    // 글 갯수
 	public List<BbsVO> hotShowArticle(PageCriteria pageCria, BoardType boardType) throws Exception; // 인기 게시글
 	public List<BbsVO> todayShowArticle(PageCriteria pageCria, BoardType boardType) throws Exception;   // 오늘의 게시글
-	public int clicklovers(int bid,String id,BoardType boardType);    // 좋아요 컨트롤
+	public void clicklovers(int bid,String id,BoardType boardType);    // 좋아요 컨트롤
 	public boolean isClickLovers(int bid,String id,BoardType boardType); // 좋아요를 눌렀는가?
 	
 	public int userCountData(String id) throws Exception;

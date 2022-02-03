@@ -17,13 +17,13 @@ let index = {
 						contentType: "application/json; charset=utf-8",
 						dataType: "text"
 				}).done(function(data){
-					if(data==0){
-						$("#lovers-count").text(parseInt($("#lovers-count").text())+1);
-						$("#icon").attr('class','bi-hand-thumbs-up-fill');
-					}
-					else{
+					if($("#icon").hasClass('bi-hand-thumbs-up-fill')){
 						$("#lovers-count").text(parseInt($("#lovers-count").text())-1);
 						$("#icon").attr('class','bi-hand-thumbs-up');
+					}
+					else{
+						$("#lovers-count").text(parseInt($("#lovers-count").text())+1);
+						$("#icon").attr('class','bi-hand-thumbs-up-fill');
 					}
 				}).fail(function(err){
 					if(err.status=='401'){

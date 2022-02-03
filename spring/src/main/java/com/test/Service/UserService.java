@@ -5,7 +5,12 @@ import org.springframework.stereotype.Service;
 import com.test.domain.Log;
 import com.test.domain.UserVO;
 import com.test.domain.reportVO;
-
+/**
+ * 유저 Service interface
+ * 2022.2.04
+ * @author user
+ *
+ */
 public interface UserService {
 	public UserVO selectMember(String id);  // 회원을 id로 조회
 	public UserVO selectMemberFromEmail(String email); // 회원 이메일로 조회

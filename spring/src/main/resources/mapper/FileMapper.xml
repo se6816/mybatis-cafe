@@ -48,9 +48,9 @@
  	</update>
  	<!-- 불필요 파일 삭제 -->
  	<delete id="deleteFileAll" parameterType="map">
- 		delete
- 		from
+ 		update 
  			${boardType.DB_File_Table}
+ 		set bid=null
  		where FILEID in
  		<foreach collection="fid" item="num"
 			open="(" separator="," close=")">

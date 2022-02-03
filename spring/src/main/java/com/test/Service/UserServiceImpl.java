@@ -1,6 +1,7 @@
 package com.test.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,21 +10,33 @@ import com.test.domain.Log;
 import com.test.domain.RoleType;
 import com.test.domain.UserVO;
 import com.test.domain.reportVO;
-
+/**
+ * 유저 Service interface
+ * 2021.2.04
+ * @author user
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService{
-
-	
+	/**
+	 * 계정 관련 mapper
+	 */
 	private final UserMapper userMapper;
 	
-	@Autowired
-	private BCryptPasswordEncoder encoder;
+	/**
+	 * 비번 암호화
+	 */
+	private final BCryptPasswordEncoder encoder= new BCryptPasswordEncoder();
 	
-	@Autowired
+
 	public UserServiceImpl(UserMapper userMapper) {
 		this.userMapper = userMapper;
 	}
-
+	
+    /**
+     * 계정을 추가한다.
+     * @param UserVO 계정 정보
+     */
 	public void insertMember(UserVO UserVO){
 		String rawpassword=UserVO.getPassword();
 		String encpw=encoder.encode(rawpassword);
@@ -32,6 +45,10 @@ public class UserServiceImpl implements UserService{
 		userMapper.insertMember(UserVO);
 	}
 
+	/**
+	 * @param id 아이디
+	 * @return 
+	 */
 	@Override
 	public int isID(String id) {
 		return userMapper.isID(id);
@@ -81,7 +98,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int isEmail(String email) {
-		// TODO Auto-generated method stub
 		return userMapper.isEmail(email);
 	}
 

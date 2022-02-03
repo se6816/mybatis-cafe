@@ -3,11 +3,16 @@
 .metadata
 bin/
 tmp/
+src/test
+target/
+src/*.properties
 *.tmp
 *.bak
 *.swp
 *~.nib
 local.properties
+.classpath
+.project
 .settings/
 .loadpath
 .recommenders
@@ -115,3 +120,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/spring/

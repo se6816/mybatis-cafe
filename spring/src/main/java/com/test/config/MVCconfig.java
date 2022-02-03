@@ -62,7 +62,7 @@ public class MVCconfig extends WebMvcConfigurerAdapter{
 	@Override
     public void addViewControllers(final ViewControllerRegistry registry) {
     		System.out.println("addViewControllers가 호출됩니다. ");
-        registry.addViewController("/").setViewName("home");
+        registry.addViewController("/").setViewName("/home");
 	}
 	@Bean
 	public InternalResourceViewResolver getInternalResourceViewResolver() {

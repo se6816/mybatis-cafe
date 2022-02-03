@@ -97,7 +97,12 @@ public class ReplyVO {
 	}
 	
 	
-	
+	public boolean isReply(){
+		if(this.rgroup==0) {
+			return true;
+		}
+		return false;
+	}
 	
 	
 	

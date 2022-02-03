@@ -42,8 +42,8 @@ public class MyBatisConfig implements TransactionManagementConfigurer{
 	@Bean
 	public DataSource dataSource() {
 		BasicDataSource dataSource= new BasicDataSource();
-		driverClassName=env.getProperty("spring.datasource.logdriver");
-		url=env.getProperty("spring.datasource.logurl");
+		driverClassName=env.getProperty("spring.datasource.driver");
+		url=env.getProperty("spring.datasource.url");
 		userName=env.getProperty("spring.datasource.username");
 		password=env.getProperty("spring.datasource.password");
 		

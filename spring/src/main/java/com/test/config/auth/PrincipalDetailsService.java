@@ -16,8 +16,13 @@ import com.test.domain.UserVO;
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
 	
-	@Autowired
-	private UserService uSvc;
+	private final UserService uSvc;
+	
+	public PrincipalDetailsService(UserService uSvc) {
+		this.uSvc = uSvc;
+	}
+
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserVO user= uSvc.selectMember(username);

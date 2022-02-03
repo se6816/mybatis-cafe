@@ -1,46 +1,31 @@
 package com.test.Contoller;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.test.Service.UserService;
-import com.test.Utils.AES256Util;
 import com.test.Utils.EmailUtil;
 import com.test.config.auth.PrincipalDetails;
 import com.test.domain.MESSAGE_CODE;
-import com.test.domain.RoleType;
 import com.test.domain.UserVO;
 import com.test.domain.reportVO;
 import com.test.dto.EmailRequest;
@@ -50,21 +35,20 @@ import com.test.dto.PWRequest;
 @RequestMapping("/api")
 @RestController
 public class UserAPIController {
+
 	
-	@Autowired
-	UserService usvc;
+	private final UserService usvc;	
 	
-	@Autowired
-	private BCryptPasswordEncoder encoder;
-	
-	@Autowired
 	AuthenticationManager AuthManager;
-	
-	@Autowired
 	JavaMailSender sender;
-	
-	
-	
+		
+	public UserAPIController(UserService usvc,AuthenticationManager authManager,
+			JavaMailSender sender) {
+		this.usvc = usvc;
+		AuthManager = authManager;
+		this.sender = sender;
+	}
+
 	@PostMapping(value="/email/check",produces="application/text; charset=utf8")
 	public ResponseEntity<String> emailCheck(@Validated(UserVO.ValidateEmail.class)@RequestBody UserVO user,HttpSession session,
 			BindingResult BindingResult) {

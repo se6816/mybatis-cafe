@@ -6,17 +6,23 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
 import com.test.Service.UserService;
 import com.test.domain.Log;
-
+@Component
 public class loginFailHandler extends SimpleUrlAuthenticationFailureHandler {
+	
+//	private final Logger logger= new LoggerFactory.getLogger(this.getClass());
 	private final UserService uSvc;
+
 	private final String defaultFailureUrl="/loginForm/fail";
 	private boolean forwardToDestination = false;
 	private boolean allowSessionCreation = true;

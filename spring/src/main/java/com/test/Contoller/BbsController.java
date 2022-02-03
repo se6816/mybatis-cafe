@@ -45,7 +45,7 @@ import com.test.domain.userBbsVO;
 
 @Controller
 public class BbsController {
-
+	private final Logger logger= LoggerFactory.getLogger(BbsController.class);
 	@Autowired
 	private BbsService bsvc;
 	@Autowired
@@ -85,6 +85,7 @@ public class BbsController {
    			   			,RedirectAttributes reAttr
 			)throws Exception {
 		boolean isLovers=false;
+		logger.info("글");
 		if(principal!=null) {
 			isLovers=bsvc.isClickLovers(bid, principal.getId(), boardType);
 		}

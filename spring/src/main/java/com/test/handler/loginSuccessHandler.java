@@ -2,7 +2,7 @@ package com.test.handler;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,14 +24,15 @@ import com.test.Service.UserService;
 import com.test.Service.UserServiceImpl;
 import com.test.config.auth.PrincipalDetails;
 import com.test.domain.Log;
-
-
+@Component
 public class loginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 
+	
 	private final UserService uSvc;
 	private RequestCache requestCache = new HttpSessionRequestCache();
-
+	
 	public loginSuccessHandler(UserService uSvc) {
+		super();
 		this.uSvc = uSvc;
 	}
 

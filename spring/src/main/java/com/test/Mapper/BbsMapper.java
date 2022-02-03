@@ -29,7 +29,6 @@ public interface BbsMapper {
 		
 		public int isClickLovers(@Param("bid")int bid,@Param("userid")String userid,@Param("boardType") BoardType boardType);
 		public void addClickLovers(@Param("bid")int bid,@Param("userid")String userid,@Param("boardType") BoardType boardType);
-		public void deleteClickLovers(@Param("bid")int bid,@Param("userid")String userid,@Param("boardType") BoardType boardType);
 
 		public int userCountData(String id) throws Exception;
 		public int userReplyCountData(String id) throws Exception;

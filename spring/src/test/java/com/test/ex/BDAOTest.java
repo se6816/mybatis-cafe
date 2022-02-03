@@ -60,7 +60,7 @@ import com.test.dto.writeRequestDto;
 @WebAppConfiguration
 @ContextConfiguration(classes= {MVCconfig.class,MyBatisConfig.class})
 public class BDAOTest {
-
+	private Logger logger=LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private com.test.Service.BbsService BbsService;
@@ -113,6 +113,7 @@ public class BDAOTest {
 			System.out.println(BbsVO.getBid()+  " : "+BbsVO.getContent());
 		}
 	}*/
+	
 	public void listCriteriaTest() throws Exception{
 		PageCriteria pri = new PageCriteria();
 		BoardType board= BoardType.arcturus;
@@ -163,6 +164,7 @@ public class BDAOTest {
 	//	SimpleDateFormat simple= new SimpleDateFormat("yyyyMMdd");
 	//	System.out.println(simple.format(cal.getTime()));
 	}
+
 	public void ReplyPosttest() {
 		ReplyVO reply= new ReplyVO();
 		reply.setBid(196631);
@@ -206,14 +208,7 @@ public class BDAOTest {
 		System.out.println(aes2.encrypt(str));
 		System.out.println(aes2.decrypt(aes2.encrypt(str)));
 	}
-	
-	public void itrator() throws Exception {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication== null
-				 ) {
-			System.out.println("aa");
-		}
-	}
+
 	
 	public void report() throws Exception{
 		reportVO report= new reportVO();
@@ -223,10 +218,10 @@ public class BDAOTest {
 		report.setReportType(reportType);
 		Usvc.report(report);
 	}
-	
-	public void userList() throws Exception {
-		Page page= new Page();
-		System.out.println(BbsService.userListCriteria(page, "user"));
+	@Test
+	public void logTest() {
+		logger.debug("debug 테스트");
+		logger.info("info 테스트");
+		logger.warn("wrn 테스트{}",11);
 	}
-	
 }

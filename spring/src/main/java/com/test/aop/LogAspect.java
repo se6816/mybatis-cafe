@@ -20,26 +20,27 @@ import com.test.domain.UserVO;
 @EnableAspectJAutoProxy
 @Component
 @Aspect
-public class AOP {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+public class LogAspect {
+	private Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
 	@Around(value = "execution(* com.test.Service..*.*(..))")
 	public Object logging(ProceedingJoinPoint joinPoint) throws Throwable {
-		System.out.println(joinPoint.getSignature().getDeclaringTypeName()+"->"+joinPoint.getSignature().getName());
+		System.out.println("ad");
+		
+		logger.info("start-{} -> {}",joinPoint.getSignature().getDeclaringTypeName(),joinPoint.getSignature().getName());
 		Object result=joinPoint.proceed();
-		System.out.println("finish-"+joinPoint.getSignature().getDeclaringTypeName()+ "/"+joinPoint.getSignature().getName());
-		
-		
+		logger.info("finish-{} -> {}",joinPoint.getSignature().getDeclaringTypeName(),joinPoint.getSignature().getName());	
 		return result;
 	}
-	@Around(value = "execution(* com.test.Contoller..*.*(..))")
-	public Object gg(ProceedingJoinPoint joinPoint) throws Throwable {
-		System.out.println(joinPoint.getSignature().getDeclaringTypeName()+"->"+joinPoint.getSignature().getName());
+	@Around(value = "execution(* com.test.Controller..*.*(..))")
+	public Object logging2(ProceedingJoinPoint joinPoint) throws Throwable {
+		System.out.println("ad");
+		logger.info("start-{} -> {}",joinPoint.getSignature().getDeclaringTypeName(),joinPoint.getSignature().getName());
 		Object result=joinPoint.proceed();
-		System.out.println("finish-"+joinPoint.getSignature().getDeclaringTypeName()+ "/"+joinPoint.getSignature().getName());
-		
+		logger.info("finish-{} -> {}",joinPoint.getSignature().getDeclaringTypeName(),joinPoint.getSignature().getName());	
 		return result;
 	}
+	
 	
 	
 	
