@@ -100,7 +100,7 @@
 			   });
 				
 			}).fail(function(err){
-				console.log(err);
+				alert(err.responseText);
 			});
       }
     </script> 

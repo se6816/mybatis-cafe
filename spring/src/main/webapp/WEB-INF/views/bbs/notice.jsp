@@ -14,13 +14,13 @@
     	
     	<div id="menu">	
     		<div class="list-group">
-  				<c:forEach var="i" begin="0" end="${boardType.getCategoryLength()-1}">
-  				  <button type="button" class="list-group-item list-group-item-action" onclick="location.href='${pageContext.request.contextPath}/bbs/${boardType.name()}?bcode=${boardType.getBcode().get(i)}'">  ${boardType.getCategory().get(i)}  </button>
+  				<c:forEach var="i" begin="0" end="${noticeType.getCategoryLength()-1}">
+  				  <button type="button" class="list-group-item list-group-item-action" onclick="location.href='${pageContext.request.contextPath}/news?bcode=${noticeType.getBcode().get(i)}'">  ${noticeType.getCategory().get(i)}  </button>
   				</c:forEach>
 			</div>
 		</div>
 		<div id="section">
-			<div class="board-name" data-board="${boardType.name()}" data-bcode="${pagingMaker.pageCria.bcode}"><p><span class="board-text">${boardType.boardName}</span>게시판</p>
+			<div class="board-name" data-board="${noticeType.name()}" data-bcode="${pagingMaker.pageCria.bcode}"><p><span class="board-text">${noticeType.boardName}</span>게시판</p>
 			</div>
 			<div class="line"></div>
 			<div class="form=group" style="float:right;">
@@ -43,8 +43,7 @@
  			  <c:forEach items="${list}" var="bvo">
    				 <tr>
      				 <th scope="row">${bvo.bid}</th>
-    				  <td><a class="list-subject" href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
-    				  		<strong>[${bvo.replyCount}]</strong>
+    				  <td class="list-subject text-truncate"><a href="${pageContext.request.contextPath}/news/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
     				  </td>
     				  <td>${bvo.writer}</td>
     				 	<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${bvo.regdate}"/></td>

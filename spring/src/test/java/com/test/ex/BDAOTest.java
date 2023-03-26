@@ -1,5 +1,7 @@
 package com.test.ex;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
@@ -19,57 +21,86 @@ import javax.annotation.Resource;
 import javax.xml.ws.spi.http.HttpHandler;
 
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.format.datetime.joda.DateTimeParser;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.test.Service.BbsServiceImpl;
-import com.test.Service.ReplyServiceImpl;
-import com.test.Service.UserServiceImpl;
-import com.test.Utils.AES256Util;
-import com.test.config.MVCconfig;
-import com.test.config.MyBatisConfig;
-import com.test.domain.BbsListVO;
-import com.test.domain.BbsVO;
-import com.test.domain.BoardType;
-import com.test.domain.Log;
-import com.test.domain.Page;
-import com.test.domain.PageCriteria;
-import com.test.domain.ReplyVO;
-import com.test.domain.SortType;
-import com.test.domain.UserVO;
-import com.test.domain.replyPageCriteria;
-import com.test.domain.reportVO;
-import com.test.dto.writeRequestDto;
+import com.cafe.classic.Service.Bbs.BbsServiceImpl;
+import com.cafe.classic.Service.reply.ReplyService;
+import com.cafe.classic.Service.reply.ReplyServiceImpl;
+import com.cafe.classic.Service.user.UserService;
+import com.cafe.classic.Service.user.UserServiceImpl;
+import com.cafe.classic.config.MVCconfig;
+import com.cafe.classic.config.MyBatisConfig;
+import com.cafe.classic.config.RedisConfig;
+import com.cafe.classic.domain.BbsListVO;
+import com.cafe.classic.domain.BbsVO;
+import com.cafe.classic.domain.BoardType;
+import com.cafe.classic.domain.Page;
+import com.cafe.classic.domain.PageCriteria;
+import com.cafe.classic.domain.ReplyVO;
+import com.cafe.classic.domain.SortType;
+import com.cafe.classic.domain.UserVO;
+import com.cafe.classic.domain.replyPageCriteria;
+import com.cafe.classic.domain.ReportVO;
+import com.cafe.classic.dto.writeRequestDto;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration(classes= {MVCconfig.class,MyBatisConfig.class})
-public class BDAOTest {
+public class BDAOTest implements ApplicationContextAware{
 	private Logger logger=LoggerFactory.getLogger(this.getClass());
+	@Autowired
+	private com.cafe.classic.Service.Bbs.BbsService BbsService;
+	@Autowired
+	private ReplyService replysc;
 	
 	@Autowired
-	private com.test.Service.BbsService BbsService;
-	
-	private ReplyServiceImpl replysc;
-	
+	private UserService Usvc;
+	private static ApplicationContext ctx;
 
-	private UserServiceImpl Usvc;
-	
+    public static ApplicationContext getApplicationContext() {
+        return ctx;
+    }
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.ctx=applicationContext;
+		
+	}
+    @Test
+	public void contextLoads() throws Exception {
+    	ApplicationContext ct=getApplicationContext();
+	      if (ct != null) {
+	          String[] beans = ctx.getBeanDefinitionNames();
+	          System.out.println("시작");
+	           for (String bean : beans) {
+	             System.out.print("1");
+	             System.out.println("bean : " + bean);
+	            }
+	        }
+	      else {
+	    	  System.out.println("null");
+	      }
+	    }
 	public void insertTest() throws Exception{
 		BbsVO bvo= new BbsVO();
 		bvo.setSubject("테스트제목입니다.");
@@ -149,32 +180,9 @@ public class BDAOTest {
 		System.out.println(env.getProperty("spring.datasource.logdriver"));
 		System.out.println(env.getProperty("spring.datasource.password"));
 	}
-	public void ddd() throws Exception {
-		BbsVO bvo=BbsService.read(196632, BoardType.arcturus);
-		System.out.println(bvo.toString());
-	//	PageCriteria cri= new PageCriteria();
-	//	cri.setPage(1);
-	//	cri.setFindType("SC");
-	//	cri.setKeyword("subject");
-	//	List<BbsVO> list= BbsService.listCriteria(cri, BoardType.ARCTURUS);
-	//	for(BbsVO bvo: list) {
-	//		logger.info(bvo.getBid() +": "+bvo.getContent());
-	//	}
-	//	Calendar cal= Calendar.getInstance();
-	//	SimpleDateFormat simple= new SimpleDateFormat("yyyyMMdd");
-	//	System.out.println(simple.format(cal.getTime()));
-	}
+	
 
-	public void ReplyPosttest() {
-		ReplyVO reply= new ReplyVO();
-		reply.setBid(196631);
-		reply.setWriter("userIm");
-		reply.setContent("bb");
-		reply.setRgroup(0);
-		reply.setRstep(0);
-		reply.setSecret(false);
-		replysc.write(reply, BoardType.arcturus);
-	}
+	
 	public void List(){
 		HashSet<Integer> exist_hash= new HashSet<>();
 		List<Integer> list= new ArrayList();
@@ -192,36 +200,33 @@ public class BDAOTest {
 		
 	}
 	
-	public void encrypt() throws UnsupportedEncodingException, NoSuchAlgorithmException, GeneralSecurityException {
-		Date date= new Date();
-		String key= "aes256realusedtempkey";
-		String key2= "aes222-test-keey!!";
-		AES256Util aes;
-		aes= new AES256Util(key);
-		AES256Util aes2;
-		aes2= new AES256Util(key2);
-		String str= "";
-		
-		System.out.println(aes.decrypt("VJ4I6-Zox-9O_Tb17VDt_w"));
-		System.out.println(aes.encrypt(str));
-		System.out.println(aes.decrypt(aes.encrypt(str)));
-		System.out.println(aes2.encrypt(str));
-		System.out.println(aes2.decrypt(aes2.encrypt(str)));
-	}
 
 	
 	public void report() throws Exception{
-		reportVO report= new reportVO();
-		com.test.domain.reportType reportType= com.test.domain.reportType.Fword;
+		ReportVO report= new ReportVO();
+		com.cafe.classic.domain.reportType reportType= com.cafe.classic.domain.reportType.Fword;
 		report.setBid("397316");
 		report.setId("user");
 		report.setReportType(reportType);
 		Usvc.report(report);
 	}
-	@Test
 	public void logTest() {
-		logger.debug("debug 테스트");
-		logger.info("info 테스트");
-		logger.warn("wrn 테스트{}",11);
+		System.out.println("log테스트");
+		logger.debug("debug");
+		logger.info("info");
+
 	}
+	
+	public void ReplyPosttest() throws Exception {
+		ReplyVO reply= new ReplyVO();
+		reply.setBid(196631);
+		reply.setWriter("userIm");
+		reply.setContent("bb");
+		reply.setRgroup(0);
+		reply.setRstep(0);
+		reply.setSecret(false);
+		replysc.write(reply, BoardType.arcturus);
+	}
+
+
 }

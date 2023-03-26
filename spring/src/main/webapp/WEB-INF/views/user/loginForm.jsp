@@ -33,8 +33,7 @@
    비밀번호: <input type="password" class="form-control" id="password" name="password" value="${password}"/>
   <br/>
   <p class="err">${ERR}</p>
-  
-  <button id="access-login" type="button" class="btn btn-success btn-block" onclick="javascript:void(0)">로그인</button>
+  <button id="access-login" type="button" class="btn btn-success btn-block">로그인</button>
 	
 </form>
 <a href="<c:url value='find_id_pw'/>">비밀번호/아이디 찾기</a>
@@ -52,7 +51,15 @@
 	}
 </script>
 <script>
-	$("#access-login").on("click",function(){
+    $("#id, #password").on("keyup",function(e){
+    	if(e.keyCode =='13'){
+    		$("#access-login").click();
+    	}
+    	
+    	
+    });
+	$("#access-login").on("click",function(e){
+		e.preventDefault();
 		if(!navigator.cookieEnabled){
 			alert("쿠키를 허용해주십시오");
 			$(".err").text("쿠키를 허용해주세요");
@@ -60,6 +67,7 @@
 		}
 		$("#login-form").submit();
 	});
+	
 </script>
 </body>
 </html>

@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- <mapper namespace="com.test.Mapper.ReplyMapper">
+  
+ <mapper namespace="com.cafe.classic.Mapper.ReplyMapper">
  	
- 	<resultMap type="com.test.domain.ReplyVO" id="replyVO">
- 		<result column="rid" property="rid"
- 				typeHandler="com.test.handler.StringHandler"/>
+ 	<resultMap type="ReplyVO" id="replyVO">
+ 		<result column="rid" property="rid"/>
   		<result column="bid" property="bid"/>
   		<result column="content" property="content"/>
   		<result column="writer" property="writer"/>
@@ -15,15 +15,27 @@
   		<result column="rstep" property="rstep"/>
   		<result column="Bwriter" property="Bwriter"/>
   		<result column="secret" property="secret" 
-  			typeHandler="com.test.handler.BooleanIntegerHandler"/>
+  			typeHandler="BooleanIntegerHandler"/>
   		<result column="delYn" property="delYn"
-  			typeHandler="com.test.handler.BooleanIntegerHandler"/>
+  			typeHandler="BooleanIntegerHandler"/>
   	</resultMap>
-<!-- 댓글 조회 -->
+  	<select id="read" resultType="replyVO">
+  		select reply.writer,article.writer as Bwriter
+  		from 
+  			${boardType.CategoryName}_reply as reply 
+  		join  ${boardType.CategoryName} as article
+  		on reply.bid=article.bid
+  		where
+  			reply.rid=#{rid}
+  	</select>
+<!-- 댓글 리스트 조회 -->
 	<select id="listCriteria" resultMap="replyVO">
-		select reply.*,article.writer as Bwriter
+		select reply.rid, reply.bid, reply.content,
+			reply.writer, reply.regdate, reply.rgroup,
+			reply.rstep, article.writer as Bwriter,
+			reply.secret, reply.delYn
 		from
-		${boardType.DB_Reply_Table} as reply, ${boardType.DB_Table} as article
+		${boardType.CategoryName}_reply as reply, ${boardType.CategoryName} as article
 		where 
 			reply.bid=article.bid and
 			reply.bid=#{bid}
@@ -34,7 +46,7 @@
 	<!-- 댓글 삭제 -->
 	<update id="delete">
 		update
-		${boardType.DB_Reply_Table}
+		${boardType.CategoryName}_reply
 		set delYn=1
 		where
 			rid=#{rid}
@@ -45,33 +57,33 @@
  	<insert id="write" parameterType="map">
  	<selectKey keyColumn="rid" keyProperty="reply.rgroup" resultType="int" order="BEFORE">
  		select IFNULL(MAX(RID)+1,0) from
- 		${boardType.DB_Reply_Table}
+ 		${boardType.CategoryName}_reply
  	</selectKey>
  	
  	insert into
- 	${boardType.DB_Reply_Table}
+ 	${boardType.CategoryName}_reply
  	(bid,content,writer,rgroup,rstep,secret)
  	values
  		(#{reply.bid},#{reply.content},#{reply.writer},
  		#{reply.rgroup},
- 		#{reply.rstep}+1,#{reply.secret, typeHandler = com.test.handler.BooleanIntegerHandler})
+ 		#{reply.rstep}+1,#{reply.secret, typeHandler = BooleanIntegerHandler})
  	
  	</insert>
  	
  	<!-- 댓글에 재댓글 작성 -->
 	<insert id="reWrite" parameterType="map">
  		insert into
- 	${boardType.DB_Reply_Table}
+ 	${boardType.CategoryName}_reply
  		(bid,content,writer,rgroup,rstep,secret)
  		values
  		(#{reply.bid},#{reply.content},#{reply.writer},#{reply.rgroup},
- 		#{reply.rstep}+1,#{reply.secret, typeHandler = com.test.handler.BooleanIntegerHandler})
+ 		#{reply.rstep}+1,#{reply.secret, typeHandler = BooleanIntegerHandler})
  	</insert>
  	
  	<!-- rstep 조작 -->
 	<update id="addRstep" parameterType="map">
  		update 
- 		${boardType.DB_Reply_Table}
+ 		${boardType.CategoryName}_reply
  		set rstep=rstep+1
  		where bid=#{reply.bid}
  			and rgroup=#{reply.rgroup} 

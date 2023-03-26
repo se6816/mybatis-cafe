@@ -42,8 +42,17 @@ let index = {
 					alert(data);
 					location.assign(location.origin+"/spring/bbs/"+$('.board-name').data('board'));
 				}).fail(function(err){
-					console.log(err);
-					alert(err.responseText);
+					if(err.status=='401'){
+						alert("로그인 후 이용해주십시오");
+						location.assign(location.origin+"/spring/loginForm");
+						return;
+					}
+					if(err.status=='404'){
+						alert(err.responseText);
+						return;
+					}
+					alert("서버와 연결이 원활하지 않습니다");
+					return;
 				});
 			},
 			deleteboard : function(){
@@ -61,7 +70,21 @@ let index = {
 					alert(data);
 					location.assign(location.origin+"/spring/bbs/"+$('.board-name').data('board'));
 				}).fail(function(err){
-					alert(err.responseText);
+					if(err.status=='400'){
+						alert("페이지를 찾지 못했습니다");
+						return;
+					}
+					if(err.status=='401'){
+						alert("로그인 후 이용해주십시오");
+						location.assign(location.origin+"/spring/loginForm");
+						return;
+					}
+					if(err.status=='403'){
+						alert(err.responseText);
+						return;
+					}
+					alert("서버와 연결이 원활하지 않습니다");
+					return;
 				});
 			},
 			
@@ -94,8 +117,26 @@ let index = {
 			}).done(function(data){
 				alert(data);
 				location.assign(location.origin+"/spring/bbs/"+$('.board-name').data('board')+"/"+$("#bid").val());
-			}).fail(function(error){
-				alert(error.responseText);
+			}).fail(function(err){
+				if(err.status=='400'){
+					alert("페이지를 찾지 못했습니다");
+					return;
+				}
+				if(err.status=='401'){
+					alert("로그인 후 이용해주십시오");
+					location.assign(location.origin+"/spring/loginForm");
+					return;
+				}
+				if(err.status=='403'){
+					alert(err.responseText);
+					return;
+				}
+				if(err.status=='404'){
+					alert(err.responseText);
+					return;
+				}
+				alert("서버와 연결이 원활하지 않습니다");
+				return;
 	
 			});
 			},
@@ -103,8 +144,6 @@ let index = {
 				let select = document.querySelector("#findType");
 				let findType=select.options[select.selectedIndex].value;
 				let bcode= $('.board-name').data('bcode');
-				
-				
 				location.assign(location.origin+"/spring/bbs/"+$('.board-name').data('board')+"?bcode="+bcode+"&findType="+findType+"&keyword="+$("#keyword").val());
 			}
 			

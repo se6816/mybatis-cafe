@@ -27,10 +27,16 @@ let index = {
 					}
 				}).fail(function(err){
 					if(err.status=='401'){
-						
 						alert("로그인 후 이용해주십시오");
 						location.assign(location.origin+"/spring/loginForm");
+						return;
 					}
+					if(err.status=='404'){
+						alert(err.responseText);
+						return;
+					}
+					alert("서버와 연결이 원활하지 않습니다");
+					
 				});
 				
 			},
@@ -77,10 +83,14 @@ let index = {
 					if(err.status=='401'){
 						alert("로그인 후 이용해주십시오");
 						location.assign(location.origin+"/spring/loginForm");
+						return;
 					}
-					else{
+					if(err.status=='404'){
 						alert(err.responseText);
+						return;
 					}
+					alert("서버와 연결이 원활하지 않습니다");
+					return;
 				});
 			},
 			deleteReply : function(target,rid){
@@ -104,7 +114,15 @@ let index = {
 					if(err.status=='401'){
 						alert("로그인 후 이용해주십시오");
 						location.assign(location.origin+"/spring/loginForm");
+						return;
 					}
+					if(err.status=='404'){
+						alert(err.responseText);
+						return;
+					}
+					
+					alert("서버와 연결이 원활하지 않습니다");
+					return;
 				});
 			}
 	

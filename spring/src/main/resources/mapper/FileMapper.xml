@@ -3,10 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
- <mapper namespace="com.test.Mapper.FileMapper">
+ <mapper namespace="com.cafe.classic.Mapper.FileMapper">
  	<!-- 파일 임시 등록 -->
  	<insert id="upload" parameterType="map">
- 		insert into ${boardType.DB_File_Table}
+ 		insert into ${boardType.CategoryName}_File
  		(PATHNAME,FILENAME,ORIGINAL_FILENAME,FILESIZE,
  		CONTENT_TYPE,RESOURCE_PATHNAME)
 		values 
@@ -15,29 +15,29 @@
 		 #{file.ReSource_PathName})
 		<selectKey keyProperty="file.FILEID" resultType="Integer" order="AFTER">
 			select IFNULL(MAX(FILEID),0) from
-			${boardType.DB_File_Table}
+			${boardType.CategoryName}_File
 		</selectKey>
  	</insert>
  	<!-- 파일 찾기 -->
- 	<select id="searchFile" parameterType="map" resultType="com.test.domain.FileVO">
+ 	<select id="searchFile" parameterType="map" resultType="FileVO">
  		select PATHNAME,FILENAME, CONTENT_TYPE,FILESIZE
  		from
- 		${boardType.DB_File_Table}
+ 		${boardType.CategoryName}_File
  		where
  		 FILEID=#{fid}
  	</select>
  	<!-- 파일 조회 -->
- 	<select id="selectFile" parameterType="map" resultType="com.test.domain.FileVO">
+ 	<select id="selectFile" parameterType="map" resultType="FileVO">
  		select RESOURCE_PATHNAME, FILEID
  		from
- 		${boardType.DB_File_Table}
+ 		${boardType.CategoryName}_File
  		where
  		 FILEID=#{fid}
  	</select>
  	<!-- 파일 정상 등록 -->
  	<update id="registerBidAll" parameterType="map">
  		update 
-		${boardType.DB_File_Table}
+		${boardType.CategoryName}_File
 		set bid=#{bid}
 		where bid is null
 		and FILEID in 
@@ -49,7 +49,7 @@
  	<!-- 불필요 파일 삭제 -->
  	<delete id="deleteFileAll" parameterType="map">
  		update 
- 			${boardType.DB_File_Table}
+ 			${boardType.CategoryName}_File
  		set bid=null
  		where FILEID in
  		<foreach collection="fid" item="num"
@@ -61,7 +61,7 @@
  	<select id="findContainedFile" parameterType="map" resultType="int">
  		select FILEID
  		from 
- 		${boardType.DB_File_Table}
+ 		${boardType.CategoryName}_File
  		where bid=#{bid}
  	</select>
  	

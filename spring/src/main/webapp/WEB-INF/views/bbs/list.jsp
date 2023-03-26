@@ -44,7 +44,7 @@
  			  <c:forEach items="${list}" var="bvo">
    				 <tr>
      				 <th scope="row">${bvo.bid}</th>
-    				  <td class="list-subject"><a target="_blank" href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
+    				  <td class="list-subject text-truncate"><a target="_blank" href="${pageContext.request.contextPath}/bbs/${boardType.name()}/${bvo.bid}${pagingMaker.makeURI(pagingMaker.pageCria.page,pagingMaker.pageCria.bcode)}">${bvo.subject}</a>
     				  		<strong>[${bvo.replyCount}]</strong>
     				  </td>
     				  <td><a target="_blank" href="${pageContext.request.contextPath}/user/${bvo.id}/bbs">${bvo.writer}</a>

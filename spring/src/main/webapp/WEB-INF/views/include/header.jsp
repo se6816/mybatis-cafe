@@ -21,11 +21,12 @@
 <sec:authorize var="isAdmin" access="hasAnyRole('ROLE_ADMIN')"/>
 <link rel="icon" href="data:,">
 <meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>리뷰 카페</title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="${pageContext.request.contextPath}/bbs/main">고전 게임 커뮤니티</a>
+  <a class="navbar-brand" href="${pageContext.request.contextPath}/main">고전 게임 커뮤니티</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="true" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -33,9 +34,12 @@
   <div class="collapse navbar-collapse" id="navbarToggler">
     <ul class="nav navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/bbs/main">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/main">Home <span class="sr-only">(current)</span></a>
       </li>
-     <c:forEach items="${boardType.values()}" var="board">
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/news">공지사항 <span class="sr-only">(current)</span></a>
+      </li>
+     <c:forEach items="${nav.values()}" var="board">
       <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/bbs/${board.name()}">${board.boardName}</a>
       </li>

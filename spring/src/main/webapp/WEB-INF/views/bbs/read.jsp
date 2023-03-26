@@ -171,12 +171,7 @@ $("#btn-add-reply").on("click",function(){
 			}
 			html+="<p style='text-align:right;'>작성날짜 :"+moment(date).format('YYYY-MM-DD')+"</p>";
 			html+="<p>작성자 :"+reply.writer+"</p>";
-			if(reply.secret===true &&!(username===reply.writer || 
-									  username===reply.Bwriter)){
-				html+="<p>비밀글입니다</p>";
-			}else{
-				html+="<p class='collapse' id='collapse-"+reply.rid+"' aria-expanded='false'>"+reply.content+"</p>";
-			}
+			html+="<p class='collapse' id='collapse-"+reply.rid+"' aria-expanded='false'>"+reply.content+"</p>";
 			html+="<div class='paper-button";
 			if(reply.length<100){
 				html+=" hide";
@@ -204,7 +199,6 @@ $("#btn-add-reply").on("click",function(){
 			target.dataset.page++;	
 	}).fail(function(err){
 		alert("서버와 연결이 원활하지 않습니다");
-		console.log(err);
 	});
 });
 </script>

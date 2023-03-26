@@ -9,13 +9,24 @@
 		<setting name="cacheEnabled" value="false"/>
 	</settings>
 	<typeAliases>
-		<typeAlias type="com.test.handler.BooleanIntegerHandler" alias="BooleanIntegerHandler"/>
-		<typeAlias type="com.test.handler.StringHandler" alias="StringHandler"/>
+	<!-- handler -->
+		<typeAlias type="com.cafe.classic.handler.BooleanIntegerHandler" alias="BooleanIntegerHandler"/>
+		<typeAlias type="org.apache.ibatis.type.EnumTypeHandler" alias="EnumTypeHandler"/>
+		
+		
+	<!-- domain -->
+		<typeAlias type="com.cafe.classic.domain.BbsVO" alias="BbsVO"/>
+		<typeAlias type="com.cafe.classic.domain.FileVO" alias="FileVO"/>
+		<typeAlias type="com.cafe.classic.domain.ReplyVO" alias="ReplyVO"/>
+		<typeAlias type="com.cafe.classic.domain.UserVO" alias="UserVO"/>
+		<typeAlias type="com.cafe.classic.domain.UserReplyVO" alias="UserReplyVO"/>
+		<typeAlias type="com.cafe.classic.domain.UserBbsVO" alias="UserBbsVO"/>
+		<typeAlias type="com.cafe.classic.domain.ReportVO" alias="ReportVO"/>
+		<typeAlias type="com.cafe.classic.domain.BbsListVO" alias="BbsListVO"/>
 	</typeAliases>
 	
 	<typeHandlers>
-		<typeHandler handler="com.test.handler.BooleanIntegerHandler"/>
-		<typeHandler handler="com.test.handler.StringHandler"/>
+		<typeHandler handler="com.cafe.classic.handler.BooleanIntegerHandler"/>
 	</typeHandlers>
 	<environments default="development">
 		<environment id="development">
